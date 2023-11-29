@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "MiniDSGameModeBase.generated.h"
 
+class APaperCharacter;
+
 /**
  * 
  */
@@ -14,4 +16,5 @@ class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+	AMiniDSGameModeBase();
 };

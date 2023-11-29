@@ -7,7 +7,11 @@
 		{
 			"Name": "MiniDS",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"Paper2D"
+			]
 		}
 	]
 }
