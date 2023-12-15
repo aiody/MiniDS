@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "ClientSocket.h"
 #include "MiniDSGameModeBase.generated.h"
 
 class APaperCharacter;
@@ -17,4 +18,7 @@ class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 	AMiniDSGameModeBase();
+
+private:
+	ClientSocket* Socket;
 };

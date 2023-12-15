@@ -12,4 +12,13 @@ AMiniDSGameModeBase::AMiniDSGameModeBase()
 	{
 		DefaultPawnClass = BP_Char.Class;
 	}
+
+	Socket = ClientSocket::Instance();
+	if (Socket->InitSocket())
+	{
+		if (Socket->Connect("127.0.0.1", 9999))
+		{
+			UE_LOG(LogClass, Log, TEXT("IOCP Server connect success!"));
+		}
+	}
 }
