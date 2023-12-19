@@ -66,31 +66,36 @@ int main()
 
         cout << "Connected!!!" << endl;
 
-        // s : connected socket
-        // buf : pointer of receive buffer
-        // len : buffer의 크기
-        // flags : 옵션을 정의할 때 사용
-        BYTE recvBuffer[1024];
-        int recvLen = ::recv(clientSocket, (char*)recvBuffer, 1024, NULL);
-
-        if (recvLen <= 0)
+        while (true)
         {
-            int errorCode = ::WSAGetLastError();
-            break;
-        }
+            // s : connected socket
+            // buf : pointer of receive buffer
+            // len : buffer의 크기
+            // flags : 옵션을 정의할 때 사용
+            BYTE recvBuffer[1024];
+            ::memset(recvBuffer, 0, sizeof(recvBuffer));
+            int recvLen = ::recv(clientSocket, (char*)recvBuffer, sizeof(recvBuffer), NULL);
 
-        cout << recvBuffer << endl;
+            if (recvLen <= 0)
+            {
+                int errorCode = ::WSAGetLastError();
+                break;
+            }
 
-        // s : connected socket
-        // buf : pointer of send buffer
-        // len : buffer의 크기
-        // flags : 옵션을 정의할 때 사용
-        char* sendBuffer = const_cast<char*>("Hi, there!");
-        int numOfBytes = ::send(clientSocket, (char*)sendBuffer, (int)strlen(sendBuffer), NULL);
-        if (numOfBytes == SOCKET_ERROR)
-        {
-            int errorCode = ::WSAGetLastError();
-            break;
+            cout << recvBuffer << endl;
+
+            // s : connected socket
+            // buf : pointer of send buffer
+            // len : buffer의 크기
+            // flags : 옵션을 정의할 때 사용
+            int numOfBytes = ::send(clientSocket, (char*)recvBuffer, recvLen, NULL);
+            if (numOfBytes == SOCKET_ERROR)
+            {
+                int errorCode = ::WSAGetLastError();
+                break;
+            }
+
+            Sleep(1000);
         }
     }
 

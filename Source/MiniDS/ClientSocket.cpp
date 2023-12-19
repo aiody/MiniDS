@@ -1,9 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ClientSocket.h"
 
-// Sets default values
 ClientSocket::ClientSocket()
 {
 }
@@ -14,11 +13,12 @@ ClientSocket::~ClientSocket()
 
 bool ClientSocket::InitSocket()
 {
-	// winsock �ʱ�ȭ
+	// winsock 초기화
 	WSADATA wsaData;
 	if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return false;
 
+	// 소켓 생성
 	ServerSocket = ::WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (ServerSocket == INVALID_SOCKET)
 		return false;
@@ -28,6 +28,8 @@ bool ClientSocket::InitSocket()
 
 void ClientSocket::CloseSocket()
 {
+	::closesocket(ServerSocket);
+	::WSACleanup();
 }
 
 bool ClientSocket::Connect(const char* ip, int port)
@@ -37,26 +39,33 @@ bool ClientSocket::Connect(const char* ip, int port)
 	serverAddr.sin_port = ::htons(port);
 	::inet_pton(AF_INET, ip, &serverAddr.sin_addr);
 
-	if (connect(ServerSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+	if (SOCKET_ERROR == ::connect(ServerSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)))
 		return false;
 
 	return true;
 }
 
-bool ClientSocket::Init()
+int ClientSocket::SendChatMessage(FString msg)
 {
-	return true;
+	int resultCode = ::send(ServerSocket, TCHAR_TO_ANSI(*msg), msg.Len(), 0);
+	if (resultCode == SOCKET_ERROR)
+		return 0;
+	UE_LOG(LogClass, Log, TEXT("SENT!! :: %d"), resultCode);
+	return resultCode;
 }
 
-uint32 ClientSocket::Run()
+void ClientSocket::Dispatch()
 {
-	return 0;
-}
+	while (true)
+	{
+		char recvBuffer[1024] = {0};
+		int recvLen = ::recv(ServerSocket, recvBuffer, sizeof(recvBuffer), 0);
+		if (recvLen > 0)
+		{
+			FString str(recvBuffer);
+			UE_LOG(LogClass, Log, TEXT("RECEIVED!! :: %s"), *str);
 
-void ClientSocket::Stop()
-{
-}
-
-void ClientSocket::Exit()
-{
+			SendChatMessage("Yo ho~!");
+		}
+	}
 }

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 
 #include "MiniDSGameModeBase.h"
@@ -12,6 +12,13 @@ AMiniDSGameModeBase::AMiniDSGameModeBase()
 	{
 		DefaultPawnClass = BP_Char.Class;
 	}
+}
+
+void AMiniDSGameModeBase::StartPlay()
+{
+	Super::StartPlay();
+
+	if (!GEngine) return;
 
 	Socket = ClientSocket::Instance();
 	if (Socket->InitSocket())
@@ -19,6 +26,13 @@ AMiniDSGameModeBase::AMiniDSGameModeBase()
 		if (Socket->Connect("127.0.0.1", 9999))
 		{
 			UE_LOG(LogClass, Log, TEXT("IOCP Server connect success!"));
+			// 서버 데이터 처리 쓰레드 시작
+			DispatcherThread* Thread = DispatcherThread::Instance([this]()
+				{
+					Socket->Dispatch();
+				});
+
+			Socket->SendChatMessage("Hello World!");
 		}
 	}
 }
