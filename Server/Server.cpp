@@ -1,52 +1,17 @@
-﻿#include <iostream>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-
-#pragma comment(lib, "ws2_32.lib")
-
-using namespace std;
+﻿#include "pch.h"
+#include "SocketUtils.h"
 
 int main()
 {
-    // wVersionRequested : 버전 정보
-    // lpWSAData : 윈도우 소켓의 디테일한 정보를 반환하는 LPWSADATA 구조체
-    // return : 성공하면 0을 리턴하고 아니면 에러코드를 WSAGetLastError를 통해 얻을 수 있다.
-    WSADATA wsaData;
-    if (::WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-    {
-        int errorCode = ::WSAGetLastError();
-        return 0;
-    }
-
-    // af : address family
-    // type : socket type
-    // protocol : protocol, af와 type이 결정되면 결정됨
-    // return : descriptor including socket information
-    SOCKET listenSocket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    SOCKET listenSocket = SocketUtils::CreateSocket();
     if (listenSocket == INVALID_SOCKET)
     {
         int errorCode = ::WSAGetLastError();
     }
 
+    SocketUtils::BindAnyAddress(listenSocket, 9999);
 
-    SOCKADDR_IN serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = ::htons(9999);
-    ::inet_pton(AF_INET, "127.0.0.1", &serverAddr.sin_addr);
-
-    // s : socket
-    // name : sockaddr 구조체의 포인터
-    // namelen : name의 길이
-    if (::bind(listenSocket, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) != 0)
-    {
-        int errorCode = ::WSAGetLastError();
-    }
-
-
-    if (listen(listenSocket, 10) != 0)
-    {
-        int errorCode = ::WSAGetLastError();
-    }
+    SocketUtils::Listen(listenSocket);
 
     cout << "Listening..." << endl;
 
@@ -99,8 +64,5 @@ int main()
         }
     }
 
-
     closesocket(listenSocket);
-
-    WSACleanup();
 }
