@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "SocketUtils.h"
+#include "NetAddress.h"
 
 LPFN_ACCEPTEX		SocketUtils::AcceptEx = nullptr;
 LPFN_CONNECTEX		SocketUtils::ConnectEx = nullptr;
@@ -12,9 +13,9 @@ void SocketUtils::Init()
 
 	// 런타임에 가져와야 해야하는 함수 포인터들
 	SOCKET dummySocket = CreateSocket();
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(AcceptEx)));
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(ConnectEx)));
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(DisconnectEx)));
+	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(&AcceptEx)));
+	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(&ConnectEx)));
+	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx)));
 	CloseSocket(dummySocket);
 }
 
@@ -26,7 +27,7 @@ void SocketUtils::Clear()
 bool SocketUtils::BindWindowsFunction(SOCKET socket, GUID guid, LPVOID* fn)
 {
 	DWORD dwBytes = 0;
-	return SOCKET_ERROR != ::WSAIoctl(socket, SIO_GET_EXTENSION_FUNCTION_POINTER, &guid, sizeof(guid), &fn, sizeof(fn), OUT &dwBytes, NULL, NULL);
+	return SOCKET_ERROR != ::WSAIoctl(socket, SIO_GET_EXTENSION_FUNCTION_POINTER, &guid, sizeof(guid), fn, sizeof(*fn), OUT &dwBytes, NULL, NULL);
 }
 
 SOCKET SocketUtils::CreateSocket()

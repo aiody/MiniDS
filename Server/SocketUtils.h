@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "NetAddress.h"
 
 class SocketUtils
 {
@@ -19,7 +18,7 @@ public:
 	static void		CloseSocket(SOCKET socket);
 
 	// 소켓 관련 함수들
-	static bool		Bind(SOCKET socket, NetAddress netAddr);
+	static bool		Bind(SOCKET socket, class NetAddress netAddr);
 	static bool		BindAnyAddress(SOCKET socket, uint16 port);
 	static bool		Listen(SOCKET socket, int32 backlog = SOMAXCONN);
 
