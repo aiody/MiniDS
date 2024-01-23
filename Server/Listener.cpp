@@ -21,7 +21,7 @@ bool Listener::StartAccept(NetAddress netAddress)
 	if (_socket == INVALID_SOCKET)
 		return false;
 
-	if (GIocpCore.Register(this) == false)
+	if (GIocpCore.Register(shared_from_this()) == false)
 		return false;
 
 	if (SocketUtils::SetReuseAddress(_socket, true) == false)
@@ -63,9 +63,10 @@ void Listener::Dispatch(IocpEvent* iocpEvent, int32 numOfBytes)
 
 void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 {
-	Session* session = new Session();
+	shared_ptr<Session> session = make_shared<Session>();
 
 	acceptEvent->Init();
+	acceptEvent->SetOwner(shared_from_this());
 	acceptEvent->SetSession(session);
 
 	DWORD bytesReceived = 0;
@@ -79,7 +80,7 @@ void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 
 void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 {
-	Session* session = acceptEvent->GetSession();
+	shared_ptr<Session> session = acceptEvent->GetSession();
 
 	if (false == SocketUtils::SetUpdateAcceptSocket(session->GetSocket(), _socket))
 	{
