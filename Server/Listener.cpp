@@ -37,6 +37,7 @@ bool Listener::StartAccept(NetAddress netAddress)
 	for (int32 i = 0; i < acceptCount; i++)
 	{
 		AcceptEvent* acceptEvent = new AcceptEvent();
+		acceptEvent->SetOwner(shared_from_this());
 		_acceptEvents.push_back(acceptEvent);
 		RegisterAccept(acceptEvent);
 	}
@@ -64,6 +65,7 @@ void Listener::Dispatch(IocpEvent* iocpEvent, int32 numOfBytes)
 void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 {
 	shared_ptr<Session> session = make_shared<Session>();
+	GIocpCore.Register(session);
 
 	acceptEvent->Init();
 	acceptEvent->SetOwner(shared_from_this());
@@ -99,6 +101,8 @@ void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 	session->SetNetAddress(NetAddress(sockAddress));
 
 	cout << "Client Connected!" << endl;
+
+	session->ProcessConnect();
 
 	RegisterAccept(acceptEvent);
 }

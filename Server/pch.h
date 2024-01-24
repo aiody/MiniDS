@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Types.h"
 #include "Macro.h"
@@ -8,6 +8,7 @@
 
 #include <iostream>
 using namespace std;
+#include <thread>
 
 #include <WinSock2.h>
 #include <MSWSock.h>
