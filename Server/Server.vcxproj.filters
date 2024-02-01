@@ -7,6 +7,9 @@
     <Filter Include="Main">
       <UniqueIdentifier>{faf9c105-a4ea-4cf5-9b41-f705cd0d13a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{e5621277-c5f7-4dc8-b317-86b8046993c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketUtils.cpp">
@@ -35,6 +38,12 @@
     </ClCompile>
     <ClCompile Include="Session.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="TLS.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="Session.h">
       <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="TLS.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Thread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
