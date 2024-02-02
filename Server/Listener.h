@@ -14,8 +14,8 @@ public:
 	void CloseSocket();
 
 public:
-	HANDLE GetHandle() override;
-	void Dispatch(class IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
+	virtual HANDLE GetHandle() override;
+	virtual void Dispatch(class IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
 
 private:
 	void RegisterAccept(AcceptEvent* acceptEvent);

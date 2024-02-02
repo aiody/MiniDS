@@ -9,13 +9,16 @@ int main()
     shared_ptr<Listener> listener = make_shared<Listener>();
     listener->StartAccept(NetAddress(L"127.0.0.1", 9999));
 
-    gThreadManager->Launch([]()
-        {
-            while (true)
+    for (int32 i = 0; i < 5; i++)
+    {
+        gThreadManager->Launch([=]()
             {
-                GIocpCore.Dispatch();
-            }
-        });
+                while (true)
+                {
+                    GIocpCore.Dispatch();
+                }
+            });
+    }
     
     gThreadManager->Join();
 
