@@ -2,6 +2,7 @@
 #include "Session.h"
 #include "SocketUtils.h"
 #include "IocpEvent.h"
+#include "Service.h"
 
 Session::Session()
 {
@@ -34,6 +35,7 @@ void Session::Disconnect(const WCHAR* cause)
 	OnDisconnected();
 
 	SocketUtils::CloseSocket(_socket);
+	GetService()->ReleaseSession(GetSessionRef());
 }
 
 HANDLE Session::GetHandle()
@@ -95,7 +97,7 @@ void Session::RegisterSend(SendEvent* sendEvent)
 
 	WSABUF wsaBuf;
 	wsaBuf.buf = reinterpret_cast<char*>(sendEvent->buffer.data());
-	wsaBuf.len = sendEvent->buffer.size();
+	wsaBuf.len = static_cast<ULONG>(sendEvent->buffer.size());
 
 	DWORD numOfBytes = 0;
 	if (SOCKET_ERROR == ::WSASend(_socket, &wsaBuf, 1, OUT &numOfBytes, 0, sendEvent, NULL))
@@ -113,6 +115,8 @@ void Session::RegisterSend(SendEvent* sendEvent)
 void Session::ProcessConnect()
 {
 	_connected.store(true);
+
+	GetService()->AddSession(GetSessionRef());
 	
 	OnConnected();
 	
@@ -129,8 +133,6 @@ void Session::ProcessRecv(int32 numOfBytes)
 		return;
 	}
 
-	cout << "Recv Data Len = " << numOfBytes << endl;
-
 	OnRecv(_recvBuffer, numOfBytes);
 
 	RegisterRecv();
@@ -146,8 +148,6 @@ void Session::ProcessSend(SendEvent* sendEvent, int32 numOfBytes)
 		Disconnect(L"Send 0");
 		return;
 	}
-
-	cout << "Send Data Len = " << numOfBytes << endl;
 
 	OnSend(numOfBytes);
 }

@@ -48,6 +48,9 @@
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="Service.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SocketUtils.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="ThreadManager.h">
       <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Service.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

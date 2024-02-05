@@ -2,6 +2,7 @@
 #include "IocpCore.h"
 
 class AcceptEvent;
+class ServerService;
 
 class Listener : public IocpObject
 {
@@ -10,7 +11,7 @@ public:
 	~Listener();
 
 public:
-	bool StartAccept(class NetAddress netAddress);
+	bool StartAccept(shared_ptr<ServerService> service);
 	void CloseSocket();
 
 public:
@@ -24,4 +25,6 @@ private:
 private:
 	SOCKET _socket = INVALID_SOCKET;
 	vector<AcceptEvent*> _acceptEvents;
+
+	shared_ptr<ServerService> _service;
 };
