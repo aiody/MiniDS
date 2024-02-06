@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "NetAddress.h"
 #include <functional>
 
@@ -23,6 +23,7 @@ public:
 	bool						CanStart() { return _sessionFactory != nullptr; }
 	virtual void				CloseService();
 
+	ServiceType					GetServiceType() { return _type; }
 	NetAddress					GetNetAddress() { return _netAddress; }
 	shared_ptr<IocpCore>		GetIocpCore() { return _iocpCore; }
 	int32						GetMaxSessionCount() { return _maxSessionCount; }

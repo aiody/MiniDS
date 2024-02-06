@@ -15,6 +15,7 @@ public:
 
 public:
 	void				Send(BYTE* buffer, int32 len);
+	bool				Connect();
 	void				Disconnect(const WCHAR* cause);
 
 	shared_ptr<Service> GetService() { return _service.lock(); }
@@ -32,11 +33,13 @@ public:
 	virtual void		Dispatch(IocpEvent* iocpEvent, int32 numOfBytes = 0) override;
 
 private:
-	void				RegisterConnect();
+	bool				RegisterConnect();
+	bool				RegisterDisconnect();
 	void				RegisterRecv();
 	void				RegisterSend(SendEvent* sendEvent);
 
 	void				ProcessConnect();
+	void				ProcessDisconnect();
 	void				ProcessRecv(int32 numOfBytes);
 	void				ProcessSend(SendEvent* sendEvent, int32 numOfBytes);
 
@@ -61,5 +64,7 @@ private:
 	USE_LOCK;
 
 private:
+	ConnectEvent		_connectEvent;
+	DisconnectEvent		_disconnectEvent;
 	RecvEvent			_recvEvent;
 };

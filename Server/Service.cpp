@@ -52,6 +52,17 @@ ClientService::ClientService(NetAddress address, shared_ptr<IocpCore> iocpCore, 
 
 bool ClientService::Start()
 {
+	if (CanStart() == false)
+		return false;
+
+	const int32 sessionCount = GetMaxSessionCount();
+	for (int32 i = 0; i < sessionCount; i++)
+	{
+		shared_ptr<Session> session = CreateSession();
+		if (session->Connect() == false)
+			return false;
+	}
+
 	return true;
 }
 
@@ -71,7 +82,8 @@ bool ServerService::Start()
 		return false;
 
 	shared_ptr<ServerService> service = static_pointer_cast<ServerService>(shared_from_this());
-	_listener->StartAccept(service); // register iocp
+	if (_listener->StartAccept(service) == false) // register iocp
+		return false;
 
 	return true;
 }
