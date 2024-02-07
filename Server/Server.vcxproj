@@ -159,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RecvBuffer.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Service.cpp" />
     <ClCompile Include="Session.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Macro.h" />
     <ClInclude Include="NetAddress.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RecvBuffer.h" />
     <ClInclude Include="Service.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="SocketUtils.h" />
