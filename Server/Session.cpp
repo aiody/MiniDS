@@ -14,15 +14,14 @@ Session::~Session()
 	SocketUtils::CloseSocket(_socket);
 }
 
-void Session::Send(BYTE* buffer, int32 len)
+void Session::Send(shared_ptr<SendBuffer> sendBuffer)
 {
-	SendEvent* sendEvent = new SendEvent();
-	sendEvent->SetOwner(shared_from_this()); // ADD_REF
-	sendEvent->buffer.resize(len);
-	::memcpy(sendEvent->buffer.data(), buffer, len);
+	WRITE_LOCK;
 
-	WRITE_LOCK
-	RegisterSend(sendEvent);
+	_sendQueue.push(sendBuffer);
+
+	if (_sendRegistered.exchange(true) == false)
+		RegisterSend();
 }
 
 bool Session::Connect()
@@ -75,7 +74,7 @@ void Session::Dispatch(IocpEvent* iocpEvent, int32 numOfBytes)
 		ProcessRecv(numOfBytes);
 		break;
 	case EventType::Send:
-		ProcessSend(static_cast<SendEvent*>(iocpEvent), numOfBytes);
+		ProcessSend(numOfBytes);
 		break;
 	default:
 		break;
@@ -147,24 +146,49 @@ void Session::RegisterRecv()
 	}
 }
 
-void Session::RegisterSend(SendEvent* sendEvent)
+void Session::RegisterSend()
 {
 	if (IsConnected() == false)
 		return;
 
-	WSABUF wsaBuf;
-	wsaBuf.buf = reinterpret_cast<char*>(sendEvent->buffer.data());
-	wsaBuf.len = static_cast<ULONG>(sendEvent->buffer.size());
+	_sendEvent.Init();
+	_sendEvent.SetOwner(shared_from_this()); // ADD_REF
+
+	{
+		WRITE_LOCK;
+
+		int32 writeSize = 0;
+		while (_sendQueue.empty() == false)
+		{
+			shared_ptr<SendBuffer> sendBuffer = _sendQueue.front();
+
+			writeSize += sendBuffer->WriteSize();
+
+			_sendQueue.pop();
+			_sendEvent.sendBuffers.push_back(sendBuffer); // MOVE_REF
+		}
+	}
+
+	vector<WSABUF> wsaBufs;
+	wsaBufs.reserve(_sendEvent.sendBuffers.size());
+	for (shared_ptr<SendBuffer> sendBuffer : _sendEvent.sendBuffers)
+	{
+		WSABUF wsaBuf;
+		wsaBuf.buf = reinterpret_cast<char*>(sendBuffer->Buffer());
+		wsaBuf.len = static_cast<ULONG>(sendBuffer->WriteSize());
+		wsaBufs.push_back(wsaBuf);
+	}
 
 	DWORD numOfBytes = 0;
-	if (SOCKET_ERROR == ::WSASend(_socket, &wsaBuf, 1, OUT &numOfBytes, 0, sendEvent, NULL))
+	if (SOCKET_ERROR == ::WSASend(_socket, wsaBufs.data(), static_cast<DWORD>(wsaBufs.size()), OUT &numOfBytes, 0, &_sendEvent, NULL))
 	{
 		int32 errorCode = ::WSAGetLastError();
 		if (errorCode != WSA_IO_PENDING)
 		{
 			HandleError(errorCode);
-			sendEvent->SetOwner(nullptr); // RELEASE_REF
-			delete sendEvent;
+			_sendEvent.SetOwner(nullptr); // RELEASE_REF
+			_sendEvent.sendBuffers.clear(); // RELEASE_REF
+			_sendRegistered.store(false);
 		}
 	}
 }
@@ -221,10 +245,10 @@ void Session::ProcessRecv(int32 numOfBytes)
 	RegisterRecv();
 }
 
-void Session::ProcessSend(SendEvent* sendEvent, int32 numOfBytes)
+void Session::ProcessSend(int32 numOfBytes)
 {
-	sendEvent->SetOwner(nullptr); // RELEASE_REF
-	delete sendEvent;
+	_sendEvent.SetOwner(nullptr); // RELEASE_REF
+	_sendEvent.sendBuffers.clear(); // RELEASE_REF
 
 	if (numOfBytes == 0)
 	{
@@ -233,6 +257,12 @@ void Session::ProcessSend(SendEvent* sendEvent, int32 numOfBytes)
 	}
 
 	OnSend(numOfBytes);
+
+	WRITE_LOCK;
+	if (_sendQueue.empty())
+		_sendRegistered.store(false);
+	else
+		RegisterSend();
 }
 
 void Session::HandleError(int32 errorCode)

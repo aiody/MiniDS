@@ -12,7 +12,7 @@ class Session : public IocpObject
 
 	enum
 	{
-		BUFFER_SIZE = 0x10000,
+		BUFFER_SIZE = 0x10000, // 64KB
 	};
 
 public:
@@ -20,7 +20,7 @@ public:
 	virtual ~Session();
 
 public:
-	void				Send(BYTE* buffer, int32 len);
+	void				Send(shared_ptr<SendBuffer> sendBuffer);
 	bool				Connect();
 	void				Disconnect(const WCHAR* cause);
 
@@ -42,12 +42,12 @@ private:
 	bool				RegisterConnect();
 	bool				RegisterDisconnect();
 	void				RegisterRecv();
-	void				RegisterSend(SendEvent* sendEvent);
+	void				RegisterSend();
 
 	void				ProcessConnect();
 	void				ProcessDisconnect();
 	void				ProcessRecv(int32 numOfBytes);
-	void				ProcessSend(SendEvent* sendEvent, int32 numOfBytes);
+	void				ProcessSend(int32 numOfBytes);
 
 	void				HandleError(int32 errorCode);
 
@@ -68,8 +68,12 @@ private:
 
 	RecvBuffer			_recvBuffer;
 
+	queue<shared_ptr<SendBuffer>> _sendQueue;
+	atomic<bool>		_sendRegistered = false;
+
 private:
 	ConnectEvent		_connectEvent;
 	DisconnectEvent		_disconnectEvent;
 	RecvEvent			_recvEvent;
+	SendEvent			_sendEvent;
 };

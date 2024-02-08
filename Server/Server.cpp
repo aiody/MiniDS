@@ -11,7 +11,13 @@ public:
     {
         // Echo
         cout << "OnRecv Len = " << len << endl;
-        //Send(buffer, len);
+        shared_ptr<SendBuffer> sendBuffer = make_shared<SendBuffer>(4096);
+        sendBuffer->CopyData(buffer, len);
+
+        for (int i = 0; i < 5; i++)
+            Send(sendBuffer);
+
+        this_thread::sleep_for(1s);
         return len;
     }
 

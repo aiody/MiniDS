@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 class Session;
 class IocpObject;
@@ -72,5 +72,5 @@ class SendEvent : public IocpEvent
 public:
 	SendEvent() : IocpEvent(EventType::Send) {}
 
-	vector<BYTE> buffer;
+	vector<shared_ptr<SendBuffer>> sendBuffers;
 };
