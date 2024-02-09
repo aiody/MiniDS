@@ -4,21 +4,25 @@
 #include "Session.h"
 #include "Service.h"
 
-class GameSession : public Session
+class GameSession : public PacketSession
 {
 public:
-    virtual int32 OnRecv(BYTE* buffer, int32 len) override
+    virtual void OnPacketRecv(BYTE* buffer, int32 len) override
     {
-        // Echo
-        cout << "OnRecv Len = " << len << endl;
+        PacketHeader header = *(reinterpret_cast<PacketHeader*>(buffer));
+        cout << "Packet ID : " << header.id << " Size : " << header.size << endl;
+
+        char recvBuffer[4096] = {0};
+        ::memcpy(recvBuffer, &buffer[4], header.size - sizeof(PacketHeader));
+        cout << "OnPacketRecv Message = " << recvBuffer << ", Len = " << header.size << endl;
+
         shared_ptr<SendBuffer> sendBuffer = make_shared<SendBuffer>(4096);
-        sendBuffer->CopyData(buffer, len);
+        sendBuffer->CopyData(recvBuffer, header.size - sizeof(PacketHeader));
 
         for (int i = 0; i < 5; i++)
             Send(sendBuffer);
 
         this_thread::sleep_for(1s);
-        return len;
     }
 
     virtual void OnSend(int32 len) override

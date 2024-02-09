@@ -16,11 +16,21 @@ Session::~Session()
 
 void Session::Send(shared_ptr<SendBuffer> sendBuffer)
 {
-	WRITE_LOCK;
+	if (IsConnected() == false)
+		return;
 
-	_sendQueue.push(sendBuffer);
+	int32 sendRegistered = false;
 
-	if (_sendRegistered.exchange(true) == false)
+	{
+		WRITE_LOCK;
+
+		_sendQueue.push(sendBuffer);
+
+		if (_sendRegistered.exchange(true) == false)
+			sendRegistered = true;
+	}
+
+	if (sendRegistered)
 		RegisterSend();
 }
 
@@ -277,4 +287,36 @@ void Session::HandleError(int32 errorCode)
 		cout << "Handle Error : " << errorCode << endl;
 		break;
 	}
+}
+
+PacketSession::PacketSession()
+{
+}
+
+PacketSession::~PacketSession()
+{
+}
+
+// [size(2)][id(2)][data(...)] [size(2)][id(2)][data(...)] [size(2)][id(2)][data(...)]
+int32 PacketSession::OnRecv(BYTE* buffer, int32 len)
+{
+	int32 processLen = 0;
+	while (true)
+	{
+		int32 dataSize = len - processLen;
+		// 최소한 헤더는 읽을 수 있는지
+		if (dataSize < sizeof(PacketHeader))
+			break;
+
+		PacketHeader header = *(reinterpret_cast<PacketHeader*>(&buffer[processLen]));
+		// 데이터를 읽을 수 있는지
+		if (dataSize < header.size)
+			break;
+
+		OnPacketRecv(&buffer[processLen], header.size);
+
+		processLen += header.size;
+	}
+
+	return processLen;
 }

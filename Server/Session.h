@@ -77,3 +77,22 @@ private:
 	RecvEvent			_recvEvent;
 	SendEvent			_sendEvent;
 };
+
+
+class PacketSession : public Session
+{
+public:
+	PacketSession();
+	virtual ~PacketSession();
+
+protected:
+	virtual int32		OnRecv(BYTE* buffer, int32 len) sealed;
+	virtual void		OnPacketRecv(BYTE* buffer, int32 len) abstract;
+};
+
+
+struct PacketHeader
+{
+	int16 size;
+	int16 id;
+};

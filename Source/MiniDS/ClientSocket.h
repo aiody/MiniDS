@@ -33,3 +33,9 @@ public:
 private:
 	SOCKET ServerSocket;
 };
+
+struct PacketHeader
+{
+	int16 size;
+	int16 id;
+};
