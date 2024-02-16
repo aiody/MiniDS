@@ -71,16 +71,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\Server\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\Server\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\Server\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\Server\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,6 +167,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Protocol.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="RecvBuffer.cpp" />
     <ClCompile Include="SendBuffer.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -177,6 +191,7 @@
     <ClInclude Include="Macro.h" />
     <ClInclude Include="NetAddress.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="RecvBuffer.h" />
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Service.h" />

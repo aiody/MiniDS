@@ -1,0 +1,12 @@
+syntax = "proto3";
+package Protocol;
+
+message C_CHAT
+{
+	string msg = 1;
+}
+
+message S_CHAT
+{
+	string msg = 1;
+}
