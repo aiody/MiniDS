@@ -313,7 +313,7 @@ int32 PacketSession::OnRecv(BYTE* buffer, int32 len)
 		if (dataSize < header.size)
 			break;
 
-		OnPacketRecv(&buffer[processLen], header.size);
+		OnRecvPacket(&buffer[processLen], header.size);
 
 		processLen += header.size;
 	}

@@ -4,31 +4,31 @@
     <Filter Include="Network">
       <UniqueIdentifier>{616b1f76-7aab-45bb-ba09-c22c9b274538}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{faf9c105-a4ea-4cf5-9b41-f705cd0d13a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Thread">
       <UniqueIdentifier>{e5621277-c5f7-4dc8-b317-86b8046993c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Protocol">
       <UniqueIdentifier>{3f4884eb-6c81-4ebf-a309-fbe3dd4019ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inclusion">
+      <UniqueIdentifier>{faf9c105-a4ea-4cf5-9b41-f705cd0d13a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{9ca666cd-49bf-4282-ae38-1f5ed72e78df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketUtils.cpp">
       <Filter>Network</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClCompile>
     <ClCompile Include="NetAddress.cpp">
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Global.cpp">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClCompile>
     <ClCompile Include="IocpCore.cpp">
       <Filter>Network</Filter>
@@ -43,7 +43,7 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="TLS.cpp">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClCompile>
     <ClCompile Include="Lock.cpp">
       <Filter>Thread</Filter>
@@ -63,25 +63,31 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSession.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SocketUtils.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Macro.h">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="NetAddress.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="Global.h">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="IocpCore.h">
       <Filter>Network</Filter>
@@ -96,7 +102,7 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="TLS.h">
-      <Filter>Main</Filter>
+      <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="Lock.h">
       <Filter>Thread</Filter>
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="Protocol.pb.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSession.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

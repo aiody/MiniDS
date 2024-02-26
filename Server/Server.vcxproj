@@ -71,24 +71,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)\Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IocpCore.cpp" />
     <ClCompile Include="IocpEvent.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="TLS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameSession.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="IocpCore.h" />
     <ClInclude Include="IocpEvent.h" />
