@@ -71,24 +71,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Server\Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Server\Libraries\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Server\Libraries\Libs\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientPacketHandler.cpp" />
     <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="IocpCore.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="TLS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientPacketHandler.h" />
     <ClInclude Include="GameSession.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="IocpCore.h" />
@@ -202,6 +204,9 @@
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="TLS.h" />
     <ClInclude Include="Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tools\PacketGenerator\Protocol.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

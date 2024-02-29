@@ -66,6 +66,9 @@
     <ClCompile Include="Server.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="ClientPacketHandler.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
     <ClCompile Include="GameSession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -122,8 +125,16 @@
     <ClInclude Include="Protocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
+    <ClInclude Include="ClientPacketHandler.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="GameSession.h">
       <Filter>Main</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tools\PacketGenerator\Protocol.proto">
+      <Filter>Protocol</Filter>
+    </None>
   </ItemGroup>
 </Project>

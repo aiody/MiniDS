@@ -49,7 +49,7 @@ int ClientSocket::SendChatMessage(FString msg)
 {
 	char sendBuffer[4096];
 	((PacketHeader*)sendBuffer)->size = sizeof(PacketHeader) + msg.Len();
-	((PacketHeader*)sendBuffer)->id = 1;
+	((PacketHeader*)sendBuffer)->id = 1001;
 	::memcpy(&sendBuffer[4], TCHAR_TO_ANSI(*msg), msg.Len());
 
 	int resultCode = ::send(ServerSocket, const_cast<const char*>(sendBuffer), ((PacketHeader*)sendBuffer)->size, 0);

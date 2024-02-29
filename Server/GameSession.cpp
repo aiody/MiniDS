@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameSession.h"
+#include "ClientPacketHandler.h"
 
 GameSession::GameSession()
 {
@@ -33,6 +34,9 @@ void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
         Send(sendBuffer);
 
     this_thread::sleep_for(1s);
+
+    //shared_ptr<PacketSession> session = GetPacketSessionRef();
+    //ClientPacketHandler::HandlePacket(session, buffer, len);
 }
 
 void GameSession::OnSend(int32 len)

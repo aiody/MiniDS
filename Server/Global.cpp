@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
+#include "ClientPacketHandler.h"
 
 ThreadManager* gThreadManager = nullptr;
 
@@ -12,6 +13,7 @@ public:
 	{
 		gThreadManager = new ThreadManager();
 		SocketUtils::Init();
+		ClientPacketHandler::Init();
 	}
 
 	~Global()
