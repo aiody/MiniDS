@@ -3,6 +3,8 @@
 
 #include "MiniDSGameModeBase.h"
 #include "PaperCharacter.h"
+#include "ClientSocket2.h"
+#include "ServerPacketHandler.h"
 
 AMiniDSGameModeBase::AMiniDSGameModeBase()
 {
@@ -20,19 +22,44 @@ void AMiniDSGameModeBase::StartPlay()
 
 	if (!GEngine) return;
 
-	Socket = ClientSocket::Instance();
-	if (Socket->InitSocket())
+	ServerPacketHandler::Init();
+
+	Socket2 = ClientSocket2::Instance();
+	if (Socket2->InitSocket())
 	{
-		if (Socket->Connect("127.0.0.1", 9999))
+		if (Socket2->Connect(TEXT("127.0.0.1"), 9999))
 		{
-			UE_LOG(LogClass, Log, TEXT("IOCP Server connect success!"));
-			// 서버 데이터 처리 쓰레드 시작
+			UE_LOG(LogClass, Log, TEXT("Server connected!!!"));
+
+			Protocol::C_CHAT PktChat;
+			PktChat.set_msg("Hello World!");
+			TSharedRef<FArrayWriter> SendBuffer = ServerPacketHandler::MakeSendBuffer(PktChat);
+			Socket2->Send(SendBuffer);
+
 			DispatcherThread* Thread = DispatcherThread::Instance([this]()
 				{
-					Socket->Dispatch();
+					Socket2->Dispatch();
 				});
-
-			Socket->SendChatMessage("Hello World!");
+		}
+		else
+		{
+			Socket2->DeleteSocket();
 		}
 	}
+
+	//Socket = ClientSocket::Instance();
+	//if (Socket->InitSocket())
+	//{
+	//	if (Socket->Connect("127.0.0.1", 9999))
+	//	{
+	//		UE_LOG(LogClass, Log, TEXT("IOCP Server connect success!"));
+	//		// 서버 데이터 처리 쓰레드 시작
+	//		DispatcherThread* Thread = DispatcherThread::Instance([this]()
+	//			{
+	//				Socket->Dispatch();
+	//			});
+	//
+	//		//Socket->SendChatMessage("Hello World!");
+	//	}
+	//}
 }

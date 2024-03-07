@@ -24,4 +24,5 @@ class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 
 private:
 	ClientSocket* Socket;
+	ClientSocket2* Socket2;
 };

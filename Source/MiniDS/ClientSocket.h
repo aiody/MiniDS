@@ -6,6 +6,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #include <WS2tcpip.h>
 #include "CoreMinimal.h"
+#include "ClientSocket2.h"
 
 /**
  * 
@@ -34,8 +35,8 @@ private:
 	SOCKET ServerSocket;
 };
 
-struct PacketHeader
-{
-	int16 size;
-	int16 id;
-};
+//struct PacketHeader
+//{
+//	int16 size;
+//	int16 id;
+//};
