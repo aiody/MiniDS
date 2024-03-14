@@ -16,6 +16,9 @@
     <Filter Include="Main">
       <UniqueIdentifier>{9ca666cd-49bf-4282-ae38-1f5ed72e78df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Job">
+      <UniqueIdentifier>{8e44e4b1-5bab-4b89-9e05-d87ef0e848a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketUtils.cpp">
@@ -71,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="GameSession.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="JobQueue.cpp">
+      <Filter>Job</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="GameSession.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="JobQueue.h">
+      <Filter>Job</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

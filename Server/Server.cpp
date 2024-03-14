@@ -3,6 +3,7 @@
 #include "ThreadManager.h"
 #include "Service.h"
 #include "GameSession.h"
+#include "JobQueue.h"
 
 int main()
 {
@@ -24,6 +25,9 @@ int main()
                 }
             });
     }
+
+    while (true)
+        gJobQueue->Flush();
     
     gThreadManager->Join();
 
