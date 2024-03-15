@@ -4,6 +4,7 @@
 #include "Service.h"
 #include "GameSession.h"
 #include "JobQueue.h"
+#include "JobTimer.h"
 
 int main()
 {
@@ -21,7 +22,9 @@ int main()
             {
                 while (true)
                 {
-                    service->GetIocpCore()->Dispatch();
+                    service->GetIocpCore()->Dispatch(10);
+
+                    gJobTimer->Distribute(::GetTickCount64());
                 }
             });
     }

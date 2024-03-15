@@ -2,6 +2,7 @@
 #include "ClientPacketHandler.h"
 #include "Job.h"
 #include "JobQueue.h"
+#include "JobTimer.h"
 
 PacketHandleFunc GPacketHandler[UINT16_MAX];
 
@@ -24,7 +25,8 @@ bool Handler_C_CHAT(shared_ptr<PacketSession>& session, Protocol::C_CHAT& pkt)
 		session->Send(sendBuffer);
 		});
 
-	gJobQueue->Push(job);
+	//gJobQueue->Push(job);
+	gJobTimer->Reserve(3000, job);
 
 	return true;
 }
