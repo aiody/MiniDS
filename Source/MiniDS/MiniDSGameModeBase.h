@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "ClientSocket.h"
-#include "DispatcherThread.h"
 #include "MiniDSGameModeBase.generated.h"
 
 class APaperCharacter;
@@ -17,12 +15,9 @@ UCLASS()
 class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 	AMiniDSGameModeBase();
 
-	virtual void StartPlay() override;
-
-private:
-	ClientSocket* Socket;
-	ClientSocket2* Socket2;
+public:
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
 };

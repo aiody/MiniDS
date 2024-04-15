@@ -1,6 +1,9 @@
 syntax = "proto3";
 package Protocol;
 
+import "Enum.proto";
+import "Struct.proto";
+
 message C_CHAT
 {
 	string msg = 1;
@@ -9,4 +12,14 @@ message C_CHAT
 message S_CHAT
 {
 	string msg = 1;
+}
+
+message S_EnterGame
+{
+	uint64 playerId = 1;
+}
+
+message S_Spawn
+{
+	Player player = 1;
 }

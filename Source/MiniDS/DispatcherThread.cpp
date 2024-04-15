@@ -11,9 +11,8 @@ DispatcherThread::DispatcherThread(std::function<void()> callback)
 
 DispatcherThread::~DispatcherThread()
 {
-	if (Thread)
+	if (Thread != nullptr)
 	{
-		Thread->WaitForCompletion();
 		Thread->Kill();
 		delete Thread;
 	}
@@ -21,19 +20,25 @@ DispatcherThread::~DispatcherThread()
 
 bool DispatcherThread::Init()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Dispatcher Thread Init!")));
 	return true;
 }
 
 uint32 DispatcherThread::Run()
 {
-	Callback();
+	while (Stopped.load() == false)
+	{
+		Callback();
+	}
 	return 0;
 }
 
 void DispatcherThread::Stop()
 {
+	Stopped.store(true);
 }
 
 void DispatcherThread::Exit()
 {
+	
 }

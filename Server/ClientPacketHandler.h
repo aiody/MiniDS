@@ -8,6 +8,8 @@ enum : uint16
 {
 	PKT_C_CHAT = 1001,
 	PKT_S_CHAT = 1002,
+	PKT_S_EnterGame = 1003,
+	PKT_S_Spawn = 1004,
 };
 
 bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len);
@@ -31,6 +33,8 @@ public:
 	}
 
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_EnterGame& pkt) { return MakeSendBuffer(pkt, PKT_S_EnterGame); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_Spawn& pkt) { return MakeSendBuffer(pkt, PKT_S_Spawn); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

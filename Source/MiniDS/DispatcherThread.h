@@ -11,7 +11,7 @@ class MINIDS_API DispatcherThread : public FRunnable
 {
 public:
 	DispatcherThread(std::function<void()> callback);
-	~DispatcherThread();
+	virtual ~DispatcherThread();
 
 	static DispatcherThread* Instance(std::function<void()> callback)
 	{
@@ -26,6 +26,7 @@ public:
 	virtual void Exit() override;
 
 private:
-	FRunnableThread* Thread;
+	FRunnableThread* Thread = nullptr;
+	std::atomic<bool> Stopped = false;
 	std::function<void()> Callback;
 };

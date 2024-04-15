@@ -34,6 +34,7 @@ bool ClientSocket2::InitSocket()
 void ClientSocket2::DeleteSocket()
 {
 	ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(_socket);
+	_socket = nullptr;
 }
 
 bool ClientSocket2::Connect(FString ip, uint16 port)
@@ -43,12 +44,17 @@ bool ClientSocket2::Connect(FString ip, uint16 port)
 		return false;
 	FIPv4Endpoint endPoint(address, port);
 
-	return _socket->Connect(endPoint.ToInternetAddr().Get());
+	bool result = _socket->Connect(endPoint.ToInternetAddr().Get());
+	return result;
 }
 
 void ClientSocket2::Disconnect()
 {
-
+	if (_socket != nullptr)
+	{
+		_socket->Shutdown(ESocketShutdownMode::ReadWrite);
+		_socket->Close();
+	}
 }
 
 void ClientSocket2::Recv()
@@ -108,8 +114,5 @@ void ClientSocket2::Send(TSharedRef<FArrayWriter> buffer)
 
 void ClientSocket2::Dispatch()
 {
-	while (true)
-	{
-		Recv();
-	}
+	Recv();
 }

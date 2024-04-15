@@ -5,6 +5,7 @@
 #include "ClientPacketHandler.h"
 #include "JobQueue.h"
 #include "JobTimer.h"
+#include "Room.h"
 
 ThreadManager* gThreadManager = nullptr;
 JobQueue* gJobQueue = nullptr;
@@ -15,19 +16,18 @@ class Global
 public:
 	Global()
 	{
+		SocketUtils::Init();
+		ClientPacketHandler::Init();
 		gThreadManager = new ThreadManager();
 		gJobQueue = new JobQueue();
 		gJobTimer = new JobTimer();
-		
-		SocketUtils::Init();
-		ClientPacketHandler::Init();
 	}
 
 	~Global()
 	{
+		SocketUtils::Clear();
 		delete gThreadManager;
 		delete gJobQueue;
 		delete gJobTimer;
-		SocketUtils::Clear();
 	}
 } GGlobal; // 전역 객체

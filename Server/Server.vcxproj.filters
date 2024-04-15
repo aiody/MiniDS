@@ -19,6 +19,9 @@
     <Filter Include="Job">
       <UniqueIdentifier>{8e44e4b1-5bab-4b89-9e05-d87ef0e848a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{74ec59be-54be-4fe7-aafc-1d57f9e6f42d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketUtils.cpp">
@@ -83,6 +86,18 @@
     </ClCompile>
     <ClCompile Include="JobTimer.cpp">
       <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Struct.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Contents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +167,30 @@
     <ClInclude Include="JobTimer.h">
       <Filter>Job</Filter>
     </ClInclude>
+    <ClInclude Include="Struct.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tools\PacketGenerator\Protocol.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="Tools\PacketGenerator\GenPacket.bat">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="Tools\PacketGenerator\Struct.proto">
+      <Filter>Protocol</Filter>
+    </None>
+    <None Include="Tools\PacketGenerator\Enum.proto">
       <Filter>Protocol</Filter>
     </None>
   </ItemGroup>
