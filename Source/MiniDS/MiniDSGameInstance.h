@@ -29,6 +29,11 @@ public:
 	TSubclassOf<AActor> Weber;
 
 protected:
-	class ClientSocket2* Socket;
+	class ClientSocket2* Socket2;
 	class DispatcherThread* Thread;
+
+public:
+	class FSocket* Socket;
+	FString IpAddress = TEXT("127.0.0.1");
+	int16 Port = 9999;
 };

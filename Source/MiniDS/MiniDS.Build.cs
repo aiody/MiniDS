@@ -14,7 +14,8 @@ public class MiniDS : ModuleRules
 
 		PrivateIncludePaths.AddRange(new string[]
 		{
-			"MiniDS/Protocol/",
+			"MiniDS/Network/",
+			"MiniDS/Network/Protocol",
 		});
 
 		// Uncomment if you are using Slate UI

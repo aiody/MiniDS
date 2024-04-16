@@ -3,7 +3,7 @@
 
 #include "MiniDSGameModeBase.h"
 #include "PaperCharacter.h"
-#include "ServerPacketHandler.h"
+#include "ClientPacketHandler.h"
 #include "MiniDSGameInstance.h"
 
 AMiniDSGameModeBase::AMiniDSGameModeBase()

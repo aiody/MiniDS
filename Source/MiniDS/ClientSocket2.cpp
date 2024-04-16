@@ -6,7 +6,7 @@
 #include "Common/TcpSocketBuilder.h"
 #include "Interfaces/IPv4/IPv4Endpoint.h"
 #include "Serialization/ArrayReader.h"
-#include "ServerPacketHandler.h"
+#include "ClientPacketHandler.h"
 
 #include "Protocol/Protocol.pb.h"
 

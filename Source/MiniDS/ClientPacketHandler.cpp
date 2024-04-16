@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "ServerPacketHandler.h"
+#include "ClientPacketHandler.h"
 
 PacketHandleFunc GPacketHandler[UINT16_MAX];
 UMiniDSGameInstance* ServerPacketHandler::GameInstance = nullptr;
