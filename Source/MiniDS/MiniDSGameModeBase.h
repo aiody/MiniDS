@@ -17,7 +17,4 @@ class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 	AMiniDSGameModeBase();
-
-public:
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
 };

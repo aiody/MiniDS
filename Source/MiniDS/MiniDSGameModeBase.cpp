@@ -1,10 +1,8 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 
 #include "MiniDSGameModeBase.h"
 #include "PaperCharacter.h"
-#include "ClientPacketHandler.h"
-#include "MiniDSGameInstance.h"
 
 AMiniDSGameModeBase::AMiniDSGameModeBase()
 {
@@ -13,11 +11,4 @@ AMiniDSGameModeBase::AMiniDSGameModeBase()
 	{
 		DefaultPawnClass = BP_Char.Class;
 	}
-}
-
-void AMiniDSGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
-{
-	Super::InitGame(MapName, Options, ErrorMessage);
-
-	ServerPacketHandler::Init(Cast<UMiniDSGameInstance>(GetGameInstance()));
 }

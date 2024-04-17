@@ -2,14 +2,10 @@
 
 
 #include "MiniDSGameInstance.h"
-
-#include "ClientSocket2.h"
-#include "DispatcherThread.h"
+#include "Common/TcpSocketBuilder.h"
+#include "PacketSession.h"
 
 #include "PaperCharacter.h"
-
-
-#include "Common/TcpSocketBuilder.h"
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
@@ -52,7 +48,12 @@ void UMiniDSGameInstance::ConnectToGameServer()
 
 		bool Connected = Socket->Connect(endPoint.ToInternetAddr().Get());
 		if (Connected)
+		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connection Success")));
+			
+			GameServerSession = MakeShared<PacketSession>(Socket);
+			GameServerSession->Run();
+		}
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connection Failed")));
 	}
@@ -71,6 +72,14 @@ void UMiniDSGameInstance::DisconnectFromGameServer()
 		ISocketSubsystem::Get()->DestroySocket(Socket);
 		Socket = nullptr;
 	}
+}
+
+void UMiniDSGameInstance::HandleRecvPackets()
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	GameServerSession->HandleRecvPackets();
 }
 
 void UMiniDSGameInstance::SpawnWeber()

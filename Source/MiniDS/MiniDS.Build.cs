@@ -14,6 +14,7 @@ public class MiniDS : ModuleRules
 
 		PrivateIncludePaths.AddRange(new string[]
 		{
+			"MiniDS/",
 			"MiniDS/Network/",
 			"MiniDS/Network/Protocol",
 		});
