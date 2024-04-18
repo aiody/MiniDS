@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "MiniDS.h"
+
 #include "MiniDSGameInstance.generated.h"
 
 /**
@@ -23,6 +24,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleRecvPackets();
+
+	void SendPacket(SendBufferRef SendBuffer);
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnWeber();

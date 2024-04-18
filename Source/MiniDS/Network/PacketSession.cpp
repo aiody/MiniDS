@@ -19,6 +19,7 @@ PacketSession::~PacketSession()
 void PacketSession::Run()
 {
 	RecvWorkerThread = MakeShared<RecvWorker>(Socket, AsShared());
+	SendWorkerThread = MakeShared<SendWorker>(Socket, AsShared());
 }
 
 void PacketSession::HandleRecvPackets()
@@ -34,6 +35,22 @@ void PacketSession::HandleRecvPackets()
 	}
 }
 
+void PacketSession::SendPacket(SendBufferRef SendBuffer)
+{
+	SendPacketQueue.Enqueue(SendBuffer);
+}
+
 void PacketSession::Disconnect()
 {
+	if (RecvWorkerThread)
+	{
+		RecvWorkerThread->Destroy();
+		RecvWorkerThread = nullptr;
+	}
+
+	if (SendWorkerThread)
+	{
+		SendWorkerThread->Destroy();
+		SendWorkerThread = nullptr;
+	}
 }

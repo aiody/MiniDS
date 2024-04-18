@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "MiniDS.h"
 
 /**
  *
@@ -17,13 +17,17 @@ public:
 
 	void HandleRecvPackets();
 
+	void SendPacket(SendBufferRef SendBuffer);
+
 	void Disconnect();
 
 public:
 	class FSocket* Socket;
 
 	TSharedPtr<class RecvWorker> RecvWorkerThread;
+	TSharedPtr<class SendWorker> SendWorkerThread;
 
 	// GameThread와 NetworkThread가 데이터를 주고받는 공용 큐
 	TQueue<TArray<uint8>> RecvPacketQueue;
+	TQueue<SendBufferRef> SendPacketQueue;
 };

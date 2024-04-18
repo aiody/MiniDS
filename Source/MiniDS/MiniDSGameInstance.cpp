@@ -9,30 +9,6 @@
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
-	/*
-	Socket2 = ClientSocket2::Instance();
-	Socket2->InitSocket();
-	
-	if (Socket2->Connect(TEXT("127.0.0.1"), 9999))
-	{
-		UE_LOG(LogClass, Log, TEXT("Server connected!!!"));
-	
-		//Protocol::C_CHAT PktChat;
-		//PktChat.set_msg("Hello World!");
-		//TSharedRef<FArrayWriter> SendBuffer = ServerPacketHandler::MakeSendBuffer(PktChat);
-		//Socket->Send(SendBuffer);
-	
-		Thread = DispatcherThread::Instance([this]()
-			{
-				Socket2->Dispatch();
-			});
-	}
-	else
-	{
-		Socket2->DeleteSocket();
-	}
-	*/
-
 	if (Socket == nullptr)
 	{
 		Socket = FTcpSocketBuilder(TEXT("Client Socket"))
@@ -61,12 +37,6 @@ void UMiniDSGameInstance::ConnectToGameServer()
 
 void UMiniDSGameInstance::DisconnectFromGameServer()
 {
-	/*
-	Socket2->Disconnect();
-	if (Thread != nullptr)
-		Thread->Stop();
-	Socket2->DeleteSocket();
-	*/
 	if (Socket)
 	{
 		ISocketSubsystem::Get()->DestroySocket(Socket);
@@ -80,6 +50,14 @@ void UMiniDSGameInstance::HandleRecvPackets()
 		return;
 
 	GameServerSession->HandleRecvPackets();
+}
+
+void UMiniDSGameInstance::SendPacket(SendBufferRef SendBuffer)
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	GameServerSession->SendPacket(SendBuffer);
 }
 
 void UMiniDSGameInstance::SpawnWeber()

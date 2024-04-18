@@ -2,15 +2,13 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "MiniDS.h"
 #include "Protocol/Protocol.pb.h"
 #include "Serialization/ArrayWriter.h"
 #include "NetworkWorker.h"
-#include "PacketSession.h"
+#include "SendBuffer.h"
 
-class PacketSession;
-
-using PacketHandleFunc = std::function<bool(TSharedPtr<PacketSession>&, BYTE*, int32)>;
+using PacketHandleFunc = std::function<bool(PacketSessionRef&, BYTE*, int32)>;
 extern PacketHandleFunc GPacketHandler[UINT16_MAX];
 
 enum : uint16
@@ -21,10 +19,10 @@ enum : uint16
 	PKT_S_Spawn = 1004,
 };
 
-bool Handler_INVALID(TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len);
-bool Handler_S_CHAT(TSharedPtr<PacketSession>& session, Protocol::S_CHAT& pkt);
-bool Handler_S_EnterGame(TSharedPtr<PacketSession>& session, Protocol::S_EnterGame& pkt);
-bool Handler_S_Spawn(TSharedPtr<PacketSession>& session, Protocol::S_Spawn& pkt);
+bool Handler_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
+bool Handler_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
+bool Handler_S_EnterGame(PacketSessionRef& session, Protocol::S_EnterGame& pkt);
+bool Handler_S_Spawn(PacketSessionRef& session, Protocol::S_Spawn& pkt);
 
 /**
  *
@@ -37,22 +35,22 @@ public:
 		for (int i = 0; i < UINT16_MAX; i++)
 			GPacketHandler[i] = Handler_INVALID;
 
-		GPacketHandler[PKT_S_CHAT] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handler_S_CHAT, session, buffer, len); };
-		GPacketHandler[PKT_S_EnterGame] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_EnterGame>(Handler_S_EnterGame, session, buffer, len); };
-		GPacketHandler[PKT_S_Spawn] = [](TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_Spawn>(Handler_S_Spawn, session, buffer, len); };
+		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handler_S_CHAT, session, buffer, len); };
+		GPacketHandler[PKT_S_EnterGame] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_EnterGame>(Handler_S_EnterGame, session, buffer, len); };
+		GPacketHandler[PKT_S_Spawn] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_Spawn>(Handler_S_Spawn, session, buffer, len); };
 	}
 
-	static bool HandlePacket(TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len)
+	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
 	{
 		FPacketHeader* header = reinterpret_cast<FPacketHeader*>(buffer);
 		return GPacketHandler[header->PacketId](session, buffer, len);
 	}
 
-	static TSharedRef<FArrayWriter> MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>
-	static bool HandlePacket(ProcessFunc func, TSharedPtr<PacketSession>& session, BYTE* buffer, int32 len)
+	static bool HandlePacket(ProcessFunc func, PacketSessionRef& session, BYTE* buffer, int32 len)
 	{
 		PacketType pkt;
 		if (false == pkt.ParseFromArray(buffer + sizeof(FPacketHeader), len - sizeof(FPacketHeader)))
@@ -62,16 +60,21 @@ private:
 	}
 
 	template<typename T>
-	static TSharedRef<FArrayWriter> MakeSendBuffer(T& pkt, uint16 pktId)
+	static SendBufferRef MakeSendBuffer(T& pkt, uint16 pktId)
 	{
-		TSharedRef<FArrayWriter> Writer = MakeShared<FArrayWriter>();
-		const int DataSize = pkt.ByteSize();
-		const int PacketSize = sizeof(FPacketHeader) + DataSize;
-		Writer->SetNum(PacketSize);
-		FPacketHeader Header(PacketSize, pktId);
-		*Writer << Header;
-		pkt.SerializeToArray(Writer->GetData() + sizeof(FPacketHeader), DataSize);
+		const int dataSize = pkt.ByteSize();
+		const int packetSize = sizeof(FPacketHeader) + dataSize;
 
-		return Writer;
+		SendBufferRef sendBuffer = MakeShared<SendBuffer>(packetSize);
+
+		FPacketHeader* header = reinterpret_cast<FPacketHeader*>(sendBuffer->Buffer());
+		header->PacketSize = packetSize;
+		header->PacketId = pktId;
+
+		pkt.SerializeToArray(&header[1], dataSize);
+
+		sendBuffer->Close(packetSize);
+
+		return sendBuffer;
 	}
 };
