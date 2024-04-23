@@ -18,8 +18,6 @@ void GameSession::OnConnected()
 
 void GameSession::OnDisconnected()
 {
-    //shared_ptr<GameSession> session = static_pointer_cast<GameSession>(GetPacketSessionRef());
-    //gJobQueue->Push(make_shared<Job>(gRoom, &Room::LeavePlayer, session->curPlayer));
 }
 
 void GameSession::OnRecvPacket(BYTE* buffer, int32 len)

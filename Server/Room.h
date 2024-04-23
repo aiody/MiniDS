@@ -11,10 +11,11 @@ public:
 	USE_LOCK;
 
 	bool HandleEnterPlayer(shared_ptr<Player> player);
+	bool HandleLeavePlayer(shared_ptr<Player> player);
 
 private:
 	bool EnterPlayer(shared_ptr<Player> player);
-	void LeavePlayer(shared_ptr<Player> player);
+	bool LeavePlayer(uint64 id);
 	void Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId = 0);
 
 private:

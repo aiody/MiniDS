@@ -68,6 +68,41 @@ bool Room::HandleEnterPlayer(shared_ptr<Player> player)
 	return success;
 }
 
+bool Room::HandleLeavePlayer(shared_ptr<Player> player)
+{
+	if (player == nullptr)
+		return false;
+
+	WRITE_LOCK;
+
+	const uint64 id = player->playerInfo->id();
+	bool success = LeavePlayer(id);
+
+	// 해당 플레이어에게 게임에 퇴장함을 알림
+	{
+		Protocol::S_LEAVE_GAME leaveGamePkt;
+		if (auto session = player->session.lock())
+		{
+			SEND_PACKET(leaveGamePkt);
+		}
+	}
+
+	// 다른 플레이어에게 현재 플레이어가 게임에서 퇴장한 사실을 알림
+	{
+		Protocol::S_DESPAWN despawnPkt;
+		despawnPkt.add_ids(id);
+
+		shared_ptr<SendBuffer> despawnBuffer = ServerPacketHandler::MakeSendBuffer(despawnPkt);
+		gJobQueue->Push(make_shared<Job>(gRoom, &Room::Broadcast, despawnBuffer, id));
+
+		// LeavePlayer에서 room에서 빼버렸기 때문에 Broadcast 대상에 들어가지 않아 다시 보냄
+		if (auto session = player->session.lock())
+			session->Send(despawnBuffer);
+	}
+
+	return false;
+}
+
 bool Room::EnterPlayer(shared_ptr<Player> player)
 {
 	// 중복됨
@@ -81,9 +116,18 @@ bool Room::EnterPlayer(shared_ptr<Player> player)
 	return true;
 }
 
-void Room::LeavePlayer(shared_ptr<Player> player)
+bool Room::LeavePlayer(uint64 id)
 {
-	_players.erase(player->playerInfo->id());
+	// 존재하는지 체크
+	if (_players.find(id) == _players.end())
+		return false;
+	
+	shared_ptr<Player> player = _players[id];
+	player->room.store(weak_ptr<Room>());
+
+	_players.erase(id);
+
+	return true;
 }
 
 void Room::Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId)

@@ -31,13 +31,33 @@ bool Handler_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt
 	}
 
 	return true;
-} 
+}
+
+bool Handler_S_LEAVE_GAME(PacketSessionRef& session, Protocol::S_LEAVE_GAME& pkt)
+{
+	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
+	{
+		GameInstance->HandleLeaveGame();
+	}
+
+	return true;
+}
 
 bool Handler_S_SPAWN(PacketSessionRef& session, Protocol::S_SPAWN& pkt)
 {
 	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
 	{
 		GameInstance->HandleSpawn(pkt);
+	}
+
+	return true;
+}
+
+bool Handler_S_DESPAWN(PacketSessionRef& session, Protocol::S_DESPAWN& pkt)
+{
+	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
+	{
+		GameInstance->HandleDespawn(pkt);
 	}
 
 	return true;

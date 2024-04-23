@@ -33,6 +33,9 @@ public:
 	void HandleSpawn(const Protocol::PlayerInfo& PlayerInfo);
 	void HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt);
 	void HandleSpawn(const Protocol::S_SPAWN& SpawnPkt);
+	void HandleDespawn(uint64 Id);
+	void HandleDespawn(const Protocol::S_DESPAWN& DespawnPkt);
+	void HandleLeaveGame();
 
 public:
 	class FSocket* Socket;

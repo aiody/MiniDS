@@ -16,13 +16,18 @@ enum : uint16
 	PKT_S_CHAT = 1002,
 	PKT_C_ENTER_GAME = 1003,
 	PKT_S_ENTER_GAME = 1004,
-	PKT_S_SPAWN = 1005,
+	PKT_C_LEAVE_GAME = 1005,
+	PKT_S_LEAVE_GAME = 1006,
+	PKT_S_SPAWN = 1007,
+	PKT_S_DESPAWN = 1008,
 };
 
 bool Handler_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
 bool Handler_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
 bool Handler_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
+bool Handler_S_LEAVE_GAME(PacketSessionRef& session, Protocol::S_LEAVE_GAME& pkt);
 bool Handler_S_SPAWN(PacketSessionRef& session, Protocol::S_SPAWN& pkt);
+bool Handler_S_DESPAWN(PacketSessionRef& session, Protocol::S_DESPAWN& pkt);
 
 /**
  *
@@ -37,7 +42,9 @@ public:
 
 		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handler_S_CHAT, session, buffer, len); };
 		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handler_S_ENTER_GAME, session, buffer, len); };
+		GPacketHandler[PKT_S_LEAVE_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LEAVE_GAME>(Handler_S_LEAVE_GAME, session, buffer, len); };
 		GPacketHandler[PKT_S_SPAWN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_SPAWN>(Handler_S_SPAWN, session, buffer, len); };
+		GPacketHandler[PKT_S_DESPAWN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_DESPAWN>(Handler_S_DESPAWN, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -48,6 +55,7 @@ public:
 
 	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_LEAVE_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_LEAVE_GAME); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

@@ -41,12 +41,11 @@ void UMiniDSGameInstance::ConnectToGameServer()
 
 void UMiniDSGameInstance::DisconnectFromGameServer()
 {
-	// Despawn
-	if (Socket)
-	{
-		ISocketSubsystem::Get()->DestroySocket(Socket);
-		Socket = nullptr;
-	}
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	Protocol::C_LEAVE_GAME Pkt;
+	SEND_PACKET(Pkt);
 }
 
 void UMiniDSGameInstance::HandleRecvPackets()
@@ -93,4 +92,37 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::S_SPAWN& SpawnPkt)
 {
 	for (auto& Player : SpawnPkt.players())
 		HandleSpawn(Player);
+}
+
+void UMiniDSGameInstance::HandleDespawn(uint64 Id)
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	auto* World = GetWorld();
+	if (World == nullptr)
+		return;
+
+	AActor** Actor = Players.Find(Id);
+	if (Actor == nullptr)
+		return;
+
+	World->DestroyActor(*Actor);
+}
+
+void UMiniDSGameInstance::HandleDespawn(const Protocol::S_DESPAWN& DespawnPkt)
+{
+	for (auto& Id : DespawnPkt.ids())
+		HandleDespawn(Id);
+}
+
+void UMiniDSGameInstance::HandleLeaveGame()
+{
+	GameServerSession->Disconnect();
+
+	if (Socket)
+	{
+		ISocketSubsystem::Get()->DestroySocket(Socket);
+		Socket = nullptr;
+	}
 }

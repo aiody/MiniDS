@@ -10,12 +10,16 @@ enum : uint16
 	PKT_S_CHAT = 1002,
 	PKT_C_ENTER_GAME = 1003,
 	PKT_S_ENTER_GAME = 1004,
-	PKT_S_SPAWN = 1005,
+	PKT_C_LEAVE_GAME = 1005,
+	PKT_S_LEAVE_GAME = 1006,
+	PKT_S_SPAWN = 1007,
+	PKT_S_DESPAWN = 1008,
 };
 
 bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len);
 bool Handler_C_CHAT(shared_ptr<PacketSession>& session, Protocol::C_CHAT& pkt);
 bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_GAME& pkt);
+bool Handler_C_LEAVE_GAME(shared_ptr<PacketSession>& session, Protocol::C_LEAVE_GAME& pkt);
 
 class ServerPacketHandler
 {
@@ -27,6 +31,7 @@ public:
 
 		GPacketHandler[PKT_C_CHAT] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHAT>(Handler_C_CHAT, session, buffer, len); };
 		GPacketHandler[PKT_C_ENTER_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handler_C_ENTER_GAME, session, buffer, len); };
+		GPacketHandler[PKT_C_LEAVE_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LEAVE_GAME>(Handler_C_LEAVE_GAME, session, buffer, len); };
 	}
 
 	static bool HandlePacket(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len)
@@ -37,7 +42,9 @@ public:
 
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_LEAVE_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_LEAVE_GAME); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_SPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_SPAWN); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_DESPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_DESPAWN); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

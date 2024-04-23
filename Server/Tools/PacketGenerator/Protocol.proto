@@ -24,7 +24,22 @@ message S_ENTER_GAME
 	PlayerInfo player = 1;
 }
 
+message C_LEAVE_GAME
+{
+
+}
+
+message S_LEAVE_GAME
+{
+
+}
+
 message S_SPAWN
 {
 	repeated PlayerInfo players = 1;
+}
+
+message S_DESPAWN
+{
+	repeated uint64 ids = 1;
 }
