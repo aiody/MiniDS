@@ -14,12 +14,17 @@ message S_CHAT
 	string msg = 1;
 }
 
-message S_EnterGame
+message C_ENTER_GAME
 {
-	uint64 playerId = 1;
+
 }
 
-message S_Spawn
+message S_ENTER_GAME
 {
-	Player player = 1;
+	PlayerInfo player = 1;
+}
+
+message S_SPAWN
+{
+	repeated PlayerInfo players = 1;
 }

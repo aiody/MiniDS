@@ -8,14 +8,16 @@ enum : uint16
 {
 	PKT_C_CHAT = 1001,
 	PKT_S_CHAT = 1002,
-	PKT_S_EnterGame = 1003,
-	PKT_S_Spawn = 1004,
+	PKT_C_ENTER_GAME = 1003,
+	PKT_S_ENTER_GAME = 1004,
+	PKT_S_SPAWN = 1005,
 };
 
 bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len);
 bool Handler_C_CHAT(shared_ptr<PacketSession>& session, Protocol::C_CHAT& pkt);
+bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_GAME& pkt);
 
-class ClientPacketHandler
+class ServerPacketHandler
 {
 public:
 	static void Init()
@@ -24,6 +26,7 @@ public:
 			GPacketHandler[i] = Handler_INVALID;
 
 		GPacketHandler[PKT_C_CHAT] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHAT>(Handler_C_CHAT, session, buffer, len); };
+		GPacketHandler[PKT_C_ENTER_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handler_C_ENTER_GAME, session, buffer, len); };
 	}
 
 	static bool HandlePacket(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len)
@@ -33,8 +36,8 @@ public:
 	}
 
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
-	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_EnterGame& pkt) { return MakeSendBuffer(pkt, PKT_S_EnterGame); }
-	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_Spawn& pkt) { return MakeSendBuffer(pkt, PKT_S_Spawn); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_SPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_SPAWN); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

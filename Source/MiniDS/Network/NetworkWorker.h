@@ -2,25 +2,10 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "MiniDS.h"
 
 class FSocket;
-
-struct MINIDS_API FPacketHeader
-{
-	FPacketHeader() : PacketSize(0), PacketId(0) { }
-	FPacketHeader(uint16 PacketSize, uint16 PacketId) : PacketSize(PacketSize), PacketId(PacketId) { }
-
-	friend FArchive& operator<<(FArchive& Ar, FPacketHeader& Header)
-	{
-		Ar << Header.PacketSize;
-		Ar << Header.PacketId;
-		return Ar;
-	}
-
-	uint16 PacketSize;
-	uint16 PacketId;
-};
 
 /**
  * 
@@ -43,7 +28,7 @@ private:
 
 protected:
 	FRunnableThread* Thread = nullptr;
-	bool Running = true;
+	bool bRunning = true;
 	FSocket* Socket = nullptr;
 	TWeakPtr<class PacketSession> SessionRef;
 };
@@ -70,7 +55,7 @@ private:
 
 protected:
 	FRunnableThread* Thread = nullptr;
-	bool Running = true;
+	bool bRunning = true;
 	FSocket* Socket = nullptr;
 	TWeakPtr<class PacketSession> SessionRef;
 };

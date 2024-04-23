@@ -3,6 +3,13 @@
 class Player
 {
 public:
-	uint64 playerId = 0;
-	shared_ptr<class GameSession> ownerSession;
+	Player();
+	virtual ~Player();
+
+public:
+	weak_ptr<class GameSession> session;
+	atomic<weak_ptr<class Room>> room;
+
+public:
+	Protocol::PlayerInfo* playerInfo;
 };

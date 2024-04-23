@@ -12,9 +12,6 @@ public:
 	virtual void OnRecvPacket(BYTE* buffer, int32 len) override;
 	virtual void OnSend(int32 len) override;
 
-private:
-	uint64 GenPlayerId();
-
 public:
-	shared_ptr<class Player> curPlayer;
+	atomic<shared_ptr<class Player>> curPlayer;
 };

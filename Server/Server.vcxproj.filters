@@ -22,6 +22,12 @@
     <Filter Include="Contents">
       <UniqueIdentifier>{74ec59be-54be-4fe7-aafc-1d57f9e6f42d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{61f99dab-3478-4f28-9d38-863e737ce338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol\Proto">
+      <UniqueIdentifier>{a268a71d-5e4f-4527-8266-b1032ba59b14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SocketUtils.cpp">
@@ -72,7 +78,7 @@
     <ClCompile Include="Server.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="ClientPacketHandler.cpp">
+    <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="GameSession.cpp">
@@ -98,6 +104,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +164,7 @@
     <ClInclude Include="Protocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="ClientPacketHandler.h">
+    <ClInclude Include="ServerPacketHandler.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="GameSession.h">
@@ -179,19 +191,25 @@
     <ClInclude Include="Player.h">
       <Filter>Contents</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tools\PacketGenerator\Protocol.proto">
-      <Filter>Protocol</Filter>
-    </None>
     <None Include="Tools\PacketGenerator\GenPacket.bat">
       <Filter>Protocol</Filter>
     </None>
-    <None Include="Tools\PacketGenerator\Struct.proto">
-      <Filter>Protocol</Filter>
-    </None>
     <None Include="Tools\PacketGenerator\Enum.proto">
-      <Filter>Protocol</Filter>
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="Tools\PacketGenerator\Protocol.proto">
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="Tools\PacketGenerator\Struct.proto">
+      <Filter>Protocol\Proto</Filter>
     </None>
   </ItemGroup>
 </Project>

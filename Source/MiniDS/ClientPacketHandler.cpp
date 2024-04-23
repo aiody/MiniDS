@@ -2,7 +2,6 @@
 
 #include "ClientPacketHandler.h"
 #include "PacketSession.h"
-#include "MiniDSGameInstance.h"
 
 PacketHandleFunc GPacketHandler[UINT16_MAX];
 
@@ -19,26 +18,26 @@ bool Handler_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 
 	Protocol::C_CHAT PktChat;
 	PktChat.set_msg(pkt.msg());
-	SendBufferRef SendBuffer = ClientPacketHandler::MakeSendBuffer(PktChat);
-	Cast<UMiniDSGameInstance>(GWorld->GetGameInstance())->SendPacket(SendBuffer);
+	SEND_PACKET(PktChat);
 
 	return true;
 }
 
-bool Handler_S_EnterGame(PacketSessionRef& session, Protocol::S_EnterGame& pkt)
+bool Handler_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
-	UE_LOG(LogClass, Log, TEXT("Your Id is = %d"), pkt.playerid());
-
-	return true;
-}
-
-bool Handler_S_Spawn(PacketSessionRef& session, Protocol::S_Spawn& pkt)
-{
-	UE_LOG(LogClass, Log, TEXT("Spawn Id is = %d"), pkt.player().id());
-
 	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
 	{
-		GameInstance->SpawnWeber();
+		GameInstance->HandleSpawn(pkt);
+	}
+
+	return true;
+} 
+
+bool Handler_S_SPAWN(PacketSessionRef& session, Protocol::S_SPAWN& pkt)
+{
+	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
+	{
+		GameInstance->HandleSpawn(pkt);
 	}
 
 	return true;

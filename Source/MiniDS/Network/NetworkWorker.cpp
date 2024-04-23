@@ -23,7 +23,7 @@ bool RecvWorker::Init()
 
 uint32 RecvWorker::Run()
 {
-	while (Running)
+	while (bRunning)
 	{
 		TArray<uint8> Packet;
 		if (RecvPacket(OUT Packet))
@@ -44,7 +44,7 @@ void RecvWorker::Exit()
 
 void RecvWorker::Destroy()
 {
-	Running = false;
+	bRunning = false;
 }
 
 bool RecvWorker::RecvPacket(TArray<uint8>& OutPacket)
@@ -66,6 +66,9 @@ bool RecvWorker::RecvPacket(TArray<uint8>& OutPacket)
 
 	// 패킷 내용 파싱
 	const int32 PayloadSize = Header.PacketSize - HeaderSize;
+	if (PayloadSize == 0)
+		return true;
+
 	OutPacket.AddZeroed(PayloadSize);
 
 	if (RecvDesiredBytes(&OutPacket[HeaderSize], PayloadSize) == false)
@@ -114,7 +117,7 @@ bool SendWorker::Init()
 
 uint32 SendWorker::Run()
 {
-	while (Running)
+	while (bRunning)
 	{
 		SendBufferRef SendBuffer;
 		if (TSharedPtr<PacketSession> Session = SessionRef.Pin())
@@ -143,7 +146,7 @@ bool SendWorker::SendPacket(SendBufferRef SendBuffer)
 
 void SendWorker::Destroy()
 {
-	Running = false;
+	bRunning = false;
 }
 
 bool SendWorker::SendDesiredBytes(const uint8* Buffer, int32 Size)

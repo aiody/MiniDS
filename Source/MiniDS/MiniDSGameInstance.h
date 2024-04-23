@@ -2,8 +2,10 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "MiniDS.h"
+#include "Protocol/Protocol.pb.h"
 
 #include "MiniDSGameInstance.generated.h"
 
@@ -14,7 +16,7 @@ UCLASS()
 class MINIDS_API UMiniDSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void ConnectToGameServer();
@@ -27,16 +29,10 @@ public:
 
 	void SendPacket(SendBufferRef SendBuffer);
 
-	UFUNCTION(BlueprintCallable)
-	void SpawnWeber();
-
 public:
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> Weber;
-
-protected:
-	class ClientSocket2* Socket2;
-	class DispatcherThread* Thread;
+	void HandleSpawn(const Protocol::PlayerInfo& PlayerInfo);
+	void HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt);
+	void HandleSpawn(const Protocol::S_SPAWN& SpawnPkt);
 
 public:
 	class FSocket* Socket;
@@ -44,4 +40,9 @@ public:
 	int16 Port = 9999;
 
 	TSharedPtr<class PacketSession> GameServerSession;
+
+public:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> PlayerClass;
+	TMap<uint64, AActor*> Players;
 };

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Network/SendBuffer.h"
+#include "SendBuffer.h"
 
 SendBuffer::SendBuffer(int32 bufferSize)
 {

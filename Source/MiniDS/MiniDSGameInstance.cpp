@@ -5,8 +5,6 @@
 #include "Common/TcpSocketBuilder.h"
 #include "PacketSession.h"
 
-#include "PaperCharacter.h"
-
 void UMiniDSGameInstance::ConnectToGameServer()
 {
 	if (Socket == nullptr)
@@ -26,9 +24,15 @@ void UMiniDSGameInstance::ConnectToGameServer()
 		if (Connected)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connection Success")));
-			
+			 
 			GameServerSession = MakeShared<PacketSession>(Socket);
 			GameServerSession->Run();
+
+			// 게임 접속 패킷 전송
+			{
+				Protocol::C_ENTER_GAME Pkt;
+				SEND_PACKET(Pkt);
+			}
 		}
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connection Failed")));
@@ -37,6 +41,7 @@ void UMiniDSGameInstance::ConnectToGameServer()
 
 void UMiniDSGameInstance::DisconnectFromGameServer()
 {
+	// Despawn
 	if (Socket)
 	{
 		ISocketSubsystem::Get()->DestroySocket(Socket);
@@ -60,15 +65,32 @@ void UMiniDSGameInstance::SendPacket(SendBufferRef SendBuffer)
 	GameServerSession->SendPacket(SendBuffer);
 }
 
-void UMiniDSGameInstance::SpawnWeber()
+void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo)
 {
-	FVector SpawnLocation(0, 0, 100);
-	FRotator SpawnRotation(0, 0, 0);
-	
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
 	auto* World = GetWorld();
 	if (World == nullptr)
 		return;
-	
-	//World->SpawnActor<APaperCharacter>(Weber, SpawnLocation, SpawnRotation);
-	World->SpawnActor(Weber, &SpawnLocation);
+
+	// 중복 처리 체크
+	const uint64 Id = PlayerInfo.id();
+	if (Players.Find(Id) != nullptr)
+		return;
+
+	FVector SpawnLocation(PlayerInfo.x(), PlayerInfo.y(), PlayerInfo.z());
+	AActor* Actor = World->SpawnActor(PlayerClass, &SpawnLocation);
+	Players.Add(PlayerInfo.id(), Actor);
+}
+
+void UMiniDSGameInstance::HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt)
+{
+	HandleSpawn(EnterGamePkt.player());
+}
+
+void UMiniDSGameInstance::HandleSpawn(const Protocol::S_SPAWN& SpawnPkt)
+{
+	for (auto& Player : SpawnPkt.players())
+		HandleSpawn(Player);
 }

@@ -33,3 +33,15 @@ using namespace std;
 #include "Lock.h"
 #include "SendBuffer.h"
 #include "Session.h"
+
+// Contents
+#include "Utils.h"
+#include "Protocol.pb.h"
+#include "Job.h"
+#include "JobQueue.h"
+#include "JobTimer.h"
+#include "GameSession.h"
+
+#define SEND_PACKET(pkt)															\
+	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);	\
+	session->Send(sendBuffer);

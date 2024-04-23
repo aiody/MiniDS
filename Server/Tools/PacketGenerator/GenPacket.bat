@@ -13,12 +13,12 @@ XCOPY Struct.pb.cc "../.." /Y
 XCOPY Protocol.pb.cc "../.." /Y
 
 :: for client
-XCOPY Enum.pb.h "../../../Source/MiniDS/Protocol" /Y
-XCOPY Struct.pb.h "../../../Source/MiniDS/Protocol" /Y
-XCOPY Protocol.pb.h "../../../Source/MiniDS/Protocol" /Y
-XCOPY Enum.pb.cc "../../../Source/MiniDS/Protocol" /Y
-XCOPY Struct.pb.cc "../../../Source/MiniDS/Protocol" /Y
-XCOPY Protocol.pb.cc "../../../Source/MiniDS/Protocol" /Y
+XCOPY Enum.pb.h "../../../Source/MiniDS/Network/Protocol" /Y
+XCOPY Struct.pb.h "../../../Source/MiniDS/Network/Protocol" /Y
+XCOPY Protocol.pb.h "../../../Source/MiniDS/Network/Protocol" /Y
+XCOPY Enum.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
+XCOPY Struct.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
+XCOPY Protocol.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
 
 DEL *.pb.h
 DEL *.pb.cc
