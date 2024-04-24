@@ -20,7 +20,7 @@ bool Room::HandleEnterPlayer(shared_ptr<Player> player)
 
 	player->playerInfo->set_x(Utils::GetRandom(0.f, 500.f));
 	player->playerInfo->set_y(Utils::GetRandom(0.f, 500.f));
-	player->playerInfo->set_z(Utils::GetRandom(0.f, 500.f));
+	player->playerInfo->set_z(118.f);
 
 	// 해당 플레이어에게 게임에 접속함을 알림
 	{

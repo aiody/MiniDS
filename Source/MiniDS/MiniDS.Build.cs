@@ -8,7 +8,7 @@ public class MiniDS : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Sockets", "Networking" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "Sockets", "Networking", "EnhancedInput" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "ProtobufCore" });
 
@@ -17,6 +17,7 @@ public class MiniDS : ModuleRules
 			"MiniDS/",
 			"MiniDS/Network/",
 			"MiniDS/Network/Protocol",
+			"MiniDS/Game",
 		});
 
 		// Uncomment if you are using Slate UI

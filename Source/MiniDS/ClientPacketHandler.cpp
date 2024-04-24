@@ -14,7 +14,7 @@ bool Handler_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 bool Handler_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 {
 	FString msg(pkt.msg().c_str());
-	UE_LOG(LogClass, Log, TEXT("Recv Payload = Msg : %s,  Size : %d"), *msg, msg.Len());
+	UE_LOG(LogTemp, Log, TEXT("Recv Payload = Msg : %s,  Size : %d"), *msg, msg.Len());
 
 	Protocol::C_CHAT PktChat;
 	PktChat.set_msg(pkt.msg());

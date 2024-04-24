@@ -4,6 +4,8 @@
 #include "MiniDSGameInstance.h"
 #include "Common/TcpSocketBuilder.h"
 #include "PacketSession.h"
+#include "Kismet/GameplayStatics.h"
+#include "MiniDSCharacter.h"
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
@@ -64,7 +66,7 @@ void UMiniDSGameInstance::SendPacket(SendBufferRef SendBuffer)
 	GameServerSession->SendPacket(SendBuffer);
 }
 
-void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo)
+void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bool IsMine)
 {
 	if (Socket == nullptr || GameServerSession == nullptr)
 		return;
@@ -79,19 +81,33 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo)
 		return;
 
 	FVector SpawnLocation(PlayerInfo.x(), PlayerInfo.y(), PlayerInfo.z());
-	AActor* Actor = World->SpawnActor(PlayerClass, &SpawnLocation);
-	Players.Add(PlayerInfo.id(), Actor);
+
+	if (IsMine)
+	{
+		auto* PC = UGameplayStatics::GetPlayerController(this, 0);
+		AMiniDSCharacter* Player = Cast<AMiniDSCharacter>(PC->GetPawn());
+		if (Player == nullptr)
+			return;
+
+		MyPlayer = Player;
+		Players.Add(PlayerInfo.id(), Player);
+	}
+	else
+	{
+		AMiniDSCharacter* Player = Cast<AMiniDSCharacter>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
+		Players.Add(PlayerInfo.id(), Player);
+	}
 }
 
 void UMiniDSGameInstance::HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt)
 {
-	HandleSpawn(EnterGamePkt.player());
+	HandleSpawn(EnterGamePkt.player(), true);
 }
 
 void UMiniDSGameInstance::HandleSpawn(const Protocol::S_SPAWN& SpawnPkt)
 {
 	for (auto& Player : SpawnPkt.players())
-		HandleSpawn(Player);
+		HandleSpawn(Player, false);
 }
 
 void UMiniDSGameInstance::HandleDespawn(uint64 Id)
@@ -103,11 +119,11 @@ void UMiniDSGameInstance::HandleDespawn(uint64 Id)
 	if (World == nullptr)
 		return;
 
-	AActor** Actor = Players.Find(Id);
-	if (Actor == nullptr)
+	AMiniDSCharacter** Player = Players.Find(Id);
+	if (Player == nullptr)
 		return;
 
-	World->DestroyActor(*Actor);
+	World->DestroyActor(*Player);
 }
 
 void UMiniDSGameInstance::HandleDespawn(const Protocol::S_DESPAWN& DespawnPkt)

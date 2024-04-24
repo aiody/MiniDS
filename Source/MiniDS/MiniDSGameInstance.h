@@ -6,8 +6,9 @@
 #include "Engine/GameInstance.h"
 #include "MiniDS.h"
 #include "Protocol/Protocol.pb.h"
-
 #include "MiniDSGameInstance.generated.h"
+
+class AMiniDSCharacter;
 
 /**
  * 
@@ -30,7 +31,7 @@ public:
 	void SendPacket(SendBufferRef SendBuffer);
 
 public:
-	void HandleSpawn(const Protocol::PlayerInfo& PlayerInfo);
+	void HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bool IsMine);
 	void HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt);
 	void HandleSpawn(const Protocol::S_SPAWN& SpawnPkt);
 	void HandleDespawn(uint64 Id);
@@ -46,6 +47,8 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> PlayerClass;
-	TMap<uint64, AActor*> Players;
+	TSubclassOf<AMiniDSCharacter> OtherPlayerClass;
+
+	AMiniDSCharacter* MyPlayer;
+	TMap<uint64, AMiniDSCharacter*> Players;
 };

@@ -15,6 +15,4 @@ UCLASS()
 class MINIDS_API AMiniDSGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-
-	AMiniDSGameModeBase();
 };
