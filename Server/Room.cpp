@@ -100,7 +100,29 @@ bool Room::HandleLeavePlayer(shared_ptr<Player> player)
 			session->Send(despawnBuffer);
 	}
 
-	return false;
+	return true;
+}
+
+void Room::HandleMove(shared_ptr<Protocol::PlayerInfo> info)
+{
+	WRITE_LOCK;
+
+	const uint64 id = info->id();
+	if (_players.find(id) == _players.end())
+		return;
+
+	shared_ptr<Player>& player = _players[id];
+	player->playerInfo->CopyFrom(*info);
+
+	{
+		Protocol::S_MOVE movePkt;
+		{
+			Protocol::PlayerInfo* moveInfo = movePkt.mutable_info();
+			moveInfo->CopyFrom(*info);
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
+		Broadcast(sendBuffer);
+	}
 }
 
 bool Room::EnterPlayer(shared_ptr<Player> player)

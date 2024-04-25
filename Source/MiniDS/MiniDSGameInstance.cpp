@@ -90,11 +90,13 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bo
 			return;
 
 		MyPlayer = Player;
+		Player->SetPlayerInfo(PlayerInfo);
 		Players.Add(PlayerInfo.id(), Player);
 	}
 	else
 	{
 		AMiniDSCharacter* Player = Cast<AMiniDSCharacter>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
+		Player->SetPlayerInfo(PlayerInfo);
 		Players.Add(PlayerInfo.id(), Player);
 	}
 }
@@ -119,11 +121,11 @@ void UMiniDSGameInstance::HandleDespawn(uint64 Id)
 	if (World == nullptr)
 		return;
 
-	AMiniDSCharacter** Player = Players.Find(Id);
-	if (Player == nullptr)
+	AMiniDSCharacter** FoundActor = Players.Find(Id);
+	if (FoundActor == nullptr)
 		return;
 
-	World->DestroyActor(*Player);
+	World->DestroyActor(*FoundActor);
 }
 
 void UMiniDSGameInstance::HandleDespawn(const Protocol::S_DESPAWN& DespawnPkt)
@@ -141,4 +143,27 @@ void UMiniDSGameInstance::HandleLeaveGame()
 		ISocketSubsystem::Get()->DestroySocket(Socket);
 		Socket = nullptr;
 	}
+}
+
+void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	auto* World = GetWorld();
+	if (World == nullptr)
+		return;
+
+	const uint64 Id = MovePkt.info().id();
+
+	AMiniDSCharacter** FoundActor = Players.Find(Id);
+	if (FoundActor == nullptr)
+		return;
+
+	AMiniDSCharacter* Player = (*FoundActor);
+	if (Player->IsMyPlayer())
+		return;
+	
+	const Protocol::PlayerInfo& Info = MovePkt.info();
+	Player->SetPlayerInfo(Info);
 }

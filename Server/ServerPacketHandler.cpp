@@ -60,3 +60,21 @@ bool Handler_C_LEAVE_GAME(shared_ptr<PacketSession>& session, Protocol::C_LEAVE_
 
 	return true;
 }
+
+bool Handler_C_MOVE(shared_ptr<PacketSession>& session, Protocol::C_MOVE& pkt)
+{
+	shared_ptr<GameSession> gameSession = static_pointer_cast<GameSession>(session);
+
+	shared_ptr<Player> player = gameSession->curPlayer.load();
+	if (player == nullptr)
+		return false;
+
+	shared_ptr<Room> room = player->room.load().lock();
+	if (room == nullptr)
+		return false;
+	
+	shared_ptr<Protocol::PlayerInfo> info = make_shared<Protocol::PlayerInfo>(pkt.info());
+	gJobQueue->Push(make_shared<Job>(room, &Room::HandleMove, info));
+
+	return true;
+}

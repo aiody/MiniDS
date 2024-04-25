@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "PaperFlipbookComponent.h"
+#include "MiniDS.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -45,6 +46,25 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyCharacter::Move);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AMyCharacter::ReleaseMove);
+	}
+}
+
+void AMyCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	MovePacketSendTimer -= DeltaSeconds;
+
+	if (MovePacketSendTimer <= 0)
+	{
+		MovePacketSendTimer = MOVE_PACKET_SEND_DELAY;
+
+		Protocol::C_MOVE MovePkt;
+		{
+			Protocol::PlayerInfo* Info = MovePkt.mutable_info();
+			Info->CopyFrom(*PlayerInfo);
+		}
+		SEND_PACKET(MovePkt);
 	}
 }
 

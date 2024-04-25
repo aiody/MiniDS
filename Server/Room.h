@@ -13,6 +13,8 @@ public:
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 
+	void HandleMove(shared_ptr<Protocol::PlayerInfo> info);
+
 private:
 	bool EnterPlayer(shared_ptr<Player> player);
 	bool LeavePlayer(uint64 id);

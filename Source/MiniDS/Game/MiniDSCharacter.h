@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PaperCharacter.h"
+#include "Protocol.pb.h"
 #include "MiniDSCharacter.generated.h"
 
 class USpringArmComponent;
@@ -23,7 +24,19 @@ class MINIDS_API AMiniDSCharacter : public APaperCharacter
 
 public:
 	AMiniDSCharacter();
+	virtual ~AMiniDSCharacter();
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+public:
+	bool IsMyPlayer();
+
+public:
+	void SetPlayerInfo(const Protocol::PlayerInfo& Info);
+	Protocol::PlayerInfo* GetPlayerInfo() { return PlayerInfo; }
+
+protected:
+	Protocol::PlayerInfo* PlayerInfo; // 현재 위치
 };

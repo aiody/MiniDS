@@ -21,6 +21,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
 public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
@@ -55,4 +57,8 @@ public:
 	UPaperFlipbook* FlipbookRunUp;
 	UPROPERTY(EditAnywhere, Category = Animation)
 	UPaperFlipbook* FlipbookRunDown;
+
+protected:
+	const float MOVE_PACKET_SEND_DELAY = 0.2f;
+	float MovePacketSendTimer = MOVE_PACKET_SEND_DELAY;
 };

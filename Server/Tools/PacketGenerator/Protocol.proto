@@ -43,3 +43,13 @@ message S_DESPAWN
 {
 	repeated uint64 ids = 1;
 }
+
+message C_MOVE
+{
+	PlayerInfo info = 1;
+}
+
+message S_MOVE
+{
+	PlayerInfo info = 1;
+}

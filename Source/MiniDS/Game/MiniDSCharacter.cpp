@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "MyCharacter.h"
 
 AMiniDSCharacter::AMiniDSCharacter()
 {
@@ -25,9 +26,42 @@ AMiniDSCharacter::AMiniDSCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.f;
+
+	PlayerInfo = new Protocol::PlayerInfo();
+}
+
+AMiniDSCharacter::~AMiniDSCharacter()
+{
+	delete PlayerInfo;
+	PlayerInfo = nullptr;
 }
 
 void AMiniDSCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AMiniDSCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	{
+		FVector Location = GetActorLocation();
+		PlayerInfo->set_x(Location.X);
+		PlayerInfo->set_y(Location.Y);
+		PlayerInfo->set_z(Location.Z);
+	}
+}
+
+bool AMiniDSCharacter::IsMyPlayer()
+{
+	return Cast<AMyCharacter>(this) != nullptr;
+}
+
+void AMiniDSCharacter::SetPlayerInfo(const Protocol::PlayerInfo& Info)
+{
+	PlayerInfo->CopyFrom(Info);
+
+	FVector Location(Info.x(), Info.y(), Info.z());
+	SetActorLocation(Location);
 }
