@@ -5,7 +5,7 @@
 #include "Common/TcpSocketBuilder.h"
 #include "PacketSession.h"
 #include "Kismet/GameplayStatics.h"
-#include "MiniDSCharacter.h"
+#include "MiniDSPlayer.h"
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
@@ -85,7 +85,7 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bo
 	if (IsMine)
 	{
 		auto* PC = UGameplayStatics::GetPlayerController(this, 0);
-		AMiniDSCharacter* Player = Cast<AMiniDSCharacter>(PC->GetPawn());
+		AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(PC->GetPawn());
 		if (Player == nullptr)
 			return;
 
@@ -95,7 +95,7 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bo
 	}
 	else
 	{
-		AMiniDSCharacter* Player = Cast<AMiniDSCharacter>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
+		AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
 		Player->SetPlayerInfo(PlayerInfo);
 		Players.Add(PlayerInfo.id(), Player);
 	}
@@ -121,7 +121,7 @@ void UMiniDSGameInstance::HandleDespawn(uint64 Id)
 	if (World == nullptr)
 		return;
 
-	AMiniDSCharacter** FoundActor = Players.Find(Id);
+	AMiniDSPlayer** FoundActor = Players.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
@@ -156,14 +156,14 @@ void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
 
 	const uint64 Id = MovePkt.info().id();
 
-	AMiniDSCharacter** FoundActor = Players.Find(Id);
+	AMiniDSPlayer** FoundActor = Players.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
-	AMiniDSCharacter* Player = (*FoundActor);
+	AMiniDSPlayer* Player = (*FoundActor);
 	if (Player->IsMyPlayer())
 		return;
 	
 	const Protocol::PlayerInfo& Info = MovePkt.info();
-	Player->SetPlayerInfo(Info);
+	Player->SetDestInfo(Info);
 }

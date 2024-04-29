@@ -8,7 +8,7 @@
 #include "Protocol/Protocol.pb.h"
 #include "MiniDSGameInstance.generated.h"
 
-class AMiniDSCharacter;
+class AMiniDSPlayer;
 
 /**
  * 
@@ -48,8 +48,8 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AMiniDSCharacter> OtherPlayerClass;
+	TSubclassOf<AMiniDSPlayer> OtherPlayerClass;
 
-	AMiniDSCharacter* MyPlayer;
-	TMap<uint64, AMiniDSCharacter*> Players;
+	AMiniDSPlayer* MyPlayer;
+	TMap<uint64, AMiniDSPlayer*> Players;
 };

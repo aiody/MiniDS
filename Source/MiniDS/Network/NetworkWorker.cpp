@@ -61,7 +61,7 @@ bool RecvWorker::RecvPacket(TArray<uint8>& OutPacket)
 	{
 		FMemoryReader Reader(OutPacket);
 		Reader << Header;
-		UE_LOG(LogTemp, Log, TEXT("Recv PacketId : %d, PacketSize : %d"), Header.PacketId, Header.PacketSize);
+		//UE_LOG(LogTemp, Log, TEXT("Recv PacketId : %d, PacketSize : %d"), Header.PacketId, Header.PacketSize);
 	}
 
 	// 패킷 내용 파싱

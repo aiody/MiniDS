@@ -28,6 +28,7 @@
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_Enum_2eproto
@@ -46,6 +47,35 @@ PROTOBUF_NAMESPACE_OPEN
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
+enum MoveState : int {
+  MOVE_STATE_NONE = 0,
+  MOVE_STATE_IDLE = 1,
+  MOVE_STATE_RUN_UP = 2,
+  MOVE_STATE_RUN_DOWN = 3,
+  MOVE_STATE_RUN_LEFT = 4,
+  MOVE_STATE_RUN_RIGHT = 5,
+  MoveState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  MoveState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool MoveState_IsValid(int value);
+constexpr MoveState MoveState_MIN = MOVE_STATE_NONE;
+constexpr MoveState MoveState_MAX = MOVE_STATE_RUN_RIGHT;
+constexpr int MoveState_ARRAYSIZE = MoveState_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveState_descriptor();
+template<typename T>
+inline const std::string& MoveState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MoveState>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function MoveState_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    MoveState_descriptor(), enum_t_value);
+}
+inline bool MoveState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MoveState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MoveState>(
+    MoveState_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -65,6 +95,16 @@ namespace Protocol {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace Protocol
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::Protocol::MoveState> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::MoveState>() {
+  return ::Protocol::MoveState_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 

@@ -8,8 +8,6 @@ public:
 	Room();
 	virtual ~Room();
 
-	USE_LOCK;
-
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 

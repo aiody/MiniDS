@@ -1,2 +1,12 @@
 syntax = "proto3";
 package Protocol;
+
+enum MoveState
+{
+	MOVE_STATE_NONE = 0;
+	MOVE_STATE_IDLE = 1;
+	MOVE_STATE_RUN_UP = 2;
+	MOVE_STATE_RUN_DOWN = 3;
+	MOVE_STATE_RUN_LEFT = 4;
+	MOVE_STATE_RUN_RIGHT = 5;
+}

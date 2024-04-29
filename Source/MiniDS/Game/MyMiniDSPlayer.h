@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Game/MiniDSCharacter.h"
-#include "MyCharacter.generated.h"
+#include "Game/MiniDSPlayer.h"
+#include "MyMiniDSPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MINIDS_API AMyCharacter : public AMiniDSCharacter
+class MINIDS_API AMyMiniDSPlayer : public AMiniDSPlayer
 {
 	GENERATED_BODY()
 	
 public:
-	AMyCharacter();
+	AMyMiniDSPlayer();
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,8 +29,7 @@ public:
 
 protected:
 	void Move(const FInputActionValue& Value);
-	void ReleaseMove(const FInputActionValue& Value);
-	void UpdateAnimation(const FVector2D MovementVector);
+	Protocol::MoveState GetMovementState(FVector2D MovementVector);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -48,17 +47,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
-public:
-	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookIdle;
-	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookRunSide;
-	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookRunUp;
-	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookRunDown;
-
 protected:
 	const float MOVE_PACKET_SEND_DELAY = 0.2f;
 	float MovePacketSendTimer = MOVE_PACKET_SEND_DELAY;
+
+	FVector2D DesiredInput;
+	FVector2D LastDesiredInput;
 };

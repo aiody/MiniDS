@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyCharacter.h"
+#include "MyMiniDSPlayer.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -9,10 +9,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
-#include "PaperFlipbookComponent.h"
 #include "MiniDS.h"
 
-AMyCharacter::AMyCharacter()
+AMyMiniDSPlayer::AMyMiniDSPlayer()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -24,7 +23,7 @@ AMyCharacter::AMyCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 }
 
-void AMyCharacter::BeginPlay()
+void AMyMiniDSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -37,25 +36,34 @@ void AMyCharacter::BeginPlay()
 	}
 }
 
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMyMiniDSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyCharacter::Move);
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AMyCharacter::ReleaseMove);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyMiniDSPlayer::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AMyMiniDSPlayer::Move);
 	}
 }
 
-void AMyCharacter::Tick(float DeltaSeconds)
+void AMyMiniDSPlayer::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	// Send 판정
+	bool ForceSendPacket = false;
+
+	if (LastDesiredInput != DesiredInput)
+	{
+		ForceSendPacket = true;
+		LastDesiredInput = DesiredInput;
+	}
+
 	MovePacketSendTimer -= DeltaSeconds;
 
-	if (MovePacketSendTimer <= 0)
+	if (MovePacketSendTimer <= 0 || ForceSendPacket)
 	{
 		MovePacketSendTimer = MOVE_PACKET_SEND_DELAY;
 
@@ -68,7 +76,7 @@ void AMyCharacter::Tick(float DeltaSeconds)
 	}
 }
 
-void AMyCharacter::Move(const FInputActionValue& Value)
+void AMyMiniDSPlayer::Move(const FInputActionValue& Value)
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -84,46 +92,30 @@ void AMyCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 
+		SetMoveState(GetMovementState(MovementVector));
 		UpdateAnimation(MovementVector);
+
+		DesiredInput = MovementVector;
 	}
 }
 
-void AMyCharacter::ReleaseMove(const FInputActionValue& Value)
+Protocol::MoveState AMyMiniDSPlayer::GetMovementState(FVector2D MovementVector)
 {
-	FVector2D MovementVector = Value.Get<FVector2D>();
-	if (Controller != nullptr)
-	{
-		UpdateAnimation(MovementVector);
-	}
-}
+	Protocol::MoveState State = Protocol::MOVE_STATE_IDLE;
 
-void AMyCharacter::UpdateAnimation(const FVector2D MovementVector)
-{
-	if (MovementVector.X == 0 && MovementVector.Y == 0)
-	{
-		GetSprite()->SetFlipbook(FlipbookIdle);
-		return;
-	}
-
-	if (MovementVector.X > 0)
-	{
-		GetSprite()->SetRelativeRotation(FRotator(0, 90.f, 0));
-		GetSprite()->SetFlipbook(FlipbookRunSide);
-	}
+	if (MovementVector == FVector2D::Zero())
+		State = Protocol::MOVE_STATE_IDLE;
+	else if (MovementVector.X > 0)
+		State = Protocol::MOVE_STATE_RUN_RIGHT;
 	else if (MovementVector.X < 0)
-	{
-		GetSprite()->SetRelativeRotation(FRotator(0, -90.f, 0));
-		GetSprite()->SetFlipbook(FlipbookRunSide);
-	}
+		State = Protocol::MOVE_STATE_RUN_LEFT;
 	else
 	{
 		if (MovementVector.Y > 0)
-		{
-			GetSprite()->SetFlipbook(FlipbookRunUp);
-		}
+			State = Protocol::MOVE_STATE_RUN_UP;
 		else
-		{
-			GetSprite()->SetFlipbook(FlipbookRunDown);
-		}
+			State = Protocol::MOVE_STATE_RUN_DOWN;
 	}
+
+	return State;
 }

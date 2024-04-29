@@ -22,18 +22,22 @@ namespace _pbi = _pb::internal;
 
 namespace Protocol {
 }  // namespace Protocol
-static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_Enum_2eproto = nullptr;
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[1];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const uint32_t TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nEnum.proto\022\010Protocolb\006proto3"
+  "\n\nEnum.proto\022\010Protocol*\230\001\n\tMoveState\022\023\n\017"
+  "MOVE_STATE_NONE\020\000\022\023\n\017MOVE_STATE_IDLE\020\001\022\025"
+  "\n\021MOVE_STATE_RUN_UP\020\002\022\027\n\023MOVE_STATE_RUN_"
+  "DOWN\020\003\022\027\n\023MOVE_STATE_RUN_LEFT\020\004\022\030\n\024MOVE_"
+  "STATE_RUN_RIGHT\020\005b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 30, descriptor_table_protodef_Enum_2eproto,
+    false, false, 185, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -47,6 +51,24 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_Enum_2ep
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_Enum_2eproto(&descriptor_table_Enum_2eproto);
 namespace Protocol {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[0];
+}
+bool MoveState_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace Protocol

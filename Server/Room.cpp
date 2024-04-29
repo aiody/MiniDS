@@ -14,8 +14,6 @@ Room::~Room()
 
 bool Room::HandleEnterPlayer(shared_ptr<Player> player)
 {
-	WRITE_LOCK;
-
 	bool success = EnterPlayer(player);
 
 	player->playerInfo->set_x(Utils::GetRandom(0.f, 500.f));
@@ -73,8 +71,6 @@ bool Room::HandleLeavePlayer(shared_ptr<Player> player)
 	if (player == nullptr)
 		return false;
 
-	WRITE_LOCK;
-
 	const uint64 id = player->playerInfo->id();
 	bool success = LeavePlayer(id);
 
@@ -105,8 +101,6 @@ bool Room::HandleLeavePlayer(shared_ptr<Player> player)
 
 void Room::HandleMove(shared_ptr<Protocol::PlayerInfo> info)
 {
-	WRITE_LOCK;
-
 	const uint64 id = info->id();
 	if (_players.find(id) == _players.end())
 		return;
