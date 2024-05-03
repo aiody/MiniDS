@@ -182,6 +182,7 @@ class PlayerInfo final :
     kXFieldNumber = 2,
     kYFieldNumber = 3,
     kZFieldNumber = 4,
+    kDirFieldNumber = 5,
     kStateFieldNumber = 6,
   };
   // uint64 id = 1;
@@ -220,13 +221,22 @@ class PlayerInfo final :
   void _internal_set_z(float value);
   public:
 
-  // .Protocol.MoveState state = 6;
-  void clear_state();
-  ::Protocol::MoveState state() const;
-  void set_state(::Protocol::MoveState value);
+  // .Protocol.MoveDir dir = 5;
+  void clear_dir();
+  ::Protocol::MoveDir dir() const;
+  void set_dir(::Protocol::MoveDir value);
   private:
-  ::Protocol::MoveState _internal_state() const;
-  void _internal_set_state(::Protocol::MoveState value);
+  ::Protocol::MoveDir _internal_dir() const;
+  void _internal_set_dir(::Protocol::MoveDir value);
+  public:
+
+  // .Protocol.CreatureState state = 6;
+  void clear_state();
+  ::Protocol::CreatureState state() const;
+  void set_state(::Protocol::CreatureState value);
+  private:
+  ::Protocol::CreatureState _internal_state() const;
+  void _internal_set_state(::Protocol::CreatureState value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.PlayerInfo)
@@ -241,6 +251,7 @@ class PlayerInfo final :
     float x_;
     float y_;
     float z_;
+    int dir_;
     int state_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -338,22 +349,42 @@ inline void PlayerInfo::set_z(float value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerInfo.z)
 }
 
-// .Protocol.MoveState state = 6;
+// .Protocol.MoveDir dir = 5;
+inline void PlayerInfo::clear_dir() {
+  _impl_.dir_ = 0;
+}
+inline ::Protocol::MoveDir PlayerInfo::_internal_dir() const {
+  return static_cast< ::Protocol::MoveDir >(_impl_.dir_);
+}
+inline ::Protocol::MoveDir PlayerInfo::dir() const {
+  // @@protoc_insertion_point(field_get:Protocol.PlayerInfo.dir)
+  return _internal_dir();
+}
+inline void PlayerInfo::_internal_set_dir(::Protocol::MoveDir value) {
+  
+  _impl_.dir_ = value;
+}
+inline void PlayerInfo::set_dir(::Protocol::MoveDir value) {
+  _internal_set_dir(value);
+  // @@protoc_insertion_point(field_set:Protocol.PlayerInfo.dir)
+}
+
+// .Protocol.CreatureState state = 6;
 inline void PlayerInfo::clear_state() {
   _impl_.state_ = 0;
 }
-inline ::Protocol::MoveState PlayerInfo::_internal_state() const {
-  return static_cast< ::Protocol::MoveState >(_impl_.state_);
+inline ::Protocol::CreatureState PlayerInfo::_internal_state() const {
+  return static_cast< ::Protocol::CreatureState >(_impl_.state_);
 }
-inline ::Protocol::MoveState PlayerInfo::state() const {
+inline ::Protocol::CreatureState PlayerInfo::state() const {
   // @@protoc_insertion_point(field_get:Protocol.PlayerInfo.state)
   return _internal_state();
 }
-inline void PlayerInfo::_internal_set_state(::Protocol::MoveState value) {
+inline void PlayerInfo::_internal_set_state(::Protocol::CreatureState value) {
   
   _impl_.state_ = value;
 }
-inline void PlayerInfo::set_state(::Protocol::MoveState value) {
+inline void PlayerInfo::set_state(::Protocol::CreatureState value) {
   _internal_set_state(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerInfo.state)
 }

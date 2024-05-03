@@ -40,8 +40,7 @@ void AMyMiniDSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &AMyMiniDSPlayer::Attack);
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMyMiniDSPlayer::Move);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AMyMiniDSPlayer::Move);
@@ -82,40 +81,52 @@ void AMyMiniDSPlayer::Move(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		const FRotator Rotaion = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotaion.Yaw, 0);
+		{
+			// 이동
+			const FRotator Rotaion = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotaion.Yaw, 0);
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
 
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
-
-		SetMoveState(GetMovementState(MovementVector));
-		UpdateAnimation(MovementVector);
+		if (MovementVector.Length() > 0)
+		{
+			SetState(Protocol::CREATURE_STATE_MOVING);
+			SetMoveDir(GetMoveDir(MovementVector));
+		}
+		else
+		{
+			SetState(Protocol::CREATURE_STATE_IDLE);
+		}
 
 		DesiredInput = MovementVector;
 	}
 }
 
-Protocol::MoveState AMyMiniDSPlayer::GetMovementState(FVector2D MovementVector)
+void AMyMiniDSPlayer::Attack(const FInputActionValue& Value)
 {
-	Protocol::MoveState State = Protocol::MOVE_STATE_IDLE;
+	SetState(Protocol::CREATURE_STATE_ATTACK);
+}
+
+Protocol::MoveDir AMyMiniDSPlayer::GetMoveDir(FVector2D MovementVector)
+{
+	Protocol::MoveDir Dir = Protocol::MOVE_DIR_NONE;
 
 	if (MovementVector == FVector2D::Zero())
-		State = Protocol::MOVE_STATE_IDLE;
+		Dir = Protocol::MOVE_DIR_NONE;
 	else if (MovementVector.X > 0)
-		State = Protocol::MOVE_STATE_RUN_RIGHT;
+		Dir = Protocol::MOVE_DIR_RIGHT;
 	else if (MovementVector.X < 0)
-		State = Protocol::MOVE_STATE_RUN_LEFT;
+		Dir = Protocol::MOVE_DIR_LEFT;
 	else
 	{
 		if (MovementVector.Y > 0)
-			State = Protocol::MOVE_STATE_RUN_UP;
+			Dir = Protocol::MOVE_DIR_UP;
 		else
-			State = Protocol::MOVE_STATE_RUN_DOWN;
+			Dir = Protocol::MOVE_DIR_DOWN;
 	}
 
-	return State;
+	return Dir;
 }

@@ -9,5 +9,6 @@ message PlayerInfo
 	float x = 2;
 	float y = 3;
 	float z = 4;
-	MoveState state = 6;
+	MoveDir dir = 5;
+	CreatureState state = 6;
 }

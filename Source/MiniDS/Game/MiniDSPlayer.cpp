@@ -52,7 +52,8 @@ void AMiniDSPlayer::BeginPlay()
 		DestInfo->set_y(Location.Y);
 		DestInfo->set_z(Location.Z);
 
-		SetMoveState(Protocol::MOVE_STATE_IDLE);
+		SetState(Protocol::CREATURE_STATE_IDLE);
+		SetMoveDir(Protocol::MOVE_DIR_NONE);
 	}
 }
 
@@ -69,7 +70,7 @@ void AMiniDSPlayer::Tick(float DeltaSeconds)
 
 	if (IsMyPlayer() == false)
 	{
-		const Protocol::MoveState State = PlayerInfo->state();
+		const Protocol::CreatureState State = GetState();
 
 		FVector Location = GetActorLocation();
 		FVector DestLocation = FVector(DestInfo->x(), DestInfo->y(), DestInfo->z());
@@ -78,73 +79,96 @@ void AMiniDSPlayer::Tick(float DeltaSeconds)
 		const float DistToDest = MoveDir.Length();
 		MoveDir.Normalize();
 		
-		if (State == Protocol::MOVE_STATE_IDLE)
+		if (State == Protocol::CREATURE_STATE_IDLE)
 		{
 			if (DistToDest > 10.f)
+			{
 				AddMovementInput(MoveDir);
+				UpdateAnimation(Protocol::CREATURE_STATE_MOVING);
+			}
 			else
-				UpdateAnimation(FVector2D::Zero());
+				UpdateAnimation(Protocol::CREATURE_STATE_IDLE);
 		}
 		else
 		{
 			AddMovementInput(MoveDir);
-			UpdateAnimation(State);
+			UpdateAnimation();
 		}
-	}
-}
-
-void AMiniDSPlayer::UpdateAnimation(const FVector2D MovementVector)
-{
-	if (MovementVector.X == 0 && MovementVector.Y == 0)
-	{
-		GetSprite()->SetFlipbook(FlipbookIdle);
-		return;
-	}
-
-	if (MovementVector.X > 0)
-	{
-		GetSprite()->SetRelativeRotation(FRotator(0, 90.f, 0));
-		GetSprite()->SetFlipbook(FlipbookRunSide);
-	}
-	else if (MovementVector.X < 0)
-	{
-		GetSprite()->SetRelativeRotation(FRotator(0, -90.f, 0));
-		GetSprite()->SetFlipbook(FlipbookRunSide);
 	}
 	else
 	{
-		if (MovementVector.Y > 0)
-		{
-			GetSprite()->SetFlipbook(FlipbookRunUp);
-		}
-		else
-		{
-			GetSprite()->SetFlipbook(FlipbookRunDown);
-		}
+		UpdateAnimation();
 	}
 }
 
-void AMiniDSPlayer::UpdateAnimation(Protocol::MoveState State)
+void AMiniDSPlayer::UpdateAnimation()
 {
+	Protocol::CreatureState State = GetState();
+	UpdateAnimation(State);
+}
+
+void AMiniDSPlayer::UpdateAnimation(Protocol::CreatureState State)
+{
+	Protocol::MoveDir MoveDir = GetMoveDir();
+
+	if (MoveDir == Protocol::MOVE_DIR_LEFT)
+		GetSprite()->SetRelativeRotation(FRotator(0, -90.f, 0));
+	else if (MoveDir == Protocol::MOVE_DIR_RIGHT)
+		GetSprite()->SetRelativeRotation(FRotator(0, 90.f, 0));
+
 	switch (State)
 	{
-	case Protocol::MOVE_STATE_RUN_UP:
-		UpdateAnimation(FVector2D(0, 1));
+	case Protocol::CREATURE_STATE_IDLE:
+		switch (MoveDir)
+		{
+		case Protocol::MOVE_DIR_UP:
+			GetSprite()->SetFlipbook(FlipbookIdleUp);
+			break;
+		case Protocol::MOVE_DIR_NONE:
+		case Protocol::MOVE_DIR_DOWN:
+			GetSprite()->SetFlipbook(FlipbookIdleDown);
+			break;
+		case Protocol::MOVE_DIR_LEFT:
+		case Protocol::MOVE_DIR_RIGHT:
+			GetSprite()->SetFlipbook(FlipbookIdleSide);
+			break;
+		}
 		break;
-	case Protocol::MOVE_STATE_RUN_DOWN:
-		UpdateAnimation(FVector2D(0, -1));
+	case Protocol::CREATURE_STATE_MOVING:
+		switch (MoveDir)
+		{
+		case Protocol::MOVE_DIR_UP:
+			GetSprite()->SetFlipbook(FlipbookRunUp);
+			break;
+		case Protocol::MOVE_DIR_NONE:
+		case Protocol::MOVE_DIR_DOWN:
+			GetSprite()->SetFlipbook(FlipbookRunDown);
+			break;
+		case Protocol::MOVE_DIR_LEFT:
+		case Protocol::MOVE_DIR_RIGHT:
+			GetSprite()->SetFlipbook(FlipbookRunSide);
+			break;
+		}
 		break;
-	case Protocol::MOVE_STATE_RUN_LEFT:
-		UpdateAnimation(FVector2D(-1, 0));
+	case Protocol::CREATURE_STATE_ATTACK:
+		switch (MoveDir)
+		{
+		case Protocol::MOVE_DIR_UP:
+			GetSprite()->SetFlipbook(FlipbookAttackUp);
+			break;
+		case Protocol::MOVE_DIR_NONE:
+		case Protocol::MOVE_DIR_DOWN:
+			GetSprite()->SetFlipbook(FlipbookAttackDown);
+			break;
+		case Protocol::MOVE_DIR_LEFT:
+		case Protocol::MOVE_DIR_RIGHT:
+			GetSprite()->SetFlipbook(FlipbookAttackSide);
+			break;
+		}
 		break;
-	case Protocol::MOVE_STATE_RUN_RIGHT:
-		UpdateAnimation(FVector2D(1, 0));
-		break;
-	case Protocol::MOVE_STATE_IDLE:
-		UpdateAnimation(FVector2D(0, 0));
+	case Protocol::CREATURE_STATE_DEAD:
 		break;
 	default:
-		UpdateAnimation(FVector2D(0, 0));
 		break;
 	}
 }
@@ -154,7 +178,15 @@ bool AMiniDSPlayer::IsMyPlayer()
 	return Cast<AMyMiniDSPlayer>(this) != nullptr;
 }
 
-void AMiniDSPlayer::SetMoveState(Protocol::MoveState State)
+void AMiniDSPlayer::SetMoveDir(Protocol::MoveDir Dir)
+{
+	if (PlayerInfo->dir() == Dir)
+		return;
+
+	PlayerInfo->set_dir(Dir);
+}
+
+void AMiniDSPlayer::SetState(Protocol::CreatureState State)
 {
 	if (PlayerInfo->state() == State)
 		return;
@@ -174,5 +206,6 @@ void AMiniDSPlayer::SetDestInfo(const Protocol::PlayerInfo& Info)
 {
 	DestInfo->CopyFrom(Info);
 
-	SetMoveState(Info.state());
+	SetState(Info.state());
+	SetMoveDir(Info.dir());
 }

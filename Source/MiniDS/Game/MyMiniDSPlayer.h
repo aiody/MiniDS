@@ -29,7 +29,8 @@ public:
 
 protected:
 	void Move(const FInputActionValue& Value);
-	Protocol::MoveState GetMovementState(FVector2D MovementVector);
+	void Attack(const FInputActionValue& Value);
+	Protocol::MoveDir GetMoveDir(FVector2D MovementVector);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -42,7 +43,7 @@ protected:
 	UInputMappingContext* DefaultMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* JumpAction;
+	UInputAction* AttackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;

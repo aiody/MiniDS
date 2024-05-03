@@ -27,6 +27,7 @@ PROTOBUF_CONSTEXPR PlayerInfo::PlayerInfo(
   , /*decltype(_impl_.x_)*/0
   , /*decltype(_impl_.y_)*/0
   , /*decltype(_impl_.z_)*/0
+  , /*decltype(_impl_.dir_)*/0
   , /*decltype(_impl_.state_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct PlayerInfoDefaultTypeInternal {
@@ -54,6 +55,7 @@ const uint32_t TableStruct_Struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerInfo, _impl_.x_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerInfo, _impl_.y_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerInfo, _impl_.z_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::PlayerInfo, _impl_.dir_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerInfo, _impl_.state_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -65,17 +67,18 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"]\n\n"
-  "PlayerInfo\022\n\n\002id\030\001 \001(\004\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003"
-  " \001(\002\022\t\n\001z\030\004 \001(\002\022\"\n\005state\030\006 \001(\0162\023.Protoco"
-  "l.MoveStateb\006proto3"
+  "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"\201\001\n"
+  "\nPlayerInfo\022\n\n\002id\030\001 \001(\004\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030"
+  "\003 \001(\002\022\t\n\001z\030\004 \001(\002\022\036\n\003dir\030\005 \001(\0162\021.Protocol"
+  ".MoveDir\022&\n\005state\030\006 \001(\0162\027.Protocol.Creat"
+  "ureStateb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_Struct_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Struct_2eproto = {
-    false, false, 139, descriptor_table_protodef_Struct_2eproto,
+    false, false, 176, descriptor_table_protodef_Struct_2eproto,
     "Struct.proto",
     &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 1,
     schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
@@ -110,6 +113,7 @@ PlayerInfo::PlayerInfo(const PlayerInfo& from)
     , decltype(_impl_.x_){}
     , decltype(_impl_.y_){}
     , decltype(_impl_.z_){}
+    , decltype(_impl_.dir_){}
     , decltype(_impl_.state_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
@@ -129,6 +133,7 @@ inline void PlayerInfo::SharedCtor(
     , decltype(_impl_.x_){0}
     , decltype(_impl_.y_){0}
     , decltype(_impl_.z_){0}
+    , decltype(_impl_.dir_){0}
     , decltype(_impl_.state_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -201,12 +206,21 @@ const char* PlayerInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
         } else
           goto handle_unusual;
         continue;
-      // .Protocol.MoveState state = 6;
+      // .Protocol.MoveDir dir = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_dir(static_cast<::Protocol::MoveDir>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // .Protocol.CreatureState state = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_state(static_cast<::Protocol::MoveState>(val));
+          _internal_set_state(static_cast<::Protocol::CreatureState>(val));
         } else
           goto handle_unusual;
         continue;
@@ -275,7 +289,14 @@ uint8_t* PlayerInfo::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_z(), target);
   }
 
-  // .Protocol.MoveState state = 6;
+  // .Protocol.MoveDir dir = 5;
+  if (this->_internal_dir() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      5, this->_internal_dir(), target);
+  }
+
+  // .Protocol.CreatureState state = 6;
   if (this->_internal_state() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -330,7 +351,13 @@ size_t PlayerInfo::ByteSizeLong() const {
     total_size += 1 + 4;
   }
 
-  // .Protocol.MoveState state = 6;
+  // .Protocol.MoveDir dir = 5;
+  if (this->_internal_dir() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_dir());
+  }
+
+  // .Protocol.CreatureState state = 6;
   if (this->_internal_state() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_state());
@@ -377,6 +404,9 @@ void PlayerInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
   if (raw_z != 0) {
     _this->_internal_set_z(from._internal_z());
+  }
+  if (from._internal_dir() != 0) {
+    _this->_internal_set_dir(from._internal_dir());
   }
   if (from._internal_state() != 0) {
     _this->_internal_set_state(from._internal_state());

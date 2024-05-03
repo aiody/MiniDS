@@ -30,14 +30,17 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	void UpdateAnimation(const FVector2D MovementVector);
-	void UpdateAnimation(Protocol::MoveState State);
+	void UpdateAnimation();
+	void UpdateAnimation(Protocol::CreatureState State);
 
 public:
 	bool IsMyPlayer();
 
-	Protocol::MoveState GetMoveState() { return PlayerInfo->state(); }
-	void SetMoveState(Protocol::MoveState State);
+	Protocol::MoveDir GetMoveDir() { return PlayerInfo->dir(); }
+	void SetMoveDir(Protocol::MoveDir Dir);
+
+	Protocol::CreatureState GetState() { return PlayerInfo->state(); }
+	void SetState(Protocol::CreatureState State);
 	
 	void SetPlayerInfo(const Protocol::PlayerInfo& Info);
 	Protocol::PlayerInfo* GetPlayerInfo() { return PlayerInfo; }
@@ -46,13 +49,23 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookIdle;
+	UPaperFlipbook* FlipbookIdleDown;
+	UPROPERTY(EditAnywhere, Category = Animation)
+	UPaperFlipbook* FlipbookIdleSide;
+	UPROPERTY(EditAnywhere, Category = Animation)
+	UPaperFlipbook* FlipbookIdleUp;
+	UPROPERTY(EditAnywhere, Category = Animation)
+	UPaperFlipbook* FlipbookRunDown;
 	UPROPERTY(EditAnywhere, Category = Animation)
 	UPaperFlipbook* FlipbookRunSide;
 	UPROPERTY(EditAnywhere, Category = Animation)
 	UPaperFlipbook* FlipbookRunUp;
 	UPROPERTY(EditAnywhere, Category = Animation)
-	UPaperFlipbook* FlipbookRunDown;
+	UPaperFlipbook* FlipbookAttackDown;
+	UPROPERTY(EditAnywhere, Category = Animation)
+	UPaperFlipbook* FlipbookAttackSide;
+	UPROPERTY(EditAnywhere, Category = Animation)
+	UPaperFlipbook* FlipbookAttackUp;
 
 protected:
 	Protocol::PlayerInfo* PlayerInfo; // 현재 위치
