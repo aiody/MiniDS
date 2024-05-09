@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PaperCharacter.h"
 #include "Protocol.pb.h"
+#include "PaperZDCharacter.h"
 #include "MiniDSPlayer.generated.h"
 
 class USpringArmComponent;
@@ -15,10 +15,22 @@ struct FInputActionValue;
 class UPaperFlipbook;
 
 /**
+* 
+*/
+UENUM(BlueprintType)
+enum class ECreatureState : uint8
+{
+	E_CREATURE_STATE_IDLE = 0,
+	E_CREATURE_STATE_MOVING = 1,
+	E_CREATURE_STATE_ATTACK = 2,
+	E_CREATURE_STATE_DEAD = 3,
+};
+
+/**
  * 
  */
 UCLASS()
-class MINIDS_API AMiniDSPlayer : public APaperCharacter
+class MINIDS_API AMiniDSPlayer : public APaperZDCharacter
 {
 	GENERATED_BODY()
 
@@ -29,9 +41,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-
-	void UpdateAnimation();
-	void UpdateAnimation(Protocol::CreatureState State);
 
 public:
 	bool IsMyPlayer();
@@ -46,6 +55,13 @@ public:
 	Protocol::PlayerInfo* GetPlayerInfo() { return PlayerInfo; }
 	
 	void SetDestInfo(const Protocol::PlayerInfo& Info);
+
+	UFUNCTION(BlueprintCallable)
+	FVector2D BP_GetMoveDir();
+	UFUNCTION(BlueprintCallable)
+	ECreatureState BP_GetState();
+	UFUNCTION(BlueprintCallable)
+	void BP_ReleaseAttack();
 
 public:
 	UPROPERTY(EditAnywhere, Category = Animation)

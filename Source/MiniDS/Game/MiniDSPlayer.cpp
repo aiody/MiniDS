@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "MyMiniDSPlayer.h"
 #include "PaperFlipbookComponent.h"
+#include "PaperZDAnimationComponent.h"
+#include "PaperZDAnimInstance.h"
 
 AMiniDSPlayer::AMiniDSPlayer()
 {
@@ -53,7 +55,7 @@ void AMiniDSPlayer::BeginPlay()
 		DestInfo->set_z(Location.Z);
 
 		SetState(Protocol::CREATURE_STATE_IDLE);
-		SetMoveDir(Protocol::MOVE_DIR_NONE);
+		SetMoveDir(Protocol::MOVE_DIR_DOWN);
 	}
 }
 
@@ -82,94 +84,12 @@ void AMiniDSPlayer::Tick(float DeltaSeconds)
 		if (State == Protocol::CREATURE_STATE_IDLE)
 		{
 			if (DistToDest > 10.f)
-			{
 				AddMovementInput(MoveDir);
-				UpdateAnimation(Protocol::CREATURE_STATE_MOVING);
-			}
-			else
-				UpdateAnimation(Protocol::CREATURE_STATE_IDLE);
 		}
 		else
 		{
 			AddMovementInput(MoveDir);
-			UpdateAnimation();
 		}
-	}
-	else
-	{
-		UpdateAnimation();
-	}
-}
-
-void AMiniDSPlayer::UpdateAnimation()
-{
-	Protocol::CreatureState State = GetState();
-	UpdateAnimation(State);
-}
-
-void AMiniDSPlayer::UpdateAnimation(Protocol::CreatureState State)
-{
-	Protocol::MoveDir MoveDir = GetMoveDir();
-
-	if (MoveDir == Protocol::MOVE_DIR_LEFT)
-		GetSprite()->SetRelativeRotation(FRotator(0, -90.f, 0));
-	else if (MoveDir == Protocol::MOVE_DIR_RIGHT)
-		GetSprite()->SetRelativeRotation(FRotator(0, 90.f, 0));
-
-	switch (State)
-	{
-	case Protocol::CREATURE_STATE_IDLE:
-		switch (MoveDir)
-		{
-		case Protocol::MOVE_DIR_UP:
-			GetSprite()->SetFlipbook(FlipbookIdleUp);
-			break;
-		case Protocol::MOVE_DIR_NONE:
-		case Protocol::MOVE_DIR_DOWN:
-			GetSprite()->SetFlipbook(FlipbookIdleDown);
-			break;
-		case Protocol::MOVE_DIR_LEFT:
-		case Protocol::MOVE_DIR_RIGHT:
-			GetSprite()->SetFlipbook(FlipbookIdleSide);
-			break;
-		}
-		break;
-	case Protocol::CREATURE_STATE_MOVING:
-		switch (MoveDir)
-		{
-		case Protocol::MOVE_DIR_UP:
-			GetSprite()->SetFlipbook(FlipbookRunUp);
-			break;
-		case Protocol::MOVE_DIR_NONE:
-		case Protocol::MOVE_DIR_DOWN:
-			GetSprite()->SetFlipbook(FlipbookRunDown);
-			break;
-		case Protocol::MOVE_DIR_LEFT:
-		case Protocol::MOVE_DIR_RIGHT:
-			GetSprite()->SetFlipbook(FlipbookRunSide);
-			break;
-		}
-		break;
-	case Protocol::CREATURE_STATE_ATTACK:
-		switch (MoveDir)
-		{
-		case Protocol::MOVE_DIR_UP:
-			GetSprite()->SetFlipbook(FlipbookAttackUp);
-			break;
-		case Protocol::MOVE_DIR_NONE:
-		case Protocol::MOVE_DIR_DOWN:
-			GetSprite()->SetFlipbook(FlipbookAttackDown);
-			break;
-		case Protocol::MOVE_DIR_LEFT:
-		case Protocol::MOVE_DIR_RIGHT:
-			GetSprite()->SetFlipbook(FlipbookAttackSide);
-			break;
-		}
-		break;
-	case Protocol::CREATURE_STATE_DEAD:
-		break;
-	default:
-		break;
 	}
 }
 
@@ -192,6 +112,11 @@ void AMiniDSPlayer::SetState(Protocol::CreatureState State)
 		return;
 
 	PlayerInfo->set_state(State);
+
+	if (State == Protocol::CREATURE_STATE_ATTACK)
+	{
+		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("Attacked"));
+	}
 }
 
 void AMiniDSPlayer::SetPlayerInfo(const Protocol::PlayerInfo& Info)
@@ -208,4 +133,42 @@ void AMiniDSPlayer::SetDestInfo(const Protocol::PlayerInfo& Info)
 
 	SetState(Info.state());
 	SetMoveDir(Info.dir());
+}
+
+FVector2D AMiniDSPlayer::BP_GetMoveDir()
+{
+	Protocol::MoveDir MoveDir = PlayerInfo->dir();
+	FVector2D Vector2D;
+	switch (MoveDir)
+	{
+	case Protocol::MOVE_DIR_NONE:
+		Vector2D = FVector2D(0.f, -1.f);
+		break;
+	case Protocol::MOVE_DIR_UP:
+		Vector2D = FVector2D(0.f, 1.f);
+		break;
+	case Protocol::MOVE_DIR_DOWN:
+		Vector2D = FVector2D(0.f, -1.f);
+		break;
+	case Protocol::MOVE_DIR_LEFT:
+		Vector2D = FVector2D(-1.f, 0.f);
+		break;
+	case Protocol::MOVE_DIR_RIGHT:
+		Vector2D = FVector2D(1.f, 0.f);
+		break;
+	default:
+		Vector2D = FVector2D(0.f, 0.f);
+	}
+	return Vector2D;
+}
+
+ECreatureState AMiniDSPlayer::BP_GetState()
+{
+	Protocol::CreatureState State = PlayerInfo->state();
+	return static_cast<ECreatureState>(static_cast<int>(State));
+}
+
+void AMiniDSPlayer::BP_ReleaseAttack()
+{
+	SetState(Protocol::CREATURE_STATE_IDLE);
 }

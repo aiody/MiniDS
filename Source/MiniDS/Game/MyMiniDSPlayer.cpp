@@ -77,6 +77,9 @@ void AMyMiniDSPlayer::Tick(float DeltaSeconds)
 
 void AMyMiniDSPlayer::Move(const FInputActionValue& Value)
 {
+	if (GetState() == Protocol::CREATURE_STATE_ATTACK)
+		return;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
