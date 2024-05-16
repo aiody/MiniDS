@@ -119,6 +119,20 @@ void Room::HandleMove(shared_ptr<Protocol::PlayerInfo> info)
 	}
 }
 
+void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
+{
+	{
+		Protocol::S_HIT attackedPkt;
+		{
+			attackedPkt.set_from(from->playerInfo->id());
+			attackedPkt.set_to(toId);
+			attackedPkt.set_damage(10);
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(attackedPkt);
+		Broadcast(sendBuffer);
+	}
+}
+
 bool Room::EnterPlayer(shared_ptr<Player> player)
 {
 	// 중복됨

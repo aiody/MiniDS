@@ -12,10 +12,13 @@
 #include "PaperFlipbookComponent.h"
 #include "PaperZDAnimationComponent.h"
 #include "PaperZDAnimInstance.h"
+#include "AnimSequences/Players/PaperZDAnimPlayer.h"
+#include "DrawDebugHelpers.h"
+#include "MiniDS.h"
 
 AMiniDSPlayer::AMiniDSPlayer()
 {
-	GetCapsuleComponent()->InitCapsuleSize(88.f, 155.f);
+	GetCapsuleComponent()->InitCapsuleSize(75.f, 155.f);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -63,6 +66,8 @@ void AMiniDSPlayer::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f, FColor::Blue);
+	
 	{
 		FVector Location = GetActorLocation();
 		PlayerInfo->set_x(Location.X);
@@ -115,7 +120,15 @@ void AMiniDSPlayer::SetState(Protocol::CreatureState State)
 
 	if (State == Protocol::CREATURE_STATE_ATTACK)
 	{
-		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("Attacked"));
+		//UPaperZDAnimPlayer* Ap = GetAnimationComponent()->GetAnimInstance()->GetPlayer();
+		//UE_LOG(LogTemp, Log, TEXT("Attack Signal %s"), Ap->GetCurrentAnimSequence()->GetSequenceName());
+		UE_LOG(LogTemp, Log, TEXT("Attack Signal %d"), GetPlayerInfo()->id());
+		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("AttackSignal"));
+	}
+
+	if (State == Protocol::CREATURE_STATE_HIT)
+	{
+		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("HitSignal"));
 	}
 }
 
@@ -135,7 +148,7 @@ void AMiniDSPlayer::SetDestInfo(const Protocol::PlayerInfo& Info)
 	SetMoveDir(Info.dir());
 }
 
-FVector2D AMiniDSPlayer::BP_GetMoveDir()
+FVector2D AMiniDSPlayer::GetMoveDirVec2D()
 {
 	Protocol::MoveDir MoveDir = PlayerInfo->dir();
 	FVector2D Vector2D;
@@ -162,13 +175,56 @@ FVector2D AMiniDSPlayer::BP_GetMoveDir()
 	return Vector2D;
 }
 
-ECreatureState AMiniDSPlayer::BP_GetState()
+ECreatureState AMiniDSPlayer::GetStateWrapped()
 {
 	Protocol::CreatureState State = PlayerInfo->state();
 	return static_cast<ECreatureState>(static_cast<int>(State));
 }
 
-void AMiniDSPlayer::BP_ReleaseAttack()
+void AMiniDSPlayer::BackToIdle()
 {
 	SetState(Protocol::CREATURE_STATE_IDLE);
+}
+
+void AMiniDSPlayer::AnimNotify_Attack()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(EName::None, false, this);
+
+	float AttackRange = 200.f;
+	float AttackRadius = 10.f;
+	FVector MoveDir = FVector(GetMoveDirVec2D().Y, GetMoveDirVec2D().X, 0);
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		GetActorLocation(),
+		GetActorLocation() + MoveDir * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel1,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	{
+		// For Debug
+		FVector Vec = MoveDir * AttackRange;
+		FVector Center = GetActorLocation() + Vec * 0.5f;
+		float HalfHeight = AttackRange * 0.5f + AttackRadius;
+		FQuat Rotation = FRotationMatrix::MakeFromZ(Vec).ToQuat();
+		FColor DrawColor = bResult ? FColor::Green : FColor::Red;
+		DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
+	}
+
+	if (IsMyPlayer() && bResult && HitResult.GetActor()->IsValidLowLevel())
+	{
+		AActor* Actor = HitResult.GetActor();
+		AMiniDSPlayer* OtherPlayer = Cast<AMiniDSPlayer>(Actor);
+		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s(%d)"), *GetName(), GetPlayerInfo()->id());
+		UE_LOG(LogTemp, Log, TEXT("Attacked Actor : %s(%d)"), *OtherPlayer->GetName(), OtherPlayer->GetPlayerInfo()->id());
+
+		Protocol::C_ATTACK AttackPkt;
+		{
+			AttackPkt.set_id(OtherPlayer->GetPlayerInfo()->id());
+		}
+		SEND_PACKET(AttackPkt);
+	}
 }

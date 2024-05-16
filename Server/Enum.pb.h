@@ -51,13 +51,14 @@ enum CreatureState : int {
   CREATURE_STATE_IDLE = 0,
   CREATURE_STATE_MOVING = 1,
   CREATURE_STATE_ATTACK = 2,
-  CREATURE_STATE_DEAD = 3,
+  CREATURE_STATE_HIT = 3,
+  CREATURE_STATE_DEATH = 4,
   CreatureState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   CreatureState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool CreatureState_IsValid(int value);
 constexpr CreatureState CreatureState_MIN = CREATURE_STATE_IDLE;
-constexpr CreatureState CreatureState_MAX = CREATURE_STATE_DEAD;
+constexpr CreatureState CreatureState_MAX = CREATURE_STATE_DEATH;
 constexpr int CreatureState_ARRAYSIZE = CreatureState_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CreatureState_descriptor();

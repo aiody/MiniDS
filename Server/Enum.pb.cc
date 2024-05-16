@@ -29,17 +29,18 @@ static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nEnum.proto\022\010Protocol*w\n\rCreatureState\022"
-  "\027\n\023CREATURE_STATE_IDLE\020\000\022\031\n\025CREATURE_STA"
-  "TE_MOVING\020\001\022\031\n\025CREATURE_STATE_ATTACK\020\002\022\027"
-  "\n\023CREATURE_STATE_DEAD\020\003*g\n\007MoveDir\022\021\n\rMO"
-  "VE_DIR_NONE\020\000\022\017\n\013MOVE_DIR_UP\020\001\022\021\n\rMOVE_D"
-  "IR_DOWN\020\002\022\021\n\rMOVE_DIR_LEFT\020\003\022\022\n\016MOVE_DIR"
-  "_RIGHT\020\004b\006proto3"
+  "\n\nEnum.proto\022\010Protocol*\220\001\n\rCreatureState"
+  "\022\027\n\023CREATURE_STATE_IDLE\020\000\022\031\n\025CREATURE_ST"
+  "ATE_MOVING\020\001\022\031\n\025CREATURE_STATE_ATTACK\020\002\022"
+  "\026\n\022CREATURE_STATE_HIT\020\003\022\030\n\024CREATURE_STAT"
+  "E_DEATH\020\004*g\n\007MoveDir\022\021\n\rMOVE_DIR_NONE\020\000\022"
+  "\017\n\013MOVE_DIR_UP\020\001\022\021\n\rMOVE_DIR_DOWN\020\002\022\021\n\rM"
+  "OVE_DIR_LEFT\020\003\022\022\n\016MOVE_DIR_RIGHT\020\004b\006prot"
+  "o3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 256, descriptor_table_protodef_Enum_2eproto,
+    false, false, 282, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -63,6 +64,7 @@ bool CreatureState_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;

@@ -167,3 +167,23 @@ void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
 	const Protocol::PlayerInfo& Info = MovePkt.info();
 	Player->SetDestInfo(Info);
 }
+
+void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	auto* World = GetWorld();
+	if (World == nullptr)
+		return;
+
+	const uint64 Id = HitPkt.to();
+	const float damage = HitPkt.damage();
+
+	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	if (FoundActor == nullptr)
+		return;
+
+	AMiniDSPlayer* Player = (*FoundActor);
+	Player->SetState(Protocol::CREATURE_STATE_HIT);
+}

@@ -23,7 +23,8 @@ enum class ECreatureState : uint8
 	E_CREATURE_STATE_IDLE = 0,
 	E_CREATURE_STATE_MOVING = 1,
 	E_CREATURE_STATE_ATTACK = 2,
-	E_CREATURE_STATE_DEAD = 3,
+	E_CREATURE_STATE_HIT = 3,
+	E_CREATURE_STATE_DEATH = 4,
 };
 
 /**
@@ -57,11 +58,13 @@ public:
 	void SetDestInfo(const Protocol::PlayerInfo& Info);
 
 	UFUNCTION(BlueprintCallable)
-	FVector2D BP_GetMoveDir();
+	FVector2D GetMoveDirVec2D();
 	UFUNCTION(BlueprintCallable)
-	ECreatureState BP_GetState();
+	ECreatureState GetStateWrapped();
 	UFUNCTION(BlueprintCallable)
-	void BP_ReleaseAttack();
+	void AnimNotify_Attack();
+	UFUNCTION(BlueprintCallable)
+	void BackToIdle();
 
 public:
 	UPROPERTY(EditAnywhere, Category = Animation)

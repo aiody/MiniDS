@@ -53,3 +53,20 @@ message S_MOVE
 {
 	PlayerInfo info = 1;
 }
+
+message C_ATTACK
+{
+	uint64 id = 1;
+}
+
+message S_HIT
+{
+	uint64 from = 1;
+	uint64 to = 2;
+	float damage = 3;
+}
+
+message S_DEATH
+{
+	uint64 id = 1;
+}

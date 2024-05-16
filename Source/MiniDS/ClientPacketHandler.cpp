@@ -72,3 +72,18 @@ bool Handler_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 
 	return true;
 }
+
+bool Handler_S_HIT(PacketSessionRef& session, Protocol::S_HIT& pkt)
+{
+	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
+	{
+		GameInstance->HandleHit(pkt);
+	}
+
+	return true;
+}
+
+bool Handler_S_DEATH(PacketSessionRef& session, Protocol::S_DEATH& pkt)
+{
+	return false;
+}

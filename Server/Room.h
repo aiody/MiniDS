@@ -12,6 +12,7 @@ public:
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 
 	void HandleMove(shared_ptr<Protocol::PlayerInfo> info);
+	void HandleAttack(shared_ptr<Player> from, uint64 toId);
 
 private:
 	bool EnterPlayer(shared_ptr<Player> player);

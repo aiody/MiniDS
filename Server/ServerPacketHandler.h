@@ -16,6 +16,9 @@ enum : uint16
 	PKT_S_DESPAWN = 1008,
 	PKT_C_MOVE = 1009,
 	PKT_S_MOVE = 1010,
+	PKT_C_ATTACK = 1011,
+	PKT_S_HIT = 1012,
+	PKT_S_DEATH = 1013,
 };
 
 bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len);
@@ -23,6 +26,7 @@ bool Handler_C_CHAT(shared_ptr<PacketSession>& session, Protocol::C_CHAT& pkt);
 bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_GAME& pkt);
 bool Handler_C_LEAVE_GAME(shared_ptr<PacketSession>& session, Protocol::C_LEAVE_GAME& pkt);
 bool Handler_C_MOVE(shared_ptr<PacketSession>& session, Protocol::C_MOVE& pkt);
+bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pkt);
 
 class ServerPacketHandler
 {
@@ -36,6 +40,7 @@ public:
 		GPacketHandler[PKT_C_ENTER_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handler_C_ENTER_GAME, session, buffer, len); };
 		GPacketHandler[PKT_C_LEAVE_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LEAVE_GAME>(Handler_C_LEAVE_GAME, session, buffer, len); };
 		GPacketHandler[PKT_C_MOVE] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MOVE>(Handler_C_MOVE, session, buffer, len); };
+		GPacketHandler[PKT_C_ATTACK] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ATTACK>(Handler_C_ATTACK, session, buffer, len); };
 	}
 
 	static bool HandlePacket(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len)
@@ -50,6 +55,8 @@ public:
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_SPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_SPAWN); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_DESPAWN& pkt) { return MakeSendBuffer(pkt, PKT_S_DESPAWN); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_S_MOVE); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_HIT& pkt) { return MakeSendBuffer(pkt, PKT_S_HIT); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_DEATH& pkt) { return MakeSendBuffer(pkt, PKT_S_DEATH); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>
