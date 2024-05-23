@@ -73,8 +73,7 @@ bool Handler_C_MOVE(shared_ptr<PacketSession>& session, Protocol::C_MOVE& pkt)
 	if (room == nullptr)
 		return false;
 	
-	shared_ptr<Protocol::PlayerInfo> info = make_shared<Protocol::PlayerInfo>(pkt.info());
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleMove, info));
+	gJobQueue->Push(make_shared<Job>(room, &Room::HandleMove, pkt));
 
 	return true;
 }
@@ -93,5 +92,5 @@ bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pk
 
 	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, player, pkt.id()));
 
-	return false;
+	return true;
 }

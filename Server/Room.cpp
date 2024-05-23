@@ -19,6 +19,8 @@ bool Room::HandleEnterPlayer(shared_ptr<Player> player)
 	player->playerInfo->set_x(Utils::GetRandom(0.f, 500.f));
 	player->playerInfo->set_y(Utils::GetRandom(0.f, 500.f));
 	player->playerInfo->set_z(118.f);
+	player->statInfo->set_hp(175.f);
+	player->statInfo->set_damage(25.f);
 
 	// 해당 플레이어에게 게임에 접속함을 알림
 	{
@@ -99,20 +101,20 @@ bool Room::HandleLeavePlayer(shared_ptr<Player> player)
 	return true;
 }
 
-void Room::HandleMove(shared_ptr<Protocol::PlayerInfo> info)
+void Room::HandleMove(Protocol::C_MOVE pkt)
 {
-	const uint64 id = info->id();
+	const uint64 id = pkt.info().id();
 	if (_players.find(id) == _players.end())
 		return;
 
-	shared_ptr<Player>& player = _players[id];
-	player->playerInfo->CopyFrom(*info);
+	shared_ptr<Player> player = _players[id];
+	player->playerInfo->MergeFrom(pkt.info());
 
 	{
 		Protocol::S_MOVE movePkt;
 		{
 			Protocol::PlayerInfo* moveInfo = movePkt.mutable_info();
-			moveInfo->CopyFrom(*info);
+			moveInfo->CopyFrom(pkt.info());
 		}
 		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
 		Broadcast(sendBuffer);
@@ -121,14 +123,38 @@ void Room::HandleMove(shared_ptr<Protocol::PlayerInfo> info)
 
 void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
 {
+	if (_players.find(from->playerInfo->id()) == _players.end())
+		return;
+	if (_players.find(toId) == _players.end())
+		return;
+
+	// hp 감소
+	shared_ptr<Player> hitPlayer = _players[toId];
+	float hpOfHitPlayer = hitPlayer->statInfo->hp();
+	float damage = from->statInfo->damage();
+	float remainHp = ::max(hpOfHitPlayer - damage, 0.0f);
+	hitPlayer->statInfo->set_hp(remainHp);
+	
+	if (remainHp <= 0)
 	{
-		Protocol::S_HIT attackedPkt;
+		Protocol::S_DEATH deathPkt;
 		{
-			attackedPkt.set_from(from->playerInfo->id());
-			attackedPkt.set_to(toId);
-			attackedPkt.set_damage(10);
+			deathPkt.set_from(from->playerInfo->id());
+			deathPkt.set_to(toId);
+			deathPkt.set_damage(damage);
 		}
-		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(attackedPkt);
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(deathPkt);
+		Broadcast(sendBuffer);
+	}
+	else
+	{
+		Protocol::S_HIT hitPkt;
+		{
+			hitPkt.set_from(from->playerInfo->id());
+			hitPkt.set_to(toId);
+			hitPkt.set_damage(damage);
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(hitPkt);
 		Broadcast(sendBuffer);
 	}
 }

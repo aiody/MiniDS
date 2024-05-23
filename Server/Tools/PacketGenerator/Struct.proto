@@ -11,4 +11,11 @@ message PlayerInfo
 	float z = 4;
 	MoveDir dir = 5;
 	CreatureState state = 6;
+	StatInfo stat = 7;
+}
+
+message StatInfo
+{
+	float hp = 1;
+	float damage = 2;
 }

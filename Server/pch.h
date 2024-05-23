@@ -16,6 +16,7 @@
 #include <iostream>
 using namespace std;
 
+#define NOMINMAX
 #include <WinSock2.h>
 #include <MSWSock.h>
 #include <WS2tcpip.h>

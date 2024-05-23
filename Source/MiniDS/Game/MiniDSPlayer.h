@@ -48,15 +48,15 @@ public:
 
 	Protocol::MoveDir GetMoveDir() { return PlayerInfo->dir(); }
 	void SetMoveDir(Protocol::MoveDir Dir);
-
 	Protocol::CreatureState GetState() { return PlayerInfo->state(); }
 	void SetState(Protocol::CreatureState State);
-	
 	void SetPlayerInfo(const Protocol::PlayerInfo& Info);
 	Protocol::PlayerInfo* GetPlayerInfo() { return PlayerInfo; }
-	
 	void SetDestInfo(const Protocol::PlayerInfo& Info);
 
+	void Hit(float Damage);
+
+	// animation
 	UFUNCTION(BlueprintCallable)
 	FVector2D GetMoveDirVec2D();
 	UFUNCTION(BlueprintCallable)
@@ -65,6 +65,10 @@ public:
 	void AnimNotify_Attack();
 	UFUNCTION(BlueprintCallable)
 	void BackToIdle();
+
+	// stat
+	UFUNCTION(BlueprintCallable)
+	float GetHealth() { return StatInfo->hp(); };
 
 public:
 	UPROPERTY(EditAnywhere, Category = Animation)
@@ -85,8 +89,11 @@ public:
 	UPaperFlipbook* FlipbookAttackSide;
 	UPROPERTY(EditAnywhere, Category = Animation)
 	UPaperFlipbook* FlipbookAttackUp;
+	UPROPERTY(EditAnywhere, Category = Battle)
+	TSubclassOf<AActor> FloatingDamageClass;
 
 protected:
 	Protocol::PlayerInfo* PlayerInfo; // 현재 위치
 	Protocol::PlayerInfo* DestInfo; // 목적지
+	Protocol::StatInfo* StatInfo;
 };

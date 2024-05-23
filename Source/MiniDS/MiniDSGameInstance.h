@@ -39,6 +39,7 @@ public:
 	void HandleLeaveGame();
 	void HandleMove(const Protocol::S_MOVE& MovePkt);
 	void HandleHit(const Protocol::S_HIT& HitPkt);
+	void HandleDeath(const Protocol::S_DEATH& DeathPkt);
 
 public:
 	class FSocket* Socket;

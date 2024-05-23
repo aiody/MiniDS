@@ -85,5 +85,10 @@ bool Handler_S_HIT(PacketSessionRef& session, Protocol::S_HIT& pkt)
 
 bool Handler_S_DEATH(PacketSessionRef& session, Protocol::S_DEATH& pkt)
 {
-	return false;
+	if (auto* GameInstance = Cast<UMiniDSGameInstance>(GWorld->GetGameInstance()))
+	{
+		GameInstance->HandleDeath(pkt);
+	}
+
+	return true;
 }

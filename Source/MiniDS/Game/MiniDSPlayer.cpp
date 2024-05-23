@@ -15,6 +15,7 @@
 #include "AnimSequences/Players/PaperZDAnimPlayer.h"
 #include "DrawDebugHelpers.h"
 #include "MiniDS.h"
+#include "FloatingDamage.h"
 
 AMiniDSPlayer::AMiniDSPlayer()
 {
@@ -36,6 +37,8 @@ AMiniDSPlayer::AMiniDSPlayer()
 
 	PlayerInfo = new Protocol::PlayerInfo();
 	DestInfo = new Protocol::PlayerInfo();
+	StatInfo = new Protocol::StatInfo();
+	PlayerInfo->set_allocated_stat(StatInfo);
 }
 
 AMiniDSPlayer::~AMiniDSPlayer()
@@ -66,8 +69,6 @@ void AMiniDSPlayer::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f, FColor::Blue);
-	
 	{
 		FVector Location = GetActorLocation();
 		PlayerInfo->set_x(Location.X);
@@ -113,16 +114,13 @@ void AMiniDSPlayer::SetMoveDir(Protocol::MoveDir Dir)
 
 void AMiniDSPlayer::SetState(Protocol::CreatureState State)
 {
-	if (PlayerInfo->state() == State)
+	if (GetState() == State)
 		return;
 
 	PlayerInfo->set_state(State);
 
 	if (State == Protocol::CREATURE_STATE_ATTACK)
 	{
-		//UPaperZDAnimPlayer* Ap = GetAnimationComponent()->GetAnimInstance()->GetPlayer();
-		//UE_LOG(LogTemp, Log, TEXT("Attack Signal %s"), Ap->GetCurrentAnimSequence()->GetSequenceName());
-		UE_LOG(LogTemp, Log, TEXT("Attack Signal %d"), GetPlayerInfo()->id());
 		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("AttackSignal"));
 	}
 
@@ -130,11 +128,16 @@ void AMiniDSPlayer::SetState(Protocol::CreatureState State)
 	{
 		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("HitSignal"));
 	}
+
+	if (State == Protocol::CREATURE_STATE_DEATH)
+	{
+		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("DeathSignal"));
+	}
 }
 
 void AMiniDSPlayer::SetPlayerInfo(const Protocol::PlayerInfo& Info)
 {
-	PlayerInfo->CopyFrom(Info);
+	PlayerInfo->MergeFrom(Info);
 
 	FVector Location(Info.x(), Info.y(), Info.z());
 	SetActorLocation(Location);
@@ -142,10 +145,27 @@ void AMiniDSPlayer::SetPlayerInfo(const Protocol::PlayerInfo& Info)
 
 void AMiniDSPlayer::SetDestInfo(const Protocol::PlayerInfo& Info)
 {
-	DestInfo->CopyFrom(Info);
+	DestInfo->MergeFrom(Info);
 
 	SetState(Info.state());
 	SetMoveDir(Info.dir());
+}
+
+void AMiniDSPlayer::Hit(float Damage)
+{
+	float CurHp = StatInfo->hp();
+	StatInfo->set_hp(CurHp - Damage);
+	UE_LOG(LogTemp, Log, TEXT("Remain Hp : %f"), StatInfo->hp());
+
+	FVector SpawnLocation(PlayerInfo->x(), PlayerInfo->y(), PlayerInfo->z() + 100.f);
+	FTransform SpawnTransform(FRotator::ZeroRotator, SpawnLocation);
+	AFloatingDamage* FloatingDamage = GetWorld()->SpawnActorDeferred<AFloatingDamage>(FloatingDamageClass, SpawnTransform);
+	if (FloatingDamage != nullptr)
+	{
+		FloatingDamage->Damage = Damage;
+		FloatingDamage->FinishSpawning(SpawnTransform);
+		UE_LOG(LogTemp, Log, TEXT("Spawn Floating Text!"));
+	}
 }
 
 FVector2D AMiniDSPlayer::GetMoveDirVec2D()
@@ -177,7 +197,7 @@ FVector2D AMiniDSPlayer::GetMoveDirVec2D()
 
 ECreatureState AMiniDSPlayer::GetStateWrapped()
 {
-	Protocol::CreatureState State = PlayerInfo->state();
+	Protocol::CreatureState State = GetState();
 	return static_cast<ECreatureState>(static_cast<int>(State));
 }
 
@@ -218,13 +238,19 @@ void AMiniDSPlayer::AnimNotify_Attack()
 	{
 		AActor* Actor = HitResult.GetActor();
 		AMiniDSPlayer* OtherPlayer = Cast<AMiniDSPlayer>(Actor);
+
+		if (OtherPlayer->GetState() == Protocol::CREATURE_STATE_DEATH)
+			return;
+		
 		UE_LOG(LogTemp, Log, TEXT("Hit Actor : %s(%d)"), *GetName(), GetPlayerInfo()->id());
 		UE_LOG(LogTemp, Log, TEXT("Attacked Actor : %s(%d)"), *OtherPlayer->GetName(), OtherPlayer->GetPlayerInfo()->id());
 
-		Protocol::C_ATTACK AttackPkt;
 		{
-			AttackPkt.set_id(OtherPlayer->GetPlayerInfo()->id());
+			Protocol::C_ATTACK AttackPkt;
+			{
+				AttackPkt.set_id(OtherPlayer->GetPlayerInfo()->id());
+			}
+			SEND_PACKET(AttackPkt);
 		}
-		SEND_PACKET(AttackPkt);
 	}
 }

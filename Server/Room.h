@@ -11,7 +11,7 @@ public:
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 
-	void HandleMove(shared_ptr<Protocol::PlayerInfo> info);
+	void HandleMove(Protocol::C_MOVE pkt);
 	void HandleAttack(shared_ptr<Player> from, uint64 toId);
 
 private:

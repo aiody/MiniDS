@@ -178,7 +178,7 @@ void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)
 		return;
 
 	const uint64 Id = HitPkt.to();
-	const float damage = HitPkt.damage();
+	const float Damage = HitPkt.damage();
 
 	AMiniDSPlayer** FoundActor = Players.Find(Id);
 	if (FoundActor == nullptr)
@@ -186,4 +186,26 @@ void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)
 
 	AMiniDSPlayer* Player = (*FoundActor);
 	Player->SetState(Protocol::CREATURE_STATE_HIT);
+	Player->Hit(Damage);
+}
+
+void UMiniDSGameInstance::HandleDeath(const Protocol::S_DEATH& DeathPkt)
+{
+	if (Socket == nullptr || GameServerSession == nullptr)
+		return;
+
+	auto* World = GetWorld();
+	if (World == nullptr)
+		return;
+
+	const uint64 Id = DeathPkt.to();
+	const float Damage = DeathPkt.damage();
+
+	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	if (FoundActor == nullptr)
+		return;
+
+	AMiniDSPlayer* Player = (*FoundActor);
+	Player->SetState(Protocol::CREATURE_STATE_DEATH);
+	Player->Hit(Damage);
 }

@@ -12,4 +12,5 @@ public:
 
 public:
 	Protocol::PlayerInfo* playerInfo;
+	Protocol::StatInfo* statInfo;
 };

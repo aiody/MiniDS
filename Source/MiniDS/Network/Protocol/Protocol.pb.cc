@@ -176,7 +176,9 @@ struct S_HITDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_HITDefaultTypeInternal _S_HIT_default_instance_;
 PROTOBUF_CONSTEXPR S_DEATH::S_DEATH(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.id_)*/uint64_t{0u}
+    /*decltype(_impl_.from_)*/uint64_t{0u}
+  , /*decltype(_impl_.to_)*/uint64_t{0u}
+  , /*decltype(_impl_.damage_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct S_DEATHDefaultTypeInternal {
   PROTOBUF_CONSTEXPR S_DEATHDefaultTypeInternal()
@@ -282,7 +284,9 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_DEATH, _impl_.id_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_DEATH, _impl_.from_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_DEATH, _impl_.to_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_DEATH, _impl_.damage_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::C_CHAT)},
@@ -328,7 +332,8 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "fo\",\n\006S_MOVE\022\"\n\004info\030\001 \001(\0132\024.Protocol.Pl"
   "ayerInfo\"\026\n\010C_ATTACK\022\n\n\002id\030\001 \001(\004\"1\n\005S_HI"
   "T\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\016\n\006damage\030\003 "
-  "\001(\002\"\025\n\007S_DEATH\022\n\n\002id\030\001 \001(\004b\006proto3"
+  "\001(\002\"3\n\007S_DEATH\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004"
+  "\022\016\n\006damage\030\003 \001(\002b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -336,7 +341,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 474, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 504, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 13,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -2296,11 +2301,15 @@ S_DEATH::S_DEATH(const S_DEATH& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   S_DEATH* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.id_){}
+      decltype(_impl_.from_){}
+    , decltype(_impl_.to_){}
+    , decltype(_impl_.damage_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.id_ = from._impl_.id_;
+  ::memcpy(&_impl_.from_, &from._impl_.from_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.damage_) -
+    reinterpret_cast<char*>(&_impl_.from_)) + sizeof(_impl_.damage_));
   // @@protoc_insertion_point(copy_constructor:Protocol.S_DEATH)
 }
 
@@ -2309,7 +2318,9 @@ inline void S_DEATH::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.id_){uint64_t{0u}}
+      decltype(_impl_.from_){uint64_t{0u}}
+    , decltype(_impl_.to_){uint64_t{0u}}
+    , decltype(_impl_.damage_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -2337,7 +2348,9 @@ void S_DEATH::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.id_ = uint64_t{0u};
+  ::memset(&_impl_.from_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.damage_) -
+      reinterpret_cast<char*>(&_impl_.from_)) + sizeof(_impl_.damage_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2347,11 +2360,27 @@ const char* S_DEATH::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // uint64 id = 1;
+      // uint64 from = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.from_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 to = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.to_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // float damage = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
+          _impl_.damage_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
         } else
           goto handle_unusual;
         continue;
@@ -2384,10 +2413,26 @@ uint8_t* S_DEATH::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint64 id = 1;
-  if (this->_internal_id() != 0) {
+  // uint64 from = 1;
+  if (this->_internal_from() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_id(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_from(), target);
+  }
+
+  // uint64 to = 2;
+  if (this->_internal_to() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_to(), target);
+  }
+
+  // float damage = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_damage = this->_internal_damage();
+  uint32_t raw_damage;
+  memcpy(&raw_damage, &tmp_damage, sizeof(tmp_damage));
+  if (raw_damage != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_damage(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2406,9 +2451,23 @@ size_t S_DEATH::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // uint64 id = 1;
-  if (this->_internal_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_id());
+  // uint64 from = 1;
+  if (this->_internal_from() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_from());
+  }
+
+  // uint64 to = 2;
+  if (this->_internal_to() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_to());
+  }
+
+  // float damage = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_damage = this->_internal_damage();
+  uint32_t raw_damage;
+  memcpy(&raw_damage, &tmp_damage, sizeof(tmp_damage));
+  if (raw_damage != 0) {
+    total_size += 1 + 4;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -2429,8 +2488,18 @@ void S_DEATH::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_id() != 0) {
-    _this->_internal_set_id(from._internal_id());
+  if (from._internal_from() != 0) {
+    _this->_internal_set_from(from._internal_from());
+  }
+  if (from._internal_to() != 0) {
+    _this->_internal_set_to(from._internal_to());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_damage = from._internal_damage();
+  uint32_t raw_damage;
+  memcpy(&raw_damage, &tmp_damage, sizeof(tmp_damage));
+  if (raw_damage != 0) {
+    _this->_internal_set_damage(from._internal_damage());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2449,7 +2518,12 @@ bool S_DEATH::IsInitialized() const {
 void S_DEATH::InternalSwap(S_DEATH* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.id_, other->_impl_.id_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(S_DEATH, _impl_.damage_)
+      + sizeof(S_DEATH::_impl_.damage_)
+      - PROTOBUF_FIELD_OFFSET(S_DEATH, _impl_.from_)>(
+          reinterpret_cast<char*>(&_impl_.from_),
+          reinterpret_cast<char*>(&other->_impl_.from_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_DEATH::GetMetadata() const {

@@ -1996,15 +1996,35 @@ class S_DEATH final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kIdFieldNumber = 1,
+    kFromFieldNumber = 1,
+    kToFieldNumber = 2,
+    kDamageFieldNumber = 3,
   };
-  // uint64 id = 1;
-  void clear_id();
-  uint64_t id() const;
-  void set_id(uint64_t value);
+  // uint64 from = 1;
+  void clear_from();
+  uint64_t from() const;
+  void set_from(uint64_t value);
   private:
-  uint64_t _internal_id() const;
-  void _internal_set_id(uint64_t value);
+  uint64_t _internal_from() const;
+  void _internal_set_from(uint64_t value);
+  public:
+
+  // uint64 to = 2;
+  void clear_to();
+  uint64_t to() const;
+  void set_to(uint64_t value);
+  private:
+  uint64_t _internal_to() const;
+  void _internal_set_to(uint64_t value);
+  public:
+
+  // float damage = 3;
+  void clear_damage();
+  float damage() const;
+  void set_damage(float value);
+  private:
+  float _internal_damage() const;
+  void _internal_set_damage(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.S_DEATH)
@@ -2015,7 +2035,9 @@ class S_DEATH final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    uint64_t id_;
+    uint64_t from_;
+    uint64_t to_;
+    float damage_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2599,24 +2621,64 @@ inline void S_HIT::set_damage(float value) {
 
 // S_DEATH
 
-// uint64 id = 1;
-inline void S_DEATH::clear_id() {
-  _impl_.id_ = uint64_t{0u};
+// uint64 from = 1;
+inline void S_DEATH::clear_from() {
+  _impl_.from_ = uint64_t{0u};
 }
-inline uint64_t S_DEATH::_internal_id() const {
-  return _impl_.id_;
+inline uint64_t S_DEATH::_internal_from() const {
+  return _impl_.from_;
 }
-inline uint64_t S_DEATH::id() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_DEATH.id)
-  return _internal_id();
+inline uint64_t S_DEATH::from() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_DEATH.from)
+  return _internal_from();
 }
-inline void S_DEATH::_internal_set_id(uint64_t value) {
+inline void S_DEATH::_internal_set_from(uint64_t value) {
   
-  _impl_.id_ = value;
+  _impl_.from_ = value;
 }
-inline void S_DEATH::set_id(uint64_t value) {
-  _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:Protocol.S_DEATH.id)
+inline void S_DEATH::set_from(uint64_t value) {
+  _internal_set_from(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_DEATH.from)
+}
+
+// uint64 to = 2;
+inline void S_DEATH::clear_to() {
+  _impl_.to_ = uint64_t{0u};
+}
+inline uint64_t S_DEATH::_internal_to() const {
+  return _impl_.to_;
+}
+inline uint64_t S_DEATH::to() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_DEATH.to)
+  return _internal_to();
+}
+inline void S_DEATH::_internal_set_to(uint64_t value) {
+  
+  _impl_.to_ = value;
+}
+inline void S_DEATH::set_to(uint64_t value) {
+  _internal_set_to(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_DEATH.to)
+}
+
+// float damage = 3;
+inline void S_DEATH::clear_damage() {
+  _impl_.damage_ = 0;
+}
+inline float S_DEATH::_internal_damage() const {
+  return _impl_.damage_;
+}
+inline float S_DEATH::damage() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_DEATH.damage)
+  return _internal_damage();
+}
+inline void S_DEATH::_internal_set_damage(float value) {
+  
+  _impl_.damage_ = value;
+}
+inline void S_DEATH::set_damage(float value) {
+  _internal_set_damage(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_DEATH.damage)
 }
 
 #ifdef __GNUC__

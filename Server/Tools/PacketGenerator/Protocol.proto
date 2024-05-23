@@ -68,5 +68,7 @@ message S_HIT
 
 message S_DEATH
 {
-	uint64 id = 1;
+	uint64 from = 1;
+	uint64 to = 2;
+	float damage = 3;
 }
