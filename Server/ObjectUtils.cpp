@@ -11,7 +11,7 @@ shared_ptr<class Player> ObjectUtils::CreatePlayer(shared_ptr<GameSession> sessi
 
 	shared_ptr<Player> player = make_shared<Player>();
 	{
-		player->playerInfo->set_id(newId);
+		player->objectInfo->set_object_id(newId);
 		player->session = session;
 
 		session->curPlayer.store(player);

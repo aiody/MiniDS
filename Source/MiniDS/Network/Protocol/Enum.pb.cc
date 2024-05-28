@@ -22,25 +22,28 @@ namespace _pbi = _pb::internal;
 
 namespace Protocol {
 }  // namespace Protocol
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[4];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const uint32_t TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nEnum.proto\022\010Protocol*\220\001\n\rCreatureState"
-  "\022\027\n\023CREATURE_STATE_IDLE\020\000\022\031\n\025CREATURE_ST"
-  "ATE_MOVING\020\001\022\031\n\025CREATURE_STATE_ATTACK\020\002\022"
-  "\026\n\022CREATURE_STATE_HIT\020\003\022\030\n\024CREATURE_STAT"
-  "E_DEATH\020\004*g\n\007MoveDir\022\021\n\rMOVE_DIR_NONE\020\000\022"
-  "\017\n\013MOVE_DIR_UP\020\001\022\021\n\rMOVE_DIR_DOWN\020\002\022\021\n\rM"
-  "OVE_DIR_LEFT\020\003\022\022\n\016MOVE_DIR_RIGHT\020\004b\006prot"
-  "o3"
+  "\n\nEnum.proto\022\010Protocol*<\n\nObjectType\022\024\n\020"
+  "OBJECT_TYPE_NONE\020\000\022\030\n\024OBJECT_TYPE_CREATU"
+  "RE\020\001*[\n\014CreatureType\022\026\n\022CREATURE_TYPE_NO"
+  "NE\020\000\022\030\n\024CREATURE_TYPE_PLAYER\020\001\022\031\n\025CREATU"
+  "RE_TYPE_MONSTER\020\002*\220\001\n\rCreatureState\022\027\n\023C"
+  "REATURE_STATE_IDLE\020\000\022\031\n\025CREATURE_STATE_M"
+  "OVING\020\001\022\031\n\025CREATURE_STATE_ATTACK\020\002\022\026\n\022CR"
+  "EATURE_STATE_HIT\020\003\022\030\n\024CREATURE_STATE_DEA"
+  "TH\020\004*g\n\007MoveDir\022\021\n\rMOVE_DIR_NONE\020\000\022\017\n\013MO"
+  "VE_DIR_UP\020\001\022\021\n\rMOVE_DIR_DOWN\020\002\022\021\n\rMOVE_D"
+  "IR_LEFT\020\003\022\022\n\016MOVE_DIR_RIGHT\020\004b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 282, descriptor_table_protodef_Enum_2eproto,
+    false, false, 437, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -54,9 +57,38 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_Enum_2ep
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_Enum_2eproto(&descriptor_table_Enum_2eproto);
 namespace Protocol {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CreatureState_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ObjectType_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
   return file_level_enum_descriptors_Enum_2eproto[0];
+}
+bool ObjectType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CreatureType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[1];
+}
+bool CreatureType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* CreatureState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[2];
 }
 bool CreatureState_IsValid(int value) {
   switch (value) {
@@ -73,7 +105,7 @@ bool CreatureState_IsValid(int value) {
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveDir_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
-  return file_level_enum_descriptors_Enum_2eproto[1];
+  return file_level_enum_descriptors_Enum_2eproto[3];
 }
 bool MoveDir_IsValid(int value) {
   switch (value) {

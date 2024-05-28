@@ -12,25 +12,6 @@ bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len
 	return false;
 }
 
-bool Handler_C_CHAT(shared_ptr<PacketSession>& session, Protocol::C_CHAT& pkt)
-{
-	shared_ptr<Job> job = make_shared<Job>([session, pkt]() {
-		cout << "ChatJob = " << pkt.msg() << endl;
-
-		this_thread::sleep_for(1s);
-
-		Protocol::S_CHAT pkt_chat;
-		pkt_chat.set_msg(pkt.msg());
-		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt_chat);
-		session->Send(sendBuffer);
-		});
-
-	//gJobQueue->Push(job);
-	gJobTimer->Reserve(3000, job);
-
-	return true;
-}
-
 bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_GAME& pkt)
 {
 	shared_ptr<GameSession> gameSession = static_pointer_cast<GameSession>(session);
@@ -90,7 +71,7 @@ bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pk
 	if (room == nullptr)
 		return false;
 
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, player, pkt.id()));
+	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, player, pkt.object_id()));
 
 	return true;
 }

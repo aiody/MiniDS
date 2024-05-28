@@ -1,6 +1,7 @@
 #pragma once
+#include "Creature.h"
 
-class Player
+class Player : public Creature
 {
 public:
 	Player();
@@ -8,9 +9,4 @@ public:
 
 public:
 	weak_ptr<class GameSession> session;
-	atomic<weak_ptr<class Room>> room;
-
-public:
-	Protocol::PlayerInfo* playerInfo;
-	Protocol::StatInfo* statInfo;
 };

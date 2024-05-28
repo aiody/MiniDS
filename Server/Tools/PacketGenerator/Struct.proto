@@ -3,19 +3,32 @@ package Protocol;
 
 import "Enum.proto";
 
-message PlayerInfo
+message PosInfo
 {
-	uint64 id = 1;
-	float x = 2;
-	float y = 3;
-	float z = 4;
-	MoveDir dir = 5;
-	CreatureState state = 6;
-	StatInfo stat = 7;
+	float x = 1;
+	float y = 2;
+	float z = 3;
+	MoveDir dir = 4;
 }
 
 message StatInfo
 {
-	float hp = 1;
-	float damage = 2;
+	float max_hp = 1;
+	float hp = 2;
+	float damage = 3;
+}
+
+message CreatureInfo
+{
+	CreatureType creature_type = 1;
+	StatInfo stat_info = 2;
+	CreatureState state = 3;
+}
+
+message ObjectInfo
+{
+	uint64 object_id = 1;
+	ObjectType object_type = 2;
+	PosInfo pos_info = 3;
+	CreatureInfo creature_info = 4;
 }

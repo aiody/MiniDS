@@ -4,16 +4,6 @@ package Protocol;
 import "Enum.proto";
 import "Struct.proto";
 
-message C_CHAT
-{
-	string msg = 1;
-}
-
-message S_CHAT
-{
-	string msg = 1;
-}
-
 message C_ENTER_GAME
 {
 
@@ -21,7 +11,7 @@ message C_ENTER_GAME
 
 message S_ENTER_GAME
 {
-	PlayerInfo player = 1;
+	ObjectInfo player = 1;
 }
 
 message C_LEAVE_GAME
@@ -36,27 +26,31 @@ message S_LEAVE_GAME
 
 message S_SPAWN
 {
-	repeated PlayerInfo players = 1;
+	repeated ObjectInfo objects = 1;
 }
 
 message S_DESPAWN
 {
-	repeated uint64 ids = 1;
+	repeated uint64 object_ids = 1;
 }
 
 message C_MOVE
 {
-	PlayerInfo info = 1;
+	uint64 object_id = 1;
+	PosInfo pos_info = 2;
+	CreatureState state = 3;
 }
 
 message S_MOVE
 {
-	PlayerInfo info = 1;
+	uint64 object_id = 1;
+	PosInfo pos_info = 2;
+	CreatureState state = 3;
 }
 
 message C_ATTACK
 {
-	uint64 id = 1;
+	uint64 object_id = 1;
 }
 
 message S_HIT

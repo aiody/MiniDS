@@ -68,8 +68,10 @@ void AMyMiniDSPlayer::Tick(float DeltaSeconds)
 
 		Protocol::C_MOVE MovePkt;
 		{
-			Protocol::PlayerInfo* Info = MovePkt.mutable_info();
-			Info->CopyFrom(*PlayerInfo);
+			MovePkt.set_object_id(ObjectInfo->object_id());
+			Protocol::PosInfo* Info = MovePkt.mutable_pos_info();
+			Info->CopyFrom(*PosInfo);
+			MovePkt.set_state(CreatureInfo->state());
 		}
 		SEND_PACKET(MovePkt);
 	}

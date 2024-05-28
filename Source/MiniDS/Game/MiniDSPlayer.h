@@ -46,13 +46,16 @@ protected:
 public:
 	bool IsMyPlayer();
 
-	Protocol::MoveDir GetMoveDir() { return PlayerInfo->dir(); }
-	void SetMoveDir(Protocol::MoveDir Dir);
-	Protocol::CreatureState GetState() { return PlayerInfo->state(); }
-	void SetState(Protocol::CreatureState State);
-	void SetPlayerInfo(const Protocol::PlayerInfo& Info);
-	Protocol::PlayerInfo* GetPlayerInfo() { return PlayerInfo; }
-	void SetDestInfo(const Protocol::PlayerInfo& Info);
+	Protocol::MoveDir		GetMoveDir() { return PosInfo->dir(); }
+	void					SetMoveDir(Protocol::MoveDir Dir);
+	Protocol::CreatureState GetState() { return CreatureInfo->state(); }
+	void					SetState(Protocol::CreatureState State);
+	Protocol::ObjectInfo*	GetObjectInfo() { return ObjectInfo; }
+	void					SetObjectInfo(const Protocol::ObjectInfo& Info);
+	Protocol::CreatureInfo*	GetCreatureInfo() { return CreatureInfo; }
+	Protocol::PosInfo*		GetPosInfo() { return PosInfo; }
+	void					SetPosInfo(const Protocol::PosInfo& Info);
+	void					SetDestInfo(const Protocol::PosInfo& Info);
 
 	void Hit(float Damage);
 
@@ -68,7 +71,7 @@ public:
 
 	// stat
 	UFUNCTION(BlueprintCallable)
-	float GetHealth() { return StatInfo->hp(); };
+	float GetHealth() { return CreatureInfo->stat_info().hp(); };
 
 public:
 	UPROPERTY(EditAnywhere, Category = Animation)
@@ -93,7 +96,9 @@ public:
 	TSubclassOf<AActor> FloatingDamageClass;
 
 protected:
-	Protocol::PlayerInfo* PlayerInfo; // 현재 위치
-	Protocol::PlayerInfo* DestInfo; // 목적지
+	Protocol::ObjectInfo* ObjectInfo;
+	Protocol::CreatureInfo* CreatureInfo;
 	Protocol::StatInfo* StatInfo;
+	Protocol::PosInfo* PosInfo; // 현재 위치
+	Protocol::PosInfo* DestInfo; // 목적지
 };

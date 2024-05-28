@@ -66,7 +66,7 @@ void UMiniDSGameInstance::SendPacket(SendBufferRef SendBuffer)
 	GameServerSession->SendPacket(SendBuffer);
 }
 
-void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bool IsMine)
+void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bool IsMine)
 {
 	if (Socket == nullptr || GameServerSession == nullptr)
 		return;
@@ -76,11 +76,12 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bo
 		return;
 
 	// 중복 처리 체크
-	const uint64 Id = PlayerInfo.id();
+	const uint64 Id = ObjectInfo.object_id();
 	if (Players.Find(Id) != nullptr)
 		return;
 
-	FVector SpawnLocation(PlayerInfo.x(), PlayerInfo.y(), PlayerInfo.z());
+	Protocol::PosInfo PosInfo = ObjectInfo.pos_info();
+	FVector SpawnLocation(PosInfo.x(), PosInfo.y(), PosInfo.z());
 
 	if (IsMine)
 	{
@@ -90,14 +91,15 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::PlayerInfo& PlayerInfo, bo
 			return;
 
 		MyPlayer = Player;
-		Player->SetPlayerInfo(PlayerInfo);
-		Players.Add(PlayerInfo.id(), Player);
+		Player->SetObjectInfo(ObjectInfo);
+		Player->SetPosInfo(PosInfo);
+		Players.Add(Id, Player);
 	}
 	else
 	{
 		AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
-		Player->SetPlayerInfo(PlayerInfo);
-		Players.Add(PlayerInfo.id(), Player);
+		Player->SetObjectInfo(ObjectInfo);
+		Players.Add(Id, Player);
 	}
 }
 
@@ -108,7 +110,7 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt
 
 void UMiniDSGameInstance::HandleSpawn(const Protocol::S_SPAWN& SpawnPkt)
 {
-	for (auto& Player : SpawnPkt.players())
+	for (auto& Player : SpawnPkt.objects())
 		HandleSpawn(Player, false);
 }
 
@@ -130,7 +132,7 @@ void UMiniDSGameInstance::HandleDespawn(uint64 Id)
 
 void UMiniDSGameInstance::HandleDespawn(const Protocol::S_DESPAWN& DespawnPkt)
 {
-	for (auto& Id : DespawnPkt.ids())
+	for (auto& Id : DespawnPkt.object_ids())
 		HandleDespawn(Id);
 }
 
@@ -154,7 +156,7 @@ void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
 	if (World == nullptr)
 		return;
 
-	const uint64 Id = MovePkt.info().id();
+	const uint64 Id = MovePkt.object_id();
 
 	AMiniDSPlayer** FoundActor = Players.Find(Id);
 	if (FoundActor == nullptr)
@@ -164,8 +166,9 @@ void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
 	if (Player->IsMyPlayer())
 		return;
 	
-	const Protocol::PlayerInfo& Info = MovePkt.info();
-	Player->SetDestInfo(Info);
+	const Protocol::PosInfo& PosInfo = MovePkt.pos_info();
+	Player->SetDestInfo(PosInfo);
+	Player->SetState(MovePkt.state());
 }
 
 void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)

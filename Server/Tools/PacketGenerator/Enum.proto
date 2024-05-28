@@ -1,6 +1,19 @@
 syntax = "proto3";
 package Protocol;
 
+enum ObjectType
+{
+	OBJECT_TYPE_NONE = 0;
+	OBJECT_TYPE_CREATURE = 1;
+}
+
+enum CreatureType
+{
+	CREATURE_TYPE_NONE = 0;
+	CREATURE_TYPE_PLAYER = 1;
+	CREATURE_TYPE_MONSTER = 2;
+}
+
 enum CreatureState
 {
 	CREATURE_STATE_IDLE = 0;

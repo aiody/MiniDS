@@ -3,12 +3,10 @@
 
 Player::Player()
 {
-	playerInfo = new Protocol::PlayerInfo();
-	statInfo = new Protocol::StatInfo();
-	playerInfo->set_allocated_stat(statInfo);
+	creatureInfo->set_creature_type(Protocol::CREATURE_TYPE_PLAYER);
+	_isPlayer = true;
 }
 
 Player::~Player()
 {
-	delete playerInfo;
 }
