@@ -9,6 +9,7 @@
 #include "MiniDSGameInstance.generated.h"
 
 class AMiniDSPlayer;
+class APig;
 
 /**
  * 
@@ -51,7 +52,10 @@ public:
 public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AMiniDSPlayer> OtherPlayerClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APig> PigClass;
 
 	AMiniDSPlayer* MyPlayer;
 	TMap<uint64, AMiniDSPlayer*> Players;
+	TMap<uint64, APig*> Monsters;
 };

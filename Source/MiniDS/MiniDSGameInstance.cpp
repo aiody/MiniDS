@@ -6,6 +6,7 @@
 #include "PacketSession.h"
 #include "Kismet/GameplayStatics.h"
 #include "MiniDSPlayer.h"
+#include "Pig.h"
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
@@ -97,9 +98,20 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bo
 	}
 	else
 	{
-		AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
-		Player->SetObjectInfo(ObjectInfo);
-		Players.Add(Id, Player);
+		if (ObjectInfo.has_creature_info() &&
+			ObjectInfo.creature_info().creature_type() == Protocol::CREATURE_TYPE_MONSTER)
+		{
+			// 몬스터 스폰
+			APig* Pig = Cast<APig>(World->SpawnActor(PigClass, &SpawnLocation));
+			Pig->SetObjectInfo(ObjectInfo);
+			Monsters.Add(Id, Pig);
+		}
+		else
+		{
+			AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
+			Player->SetObjectInfo(ObjectInfo);
+			Players.Add(Id, Player);
+		}
 	}
 }
 
@@ -110,8 +122,8 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::S_ENTER_GAME& EnterGamePkt
 
 void UMiniDSGameInstance::HandleSpawn(const Protocol::S_SPAWN& SpawnPkt)
 {
-	for (auto& Player : SpawnPkt.objects())
-		HandleSpawn(Player, false);
+	for (auto& Object : SpawnPkt.objects())
+		HandleSpawn(Object, false);
 }
 
 void UMiniDSGameInstance::HandleDespawn(uint64 Id)

@@ -9,3 +9,8 @@ Monster::Monster()
 Monster::~Monster()
 {
 }
+
+void Monster::UpdateTick()
+{
+	//cout << "Monster Update Tick" << endl;
+}

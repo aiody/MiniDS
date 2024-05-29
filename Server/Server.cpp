@@ -5,6 +5,7 @@
 #include "GameSession.h"
 #include "JobQueue.h"
 #include "JobTimer.h"
+#include "Room.h"
 
 int main()
 {
@@ -28,6 +29,8 @@ int main()
                 }
             });
     }
+
+    gJobQueue->Push(make_shared<Job>(gRoom, &Room::Start));
 
     while (true)
         gJobQueue->Flush();

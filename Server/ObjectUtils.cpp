@@ -2,6 +2,7 @@
 #include "ObjectUtils.h"
 #include "Player.h"
 #include "GameSession.h"
+#include "Monster.h"
 
 atomic<int64> ObjectUtils::s_idGenerator = 1;
 
@@ -18,4 +19,16 @@ shared_ptr<class Player> ObjectUtils::CreatePlayer(shared_ptr<GameSession> sessi
 	}
 
 	return player;
+}
+
+shared_ptr<class Monster> ObjectUtils::CreateMonster()
+{
+	const int64 newId = s_idGenerator.fetch_add(1);
+
+	shared_ptr<Monster> monster = make_shared<Monster>();
+	{
+		monster->objectInfo->set_object_id(newId);
+	}
+
+	return monster;
 }

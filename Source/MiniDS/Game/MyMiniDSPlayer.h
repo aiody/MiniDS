@@ -6,6 +6,12 @@
 #include "Game/MiniDSPlayer.h"
 #include "MyMiniDSPlayer.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+
 /**
  * 
  */

@@ -2,6 +2,8 @@
 #include "Room.h"
 #include "Object.h"
 #include "Player.h"
+#include "Monster.h"
+#include "ObjectUtils.h"
 
 shared_ptr<Room> gRoom = make_shared<Room>();
 
@@ -11,6 +13,113 @@ Room::Room()
 
 Room::~Room()
 {
+}
+
+void Room::Start()
+{
+	//cout << "Room Start!" << endl;
+	gJobQueue->Push(make_shared<Job>(gRoom, &Room::UpdateTick));
+
+	shared_ptr<Monster> monster = ObjectUtils::CreateMonster();
+	EnterRoom(monster);
+}
+
+void Room::UpdateTick()
+{
+	for (auto& item : _objects)
+	{
+		shared_ptr<Object> object = item.second;
+		if (object->objectInfo->has_creature_info() &&
+			object->objectInfo->creature_info().creature_type() & Protocol::CREATURE_TYPE_MONSTER)
+		{
+			shared_ptr<Monster> monster = static_pointer_cast<Monster>(object);
+			monster->UpdateTick();
+		}
+	}
+
+	shared_ptr<Job> job = make_shared<Job>(shared_from_this(), &Room::UpdateTick);
+	gJobTimer->Reserve(100, job);
+}
+
+bool Room::HandleEnterPlayer(shared_ptr<Player> player)
+{
+	return EnterRoom(player);
+}
+
+bool Room::HandleLeavePlayer(shared_ptr<Player> player)
+{
+	return LeaveRoom(player);
+}
+
+void Room::HandleMove(Protocol::C_MOVE pkt)
+{
+	const uint64 id = pkt.object_id();
+	if (_objects.find(id) == _objects.end())
+		return;
+
+	shared_ptr<Object> object = _objects[id];
+	if (object->IsPlayer())
+	{
+		shared_ptr<Player> player = static_pointer_cast<Player>(object);
+		player->posInfo->MergeFrom(pkt.pos_info());
+		player->creatureInfo->set_state(pkt.state());
+	}
+
+	{
+		Protocol::S_MOVE movePkt;
+		{
+			movePkt.set_object_id(id);
+			Protocol::PosInfo* posInfo = movePkt.mutable_pos_info();
+			posInfo->CopyFrom(pkt.pos_info());
+			movePkt.set_state(pkt.state());
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
+		Broadcast(sendBuffer);
+	}
+}
+
+void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
+{
+	if (_objects.find(from->objectInfo->object_id()) == _objects.end())
+		return;
+	if (_objects.find(toId) == _objects.end())
+		return;
+
+	// hp 감소
+	shared_ptr<Object> object = _objects[toId];
+	float damage = 0;
+	float remainHp = 0;
+	if (object->IsPlayer())
+	{
+		shared_ptr<Player> hitPlayer = static_pointer_cast<Player>(object);
+		float hpOfHitPlayer = hitPlayer->statInfo->hp();
+		damage = from->statInfo->damage();
+		remainHp = ::max(hpOfHitPlayer - damage, 0.0f);
+		hitPlayer->statInfo->set_hp(remainHp);
+	}
+
+	if (remainHp <= 0)
+	{
+		Protocol::S_DEATH deathPkt;
+		{
+			deathPkt.set_from(from->objectInfo->object_id());
+			deathPkt.set_to(toId);
+			deathPkt.set_damage(damage);
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(deathPkt);
+		Broadcast(sendBuffer);
+	}
+	else
+	{
+		Protocol::S_HIT hitPkt;
+		{
+			hitPkt.set_from(from->objectInfo->object_id());
+			hitPkt.set_to(toId);
+			hitPkt.set_damage(damage);
+		}
+		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(hitPkt);
+		Broadcast(sendBuffer);
+	}
 }
 
 bool Room::EnterRoom(shared_ptr<Object> object)
@@ -49,12 +158,12 @@ bool Room::EnterRoom(shared_ptr<Object> object)
 
 		for (auto& item : _objects)
 		{
-			shared_ptr<Object> o = item.second;
-			if (o->objectInfo->object_id() == object->objectInfo->object_id())
+			shared_ptr<Object> obj = item.second;
+			if (obj->objectInfo->object_id() == object->objectInfo->object_id())
 				continue;
 
 			Protocol::ObjectInfo* objectInfo = spawnPkt.add_objects();
-			objectInfo->CopyFrom(*o->objectInfo);
+			objectInfo->CopyFrom(*obj->objectInfo);
 		}
 
 		if (auto session = static_pointer_cast<Player>(object)->session.lock())
@@ -111,86 +220,6 @@ bool Room::LeaveRoom(shared_ptr<Object> object)
 	}
 
 	return true;
-}
-
-bool Room::HandleEnterPlayer(shared_ptr<Player> player)
-{
-	return EnterRoom(player);
-}
-
-bool Room::HandleLeavePlayer(shared_ptr<Player> player)
-{
-	return LeaveRoom(player);
-}
-
-void Room::HandleMove(Protocol::C_MOVE pkt)
-{
-	const uint64 id = pkt.object_id();
-	if (_objects.find(id) == _objects.end())
-		return;
-
-	shared_ptr<Object> object = _objects[id];
-	if (object->IsPlayer())
-	{
-		shared_ptr<Player> player = static_pointer_cast<Player>(object);
-		player->posInfo->MergeFrom(pkt.pos_info());
-		player->creatureInfo->set_state(pkt.state());
-	}
-
-	{
-		Protocol::S_MOVE movePkt;
-		{
-			movePkt.set_object_id(id);
-			Protocol::PosInfo* posInfo = movePkt.mutable_pos_info();
-			posInfo->CopyFrom(pkt.pos_info());
-			movePkt.set_state(pkt.state());
-		}
-		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
-		Broadcast(sendBuffer);
-	}
-}
-
-void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
-{
-	if (_objects.find(from->objectInfo->object_id()) == _objects.end())
-		return;
-	if (_objects.find(toId) == _objects.end())
-		return;
-
-	// hp 감소
-	shared_ptr<Object> object = _objects[toId];
-	float damage, remainHp;
-	if (object->IsPlayer())
-	{
-		shared_ptr<Player> hitPlayer = static_pointer_cast<Player>(object);
-		float hpOfHitPlayer = hitPlayer->statInfo->hp();
-		damage = from->statInfo->damage();
-		remainHp = ::max(hpOfHitPlayer - damage, 0.0f);
-		hitPlayer->statInfo->set_hp(remainHp);
-	}
-
-	if (remainHp <= 0)
-	{
-		Protocol::S_DEATH deathPkt;
-		{
-			deathPkt.set_from(from->objectInfo->object_id());
-			deathPkt.set_to(toId);
-			deathPkt.set_damage(damage);
-		}
-		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(deathPkt);
-		Broadcast(sendBuffer);
-	}
-	else
-	{
-		Protocol::S_HIT hitPkt;
-		{
-			hitPkt.set_from(from->objectInfo->object_id());
-			hitPkt.set_to(toId);
-			hitPkt.set_damage(damage);
-		}
-		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(hitPkt);
-		Broadcast(sendBuffer);
-	}
 }
 
 bool Room::AddObject(shared_ptr<Object> object)
