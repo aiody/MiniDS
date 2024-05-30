@@ -8,4 +8,7 @@ public:
 	virtual ~Monster();
 
 	virtual void UpdateTick();
+
+protected:
+	shared_ptr<class Brain> _brain;
 };

@@ -120,6 +120,12 @@
     <ClCompile Include="Monster.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorTree.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Brain.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SocketUtils.h">
@@ -213,6 +219,12 @@
       <Filter>Contents</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Brain.h">
       <Filter>Contents</Filter>
     </ClInclude>
   </ItemGroup>

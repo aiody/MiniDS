@@ -159,6 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviorTree.cpp" />
+    <ClCompile Include="Brain.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -211,6 +213,8 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviorTree.h" />
+    <ClInclude Include="Brain.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />

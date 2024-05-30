@@ -38,7 +38,7 @@ void Room::UpdateTick()
 	}
 
 	shared_ptr<Job> job = make_shared<Job>(shared_from_this(), &Room::UpdateTick);
-	gJobTimer->Reserve(100, job);
+	gJobTimer->Reserve(1000, job);
 }
 
 bool Room::HandleEnterPlayer(shared_ptr<Player> player)
