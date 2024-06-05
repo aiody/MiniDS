@@ -1,6 +1,6 @@
 #pragma once
 
-class Object
+class Object : public enable_shared_from_this<Object>
 {
 public:
 	Object();

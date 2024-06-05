@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MiniDSPlayer.h"
 #include "Pig.h"
+#include "Creature.h"
 
 void UMiniDSGameInstance::ConnectToGameServer()
 {
@@ -78,7 +79,7 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bo
 
 	// 중복 처리 체크
 	const uint64 Id = ObjectInfo.object_id();
-	if (Players.Find(Id) != nullptr)
+	if (Creatures.Find(Id) != nullptr)
 		return;
 
 	Protocol::PosInfo PosInfo = ObjectInfo.pos_info();
@@ -94,7 +95,7 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bo
 		MyPlayer = Player;
 		Player->SetObjectInfo(ObjectInfo);
 		Player->SetPosInfo(PosInfo);
-		Players.Add(Id, Player);
+		Creatures.Add(Id, Player);
 	}
 	else
 	{
@@ -104,13 +105,13 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bo
 			// 몬스터 스폰
 			APig* Pig = Cast<APig>(World->SpawnActor(PigClass, &SpawnLocation));
 			Pig->SetObjectInfo(ObjectInfo);
-			Monsters.Add(Id, Pig);
+			Creatures.Add(Id, Pig);
 		}
 		else
 		{
 			AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
 			Player->SetObjectInfo(ObjectInfo);
-			Players.Add(Id, Player);
+			Creatures.Add(Id, Player);
 		}
 	}
 }
@@ -135,7 +136,7 @@ void UMiniDSGameInstance::HandleDespawn(uint64 Id)
 	if (World == nullptr)
 		return;
 
-	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	ACreature** FoundActor = Creatures.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
@@ -170,17 +171,14 @@ void UMiniDSGameInstance::HandleMove(const Protocol::S_MOVE& MovePkt)
 
 	const uint64 Id = MovePkt.object_id();
 
-	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	ACreature** FoundActor = Creatures.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
-	AMiniDSPlayer* Player = (*FoundActor);
-	if (Player->IsMyPlayer())
-		return;
-	
+	ACreature* Creature = (*FoundActor);
 	const Protocol::PosInfo& PosInfo = MovePkt.pos_info();
-	Player->SetDestInfo(PosInfo);
-	Player->SetState(MovePkt.state());
+	Creature->SetDestInfo(PosInfo);
+	Creature->SetState(MovePkt.state());
 }
 
 void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)
@@ -195,13 +193,13 @@ void UMiniDSGameInstance::HandleHit(const Protocol::S_HIT& HitPkt)
 	const uint64 Id = HitPkt.to();
 	const float Damage = HitPkt.damage();
 
-	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	ACreature** FoundActor = Creatures.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
-	AMiniDSPlayer* Player = (*FoundActor);
-	Player->SetState(Protocol::CREATURE_STATE_HIT);
-	Player->Hit(Damage);
+	ACreature* Creature = (*FoundActor);
+	Creature->SetState(Protocol::CREATURE_STATE_HIT);
+	Creature->Hit(Damage);
 }
 
 void UMiniDSGameInstance::HandleDeath(const Protocol::S_DEATH& DeathPkt)
@@ -216,11 +214,11 @@ void UMiniDSGameInstance::HandleDeath(const Protocol::S_DEATH& DeathPkt)
 	const uint64 Id = DeathPkt.to();
 	const float Damage = DeathPkt.damage();
 
-	AMiniDSPlayer** FoundActor = Players.Find(Id);
+	ACreature** FoundActor = Creatures.Find(Id);
 	if (FoundActor == nullptr)
 		return;
 
-	AMiniDSPlayer* Player = (*FoundActor);
-	Player->SetState(Protocol::CREATURE_STATE_DEATH);
-	Player->Hit(Damage);
+	ACreature* Creature = (*FoundActor);
+	Creature->SetState(Protocol::CREATURE_STATE_DEATH);
+	Creature->Hit(Damage);
 }

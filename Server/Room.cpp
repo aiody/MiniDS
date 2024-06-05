@@ -22,6 +22,7 @@ void Room::Start()
 
 	shared_ptr<Monster> monster = ObjectUtils::CreateMonster();
 	EnterRoom(monster);
+	monster->Start();
 }
 
 void Room::UpdateTick()
@@ -38,7 +39,38 @@ void Room::UpdateTick()
 	}
 
 	shared_ptr<Job> job = make_shared<Job>(shared_from_this(), &Room::UpdateTick);
-	gJobTimer->Reserve(1000, job);
+	gJobTimer->Reserve(100, job);
+}
+
+shared_ptr<Player> Room::FindPlayer()
+{
+	for (auto& item : _objects)
+	{
+		shared_ptr<Object> object = item.second;
+		if (object->objectInfo->has_creature_info() &&
+			object->objectInfo->creature_info().creature_type() & Protocol::CREATURE_TYPE_PLAYER)
+		{
+			shared_ptr<Player> player = static_pointer_cast<Player>(object);
+			return player;
+		}
+	}
+	return nullptr;
+}
+
+vector<shared_ptr<Player>> Room::FindPlayers()
+{
+	vector<shared_ptr<Player>> players;
+	for (auto& item : _objects)
+	{
+		shared_ptr<Object> object = item.second;
+		if (object->objectInfo->has_creature_info() &&
+			object->objectInfo->creature_info().creature_type() & Protocol::CREATURE_TYPE_PLAYER)
+		{
+			shared_ptr<Player> player = static_pointer_cast<Player>(object);
+			players.push_back(player);
+		}
+	}
+	return players;
 }
 
 bool Room::HandleEnterPlayer(shared_ptr<Player> player)
@@ -119,6 +151,22 @@ void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
 		}
 		shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(hitPkt);
 		Broadcast(sendBuffer);
+	}
+}
+
+void Room::Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId)
+{
+	for (auto& item : _objects)
+	{
+		shared_ptr<Object> object = item.second;
+		if (object->IsPlayer())
+		{
+			shared_ptr<Player> player = static_pointer_cast<Player>(object);
+			if (player->objectInfo->object_id() == exceptId)
+				continue;
+			if (shared_ptr<GameSession> session = player->session.lock())
+				session->Send(sendBuffer);
+		}
 	}
 }
 
@@ -251,20 +299,4 @@ bool Room::RemoveObject(uint64 objectId)
 	_objects.erase(objectId);
 
 	return true;
-}
-
-void Room::Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId)
-{
-	for (auto& item : _objects)
-	{
-		shared_ptr<Object> object = item.second;
-		if (object->IsPlayer())
-		{
-			shared_ptr<Player> player = static_pointer_cast<Player>(object);
-			if (player->objectInfo->object_id() == exceptId)
-				continue;
-			if (shared_ptr<GameSession> session = player->session.lock())
-				session->Send(sendBuffer);
-		}
-	}
 }

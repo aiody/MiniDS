@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Brain.h"
+#include "Monster.h"
 #include "BehaviorTree.h"
 
-Brain::Brain()
+Brain::Brain(shared_ptr<class Monster> owner) : _owner(owner)
 {
 	root = make_shared<BTSequence>();
 }
@@ -16,37 +17,76 @@ void Brain::Init()
     BTSelectorRef rootSelector = make_shared<BTSelector>();
 
     BTSequenceRef battleModeSequence = make_shared<BTSequence>();
-    BTConditionRef isBattleMode = make_shared<BTCondition>(true);
+    BTConditionRef isBattleMode = make_shared<BTCondition>([this]()
+        {
+            return _isBattleMode;
+        });
 
     BTSelectorRef battleModeSelector = make_shared<BTSelector>();
 
     BTSequenceRef checkBattleModeSequence = make_shared<BTSequence>();
-    BTConditionRef isTooFarToAttack = make_shared<BTCondition>(false);
-    BTActionRef offBattleMode = make_shared<BTAction>("Battle mode is end.");
+    BTConditionRef isTooFarToAttack = make_shared<BTCondition>([this]() { return false; });
+    BTActionRef offBattleMode = make_shared<BTAction>([this]()
+        {
+            cout << "Battle mode is end." << endl;
+            _isBattleMode = false;
+        });
 
     BTSequenceRef avoidWhileCoolingSequence = make_shared<BTSequence>();
-    BTConditionRef isAttackCooling = make_shared<BTCondition>(false);
-    BTActionRef avoidWithPlayerWhileCooling = make_shared<BTAction>("Run away!");
+    BTConditionRef isAttackCooling = make_shared<BTCondition>([this]() { return false; });
+    BTActionRef avoidWithPlayerWhileCooling = make_shared<BTAction>([this]()
+        {
+            cout << "Run away!" << endl;
+        });
 
     BTSequenceRef attackSequence = make_shared<BTSequence>();
-    BTConditionRef isCloseEnoughWithPlayer = make_shared<BTCondition>(false);
-    BTActionRef attackPlayer = make_shared<BTAction>("Attack!!!");
-    BTActionRef setAttackCooldown = make_shared<BTAction>("Set attack cooldown");
+    BTConditionRef isCloseEnoughWithPlayer = make_shared<BTCondition>([this]() { return false; });
+    BTActionRef attackPlayer = make_shared<BTAction>([]()
+        {
+            cout << "Attack!!!" << endl;
+        });
+    BTActionRef setAttackCooldown = make_shared<BTAction>([]()
+        {
+            cout << "Set attack cooldown" << endl;
+        });
 
-    BTActionRef chasePlayer = make_shared<BTAction>("Chase the Player");
+    BTActionRef chasePlayer = make_shared<BTAction>([this]()
+        {
+            cout << "Chase the Player" << endl;
+            _owner->Move();
+        });
 
     BTSelectorRef noneBattleModeSelector = make_shared<BTSelector>();
 
     BTSequenceRef avoidSequence = make_shared<BTSequence>();
-    BTConditionRef isTooCloseWithPlayer = make_shared<BTCondition>(false);
+    BTConditionRef isTooCloseWithPlayer = make_shared<BTCondition>([this]()
+        {
+            return _owner->IsTooCloseWithPlayer(_safe_dist);
+        });
     BTSelectorRef selectorAvoid = make_shared<BTSelector>();
-    BTConditionRef isFarEnoughWithPlayer = make_shared<BTCondition>(false);
-    BTActionRef avoidPlayer = make_shared<BTAction>("It's too close! Avoid the Player");
+    BTConditionRef isFarEnoughWithPlayer = make_shared<BTCondition>([this]()
+        {
+            return !_owner->IsTooCloseWithPlayer(_stop_run_away_dist);
+        });
+    BTActionRef avoidPlayer = make_shared<BTAction>([this]()
+        {
+            cout << "It's too close! Avoid the Player" << endl;
+            _owner->RunAway(_stop_run_away_dist);
+        });
 
     BTSequenceRef wanderSequence = make_shared<BTSequence>();
-    BTActionRef wanderWait = make_shared<BTAction>("Wait.");
-    BTActionRef wanderSetDest = make_shared<BTAction>("Set destination.");
-    BTActionRef wanderMoveToDest = make_shared<BTAction>("Move to destination.");
+    BTActionRef wanderWait = make_shared<BTAction>([]()
+        {
+            cout << "Wait." << endl;
+        });
+    BTActionRef wanderSetDest = make_shared<BTAction>([]()
+        {
+            cout << "Set destination." << endl;
+        });
+    BTActionRef wanderMoveToDest = make_shared<BTAction>([]()
+        {
+            cout << "Move to destination." << endl;
+        });
 
     root->AddChild(rootSelector);
 

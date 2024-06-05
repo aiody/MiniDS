@@ -17,11 +17,11 @@ public:
 
 	void AddChild(shared_ptr<BTNode> child)
 	{
-		children.push_back(child);
+		_children.push_back(child);
 	}
 
 protected:
-	std::vector<shared_ptr<BTNode>> children;
+	std::vector<shared_ptr<BTNode>> _children;
 };
 
 // AND 노드
@@ -30,7 +30,7 @@ class BTSequence : public BTComposite
 public:
 	virtual bool run() override
 	{
-		for (auto& child : children)
+		for (auto& child : _children)
 		{
 			if (!child->run())
 				return false;
@@ -45,7 +45,7 @@ class BTSelector : public BTComposite
 public:
 	virtual bool run() override
 	{
-		for (auto& child : children)
+		for (auto& child : _children)
 		{
 			if (child->run())
 				return true;
@@ -55,34 +55,36 @@ public:
 };
 
 // 조건문 노드
+using ConditionFuncType = function<bool()>;
 class BTCondition : public BTNode
 {
 public:
-	BTCondition(bool condition) : condition(condition) {}
+	BTCondition(ConditionFuncType func) : _func(func) {}
 
 	virtual bool run() override
 	{
-		return condition;
+		return _func();
 	}
 
 private:
-	bool condition;
+	ConditionFuncType _func;
 };
 
 // 작업 노드
+using ActionFuncType = function<void()>;
 class BTAction : public BTNode
 {
 public:
-	BTAction(const std::string& name) : name(name) {}
+	BTAction(ActionFuncType func) : _func(func) {}
 
 	virtual bool run() override
 	{
-		cout << "Running action: " << name << endl;
+		_func();
 		return true;
 	}
 
 private:
-	std::string name;
+	ActionFuncType _func;
 };
 
 using BTSequenceRef = shared_ptr<BTSequence>;

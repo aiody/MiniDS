@@ -11,11 +11,15 @@ public:
 
 	void Start();
 	void UpdateTick();
+	shared_ptr<Player> FindPlayer();
+	vector<shared_ptr<Player>> FindPlayers();
 
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 	void HandleMove(Protocol::C_MOVE pkt);
 	void HandleAttack(shared_ptr<Player> from, uint64 toId);
+
+	void Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId = 0);
 
 private:
 	bool EnterRoom(shared_ptr<Object> object);
@@ -23,7 +27,6 @@ private:
 
 	bool AddObject(shared_ptr<Object> object);
 	bool RemoveObject(uint64 objectId);
-	void Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId = 0);
 
 private:
 	unordered_map<uint64, shared_ptr<Object>> _objects;

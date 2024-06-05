@@ -126,6 +126,9 @@
     <ClCompile Include="Brain.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SocketUtils.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Brain.h">
       <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

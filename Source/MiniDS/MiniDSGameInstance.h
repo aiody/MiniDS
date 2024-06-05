@@ -8,6 +8,7 @@
 #include "Protocol/Protocol.pb.h"
 #include "MiniDSGameInstance.generated.h"
 
+class ACreature;
 class AMiniDSPlayer;
 class APig;
 
@@ -56,6 +57,5 @@ public:
 	TSubclassOf<APig> PigClass;
 
 	AMiniDSPlayer* MyPlayer;
-	TMap<uint64, AMiniDSPlayer*> Players;
-	TMap<uint64, APig*> Monsters;
+	TMap<uint64, ACreature*> Creatures;
 };
