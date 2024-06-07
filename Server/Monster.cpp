@@ -31,75 +31,23 @@ void Monster::UpdateTick()
 	_brain->Run();
 }
 
-void Monster::Move()
+bool Monster::Move(Vector3 targetPos)
 {
-	shared_ptr<Room> myRoom = room.load().lock();
-	if (myRoom == nullptr)
-		return;
-
-	shared_ptr<Player> target = myRoom->FindPlayer();
-	if (target == nullptr)
-		return;
-
-	Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
-	Vector3 myPos(posInfo->x(), posInfo->y(), target->posInfo->z());
+	Vector3 myPos(posInfo->x(), posInfo->y(), targetPos.z);
 
 	Vector3 dir = (targetPos - myPos).normalize() * _speed;
 	Vector3 destPos = myPos + dir;
 
 	posInfo->set_x(destPos.x);
 	posInfo->set_y(destPos.y);
-	posInfo->set_z(destPos.z);
+	posInfo->set_z(posInfo->z());
 
 	BroadcastMove();
-}
 
-void Monster::RunAway(float runAwayDist)
-{
-	shared_ptr<Room> myRoom = room.load().lock();
-	if (myRoom == nullptr)
-		return;
-
-	shared_ptr<Player> target = _brain->GetTarget();
-	if (target == nullptr)
-		return;
-
-	Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
-	Vector3 myPos(posInfo->x(), posInfo->y(), target->posInfo->z());
-	float dist = (targetPos - myPos).length();
-	if (dist >= runAwayDist)
-		return;
-
-	// run away
-	Vector3 dir = (myPos - targetPos).normalize() * _speed;
-	Vector3 destPos = myPos + dir;
-
-	posInfo->set_x(destPos.x);
-	posInfo->set_y(destPos.y);
-	posInfo->set_z(destPos.z);
-
-	BroadcastMove();
-}
-
-bool Monster::IsTooCloseWithPlayer(float runAwayDist) const
-{
-	shared_ptr<Room> myRoom = room.load().lock();
-	if (myRoom == nullptr)
-		return false;
-
-	for (auto& player : myRoom->FindPlayers())
-	{
-		Vector3 targetPos(player->posInfo->x(), player->posInfo->y(), player->posInfo->z());
-		Vector3 myPos(posInfo->x(), posInfo->y(), player->posInfo->z());
-		float dist = (targetPos - myPos).length();
-		if (dist < runAwayDist)
-		{
-			_brain->SetTarget(player);
-			return true;
-		}
-	}
-
-	return false;
+	//cout << "DestPos : " << targetPos.x << ", " << targetPos.y << ", " << targetPos.z << endl;
+	//cout << "MyPos : " << myPos.x << ", " << myPos.y << ", " << myPos.z << endl;
+	//cout << "Length : " << (targetPos - myPos).length() << endl;
+	return (targetPos - myPos).length() < 50.f;
 }
 
 void Monster::BroadcastMove()

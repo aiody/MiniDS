@@ -2,6 +2,7 @@
 #include "Creature.h"
 
 class Player;
+class Vector3;
 
 class Monster : public Creature
 {
@@ -13,10 +14,7 @@ public:
 	virtual void Start();
 	virtual void UpdateTick();
 
-	void Move();
-	void RunAway(float runAwayDist);
-	bool IsTooCloseWithPlayer(float runAwayDist) const;
-	bool IsFarEnoughWithPlayer(float runAwayDist) const;
+	bool Move(Vector3 targetPos);
 
 private:
 	void BroadcastMove();

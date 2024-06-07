@@ -1,12 +1,25 @@
 #pragma once
 
+enum BTNodeStatus
+{
+	Ready,
+	Running,
+	Success,
+	Failure,
+};
+
 // base 노드
 class BTNode
 {
 public:
 	virtual ~BTNode() {}
+	
+	BTNodeStatus Init() { return BTNodeStatus::Running; }
+	void Reset() { _status = BTNodeStatus::Ready; }
+	virtual BTNodeStatus Run() = 0;
 
-	virtual bool run() = 0;
+protected:
+	BTNodeStatus _status = BTNodeStatus::Ready;
 };
 
 // 자식을 가질 수 있는 노드
@@ -20,22 +33,45 @@ public:
 		_children.push_back(child);
 	}
 
+	void ResetChildren()
+	{
+		_runningIdx = 0;
+		for (auto& child : _children)
+		{
+			child->Reset();
+		}
+	}
+
 protected:
 	std::vector<shared_ptr<BTNode>> _children;
+	int _runningIdx = 0;
 };
 
 // AND 노드
 class BTSequence : public BTComposite
 {
 public:
-	virtual bool run() override
+	virtual BTNodeStatus Run() override
 	{
-		for (auto& child : _children)
+		while (_runningIdx < _children.size())
 		{
-			if (!child->run())
-				return false;
+			shared_ptr<BTNode> child = _children[_runningIdx];
+			BTNodeStatus status = child->Run();
+			switch (status)
+			{
+			case BTNodeStatus::Running:
+				return status;
+			case BTNodeStatus::Success:
+				_runningIdx++;
+				break;
+			case BTNodeStatus::Failure:
+				ResetChildren();
+				return status;
+			}
 		}
-		return true;
+
+		ResetChildren();
+		return BTNodeStatus::Success;
 	}
 };
 
@@ -43,14 +79,27 @@ public:
 class BTSelector : public BTComposite
 {
 public:
-	virtual bool run() override
+	virtual BTNodeStatus Run() override
 	{
-		for (auto& child : _children)
+		while (_runningIdx < _children.size())
 		{
-			if (child->run())
-				return true;
+			shared_ptr<BTNode> child = _children[_runningIdx];
+			BTNodeStatus status = child->Run();
+			switch (status)
+			{
+			case BTNodeStatus::Running:
+				return status;
+			case BTNodeStatus::Success:
+				ResetChildren();
+				return status;
+			case BTNodeStatus::Failure:
+				_runningIdx++;
+				break;
+			}
 		}
-		return false;
+
+		ResetChildren();
+		return BTNodeStatus::Failure;
 	}
 };
 
@@ -61,9 +110,9 @@ class BTCondition : public BTNode
 public:
 	BTCondition(ConditionFuncType func) : _func(func) {}
 
-	virtual bool run() override
+	virtual BTNodeStatus Run() override
 	{
-		return _func();
+		return _func() == true ? BTNodeStatus::Success : BTNodeStatus::Failure;
 	}
 
 private:
@@ -71,20 +120,26 @@ private:
 };
 
 // 작업 노드
-using ActionFuncType = function<void()>;
+using ActionFuncType = function<BTNodeStatus()>;
 class BTAction : public BTNode
 {
 public:
-	BTAction(ActionFuncType func) : _func(func) {}
+	BTAction(ActionFuncType func, ActionFuncType init = nullptr) : _func(func), _init(init) {}
 
-	virtual bool run() override
+	virtual BTNodeStatus Run() override
 	{
-		_func();
-		return true;
+		if (_status == BTNodeStatus::Ready)
+			_status = _init == nullptr ? Init() : _init();
+
+		if (_status == BTNodeStatus::Running)
+			_status = _func();
+
+		return _status;
 	}
 
 private:
 	ActionFuncType _func;
+	ActionFuncType _init;
 };
 
 using BTSequenceRef = shared_ptr<BTSequence>;
