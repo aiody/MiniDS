@@ -121,13 +121,20 @@ void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
 	shared_ptr<Object> object = _objects[toId];
 	float damage = 0;
 	float remainHp = 0;
-	if (object->IsPlayer())
+
+	// 피격 처리
 	{
-		shared_ptr<Player> hitPlayer = static_pointer_cast<Player>(object);
-		float hpOfHitPlayer = hitPlayer->statInfo->hp();
+		shared_ptr<Creature> hitCreature = static_pointer_cast<Creature>(object);
+		float hpOfHitCreature = hitCreature->statInfo->hp();
 		damage = from->statInfo->damage();
-		remainHp = ::max(hpOfHitPlayer - damage, 0.0f);
-		hitPlayer->statInfo->set_hp(remainHp);
+		remainHp = ::max(hpOfHitCreature - damage, 0.0f);
+		hitCreature->statInfo->set_hp(remainHp);
+
+		if (hitCreature->IsPlayer() == false)
+		{
+			shared_ptr<Monster> monster = static_pointer_cast<Monster>(hitCreature);
+			monster->SetTarget(from);
+		}
 	}
 
 	if (remainHp <= 0)
@@ -183,6 +190,13 @@ bool Room::EnterRoom(shared_ptr<Object> object)
 		player->statInfo->set_max_hp(175.f);
 		player->statInfo->set_hp(175.f);
 		player->statInfo->set_damage(25.f);
+	}
+	else
+	{
+		auto creature = static_pointer_cast<Creature>(object);
+		creature->statInfo->set_max_hp(250.f);
+		creature->statInfo->set_hp(250.f);
+		creature->statInfo->set_damage(33.f);
 	}
 
 	// 해당 플레이어에게 게임에 접속함을 알림

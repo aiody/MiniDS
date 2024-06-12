@@ -6,6 +6,8 @@ class Vector3;
 
 class Monster : public Creature
 {
+	friend class Brain;
+
 public:
 	Monster();
 	virtual ~Monster();
@@ -14,6 +16,8 @@ public:
 	virtual void Start();
 	virtual void UpdateTick();
 
+	void SetState(Protocol::CreatureState state);
+	void SetTarget(shared_ptr<class Creature> target) { _target = target; }
 	bool Move(Vector3 targetPos);
 
 private:
@@ -22,4 +26,5 @@ private:
 protected:
 	shared_ptr<class Brain> _brain;
 	float _speed = 25.f;
+	shared_ptr<class Creature> _target;
 };

@@ -104,14 +104,20 @@ void UMiniDSGameInstance::HandleSpawn(const Protocol::ObjectInfo& ObjectInfo, bo
 		{
 			// 몬스터 스폰
 			APig* Pig = Cast<APig>(World->SpawnActor(PigClass, &SpawnLocation));
-			Pig->SetObjectInfo(ObjectInfo);
-			Creatures.Add(Id, Pig);
+			if (Pig != nullptr)
+			{
+				Pig->SetObjectInfo(ObjectInfo);
+				Creatures.Add(Id, Pig);
+			}
 		}
 		else
 		{
 			AMiniDSPlayer* Player = Cast<AMiniDSPlayer>(World->SpawnActor(OtherPlayerClass, &SpawnLocation));
-			Player->SetObjectInfo(ObjectInfo);
-			Creatures.Add(Id, Player);
+			if (Player != nullptr)
+			{
+				Player->SetObjectInfo(ObjectInfo);
+				Creatures.Add(Id, Player);
+			}
 		}
 	}
 }

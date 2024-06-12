@@ -31,6 +31,12 @@ void Monster::UpdateTick()
 	_brain->Run();
 }
 
+void Monster::SetState(Protocol::CreatureState state)
+{
+	creatureInfo->set_state(state);
+	BroadcastMove();
+}
+
 bool Monster::Move(Vector3 targetPos)
 {
 	Vector3 myPos(posInfo->x(), posInfo->y(), targetPos.z);
@@ -47,7 +53,7 @@ bool Monster::Move(Vector3 targetPos)
 	//cout << "DestPos : " << targetPos.x << ", " << targetPos.y << ", " << targetPos.z << endl;
 	//cout << "MyPos : " << myPos.x << ", " << myPos.y << ", " << myPos.z << endl;
 	//cout << "Length : " << (targetPos - myPos).length() << endl;
-	return (targetPos - myPos).length() < 50.f;
+	return (targetPos - myPos).length() < 30.f;
 }
 
 void Monster::BroadcastMove()

@@ -16,9 +16,13 @@ public:
 	void Run();
 
 protected:
-	BTNodeStatus ChasePlayer();
+	bool IsBattleMode();
+	bool IsTooFarToAttack();
+	bool IsAttackCooling();
+	BTNodeStatus ChaseAndAttackPlayer();
 	bool IsTooCloseWithPlayer();
 	BTNodeStatus SetAvoidDest();
+	BTNodeStatus AvoidWhileCooling();
 	BTNodeStatus MoveToDest();
 	BTNodeStatus SetDestForWandering();
 	BTNodeStatus Wait();
@@ -32,5 +36,9 @@ private:
 	bool _isBattleMode = true;
 	float _safe_dist = 300.0f;
 	float _stop_run_away_dist = 500.0f;
-	float _waitUntil;
+	float _see_target_dist = 1000.0f;
+	float _attack_range = 30.0f;
+	float _waitUntil = 0.0f;
+	float _attackCooldown = 3.0f;
+	float _attackCooldownUntil = 0.0f;
 };
