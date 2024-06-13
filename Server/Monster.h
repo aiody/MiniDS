@@ -19,6 +19,7 @@ public:
 	void SetState(Protocol::CreatureState state);
 	void SetTarget(shared_ptr<class Creature> target) { _target = target; }
 	bool Move(Vector3 targetPos);
+	Protocol::MoveDir GetMoveDir(Vector3 dirVector);
 
 private:
 	void BroadcastMove();

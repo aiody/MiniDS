@@ -14,10 +14,11 @@ UENUM(BlueprintType)
 enum class ECreatureState : uint8
 {
 	E_CREATURE_STATE_IDLE = 0,
-	E_CREATURE_STATE_MOVING = 1,
-	E_CREATURE_STATE_ATTACK = 2,
-	E_CREATURE_STATE_HIT = 3,
-	E_CREATURE_STATE_DEATH = 4,
+	E_CREATURE_STATE_WALK = 1,
+	E_CREATURE_STATE_RUN = 2,
+	E_CREATURE_STATE_ATTACK = 3,
+	E_CREATURE_STATE_HIT = 4,
+	E_CREATURE_STATE_DEATH = 5,
 };
 
 /**
@@ -43,10 +44,10 @@ public:
 	void					SetMoveDir(Protocol::MoveDir Dir);
 	Protocol::CreatureState GetState() { return CreatureInfo->state(); }
 	void					SetState(Protocol::CreatureState State);
-	Protocol::ObjectInfo* GetObjectInfo() { return ObjectInfo; }
+	Protocol::ObjectInfo*	GetObjectInfo() { return ObjectInfo; }
 	void					SetObjectInfo(const Protocol::ObjectInfo& Info);
 	Protocol::CreatureInfo* GetCreatureInfo() { return CreatureInfo; }
-	Protocol::PosInfo* GetPosInfo() { return PosInfo; }
+	Protocol::PosInfo*		GetPosInfo() { return PosInfo; }
 	void					SetPosInfo(const Protocol::PosInfo& Info);
 	void					SetDestInfo(const Protocol::PosInfo& Info);
 

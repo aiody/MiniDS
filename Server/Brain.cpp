@@ -32,7 +32,6 @@ void Brain::Init()
         {
             cout << "Is Attack Cooling" << endl;
             bool result = IsAttackCooling();
-            cout << (result == true ? "true" : "false") << endl;
             return IsAttackCooling();
         });
     BTActionRef avoidWithPlayerWhileCooling = make_shared<BTAction>([this]()
@@ -41,7 +40,7 @@ void Brain::Init()
             return AvoidWhileCooling();
         },
         [this]() {
-            _owner->SetState(Protocol::CREATURE_STATE_MOVING);
+            _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
 
@@ -51,7 +50,7 @@ void Brain::Init()
             return ChaseAndAttackPlayer();
         },
         [this]() {
-            _owner->SetState(Protocol::CREATURE_STATE_MOVING);
+            _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
 
@@ -76,7 +75,7 @@ void Brain::Init()
             return MoveToDest();
         },
         [this]() {
-            _owner->SetState(Protocol::CREATURE_STATE_MOVING);
+            _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
 
@@ -102,7 +101,7 @@ void Brain::Init()
             return MoveToDest();
         },
         [this]() {
-            _owner->SetState(Protocol::CREATURE_STATE_MOVING);
+            _owner->SetState(Protocol::CREATURE_STATE_WALK);
             return BTNodeStatus::Running;
         });
 
@@ -181,23 +180,35 @@ BTNodeStatus Brain::ChaseAndAttackPlayer()
     if (target == nullptr)
         return BTNodeStatus::Failure;
 
-    Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
-    _owner->Move(targetPos);
-    Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), target->posInfo->z());
-    float dist = (targetPos - myPos).length();
-    if (dist >= _see_target_dist)
+    if (_owner->creatureInfo->state() != Protocol::CREATURE_STATE_ATTACK)
     {
-        cout << "Battle mode is end." << endl;
-        _owner->SetTarget(nullptr);
-        return BTNodeStatus::Failure;
-    }
+        Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
+        _owner->Move(targetPos);
+        Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), target->posInfo->z());
 
-    if (dist < _attack_range)
+        float dist = (targetPos - myPos).length();
+        if (dist >= _see_target_dist)
+        {
+            cout << "Battle mode is end." << endl;
+            _owner->SetTarget(nullptr);
+            return BTNodeStatus::Failure;
+        }
+
+        if (dist < _attack_range)
+        {
+            cout << "Attack!" << endl;
+            _owner->SetState(Protocol::CREATURE_STATE_ATTACK);
+            _attackCooldownUntil = ::GetTickCount64() + (_attackCooldown * 1000.0f);
+            _attackUntil = ::GetTickCount64() + (_attackLength * 1000.0f);
+            return BTNodeStatus::Running;
+        }
+    }
+    else
     {
-        cout << "Attack!" << endl;
-        _owner->SetState(Protocol::CREATURE_STATE_ATTACK);
-        _attackCooldownUntil = ::GetTickCount64() + (_attackCooldown * 1000.0f);
-        return BTNodeStatus::Success;
+        if (::GetTickCount64() > _attackUntil)
+            return BTNodeStatus::Success;
+        else
+            return BTNodeStatus::Running;
     }
 
     return BTNodeStatus::Running;
@@ -245,7 +256,6 @@ BTNodeStatus Brain::SetAvoidDest()
         return BTNodeStatus::Failure;
 
     Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
-    //cout << "TargetPos : " << targetPos.x << ", " << targetPos.y << ", " << targetPos.z << endl;
     Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), targetPos.z);
     Vector3 destPos = (myPos - targetPos).normalize() * _stop_run_away_dist;
     _destPos = destPos;
@@ -276,6 +286,9 @@ BTNodeStatus Brain::AvoidWhileCooling()
 
 BTNodeStatus Brain::MoveToDest()
 {
+    if (IsBattleMode())
+        return BTNodeStatus::Failure;
+
     return _owner->Move(_destPos) ? BTNodeStatus::Success : BTNodeStatus::Running;
 }
 
@@ -290,6 +303,9 @@ BTNodeStatus Brain::SetDestForWandering()
 
 BTNodeStatus Brain::Wait()
 {
+    if (IsTooCloseWithPlayer() || IsBattleMode())
+        return BTNodeStatus::Failure;
+
     if (::GetTickCount64() < _waitUntil)
         return BTNodeStatus::Running;
 

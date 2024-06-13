@@ -33,17 +33,18 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "OBJECT_TYPE_NONE\020\000\022\030\n\024OBJECT_TYPE_CREATU"
   "RE\020\001*[\n\014CreatureType\022\026\n\022CREATURE_TYPE_NO"
   "NE\020\000\022\030\n\024CREATURE_TYPE_PLAYER\020\001\022\031\n\025CREATU"
-  "RE_TYPE_MONSTER\020\002*\220\001\n\rCreatureState\022\027\n\023C"
-  "REATURE_STATE_IDLE\020\000\022\031\n\025CREATURE_STATE_M"
-  "OVING\020\001\022\031\n\025CREATURE_STATE_ATTACK\020\002\022\026\n\022CR"
-  "EATURE_STATE_HIT\020\003\022\030\n\024CREATURE_STATE_DEA"
-  "TH\020\004*g\n\007MoveDir\022\021\n\rMOVE_DIR_NONE\020\000\022\017\n\013MO"
-  "VE_DIR_UP\020\001\022\021\n\rMOVE_DIR_DOWN\020\002\022\021\n\rMOVE_D"
-  "IR_LEFT\020\003\022\022\n\016MOVE_DIR_RIGHT\020\004b\006proto3"
+  "RE_TYPE_MONSTER\020\002*\246\001\n\rCreatureState\022\027\n\023C"
+  "REATURE_STATE_IDLE\020\000\022\027\n\023CREATURE_STATE_W"
+  "ALK\020\001\022\026\n\022CREATURE_STATE_RUN\020\002\022\031\n\025CREATUR"
+  "E_STATE_ATTACK\020\003\022\026\n\022CREATURE_STATE_HIT\020\004"
+  "\022\030\n\024CREATURE_STATE_DEATH\020\005*g\n\007MoveDir\022\021\n"
+  "\rMOVE_DIR_NONE\020\000\022\017\n\013MOVE_DIR_UP\020\001\022\021\n\rMOV"
+  "E_DIR_DOWN\020\002\022\021\n\rMOVE_DIR_LEFT\020\003\022\022\n\016MOVE_"
+  "DIR_RIGHT\020\004b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_Enum_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Enum_2eproto = {
-    false, false, 437, descriptor_table_protodef_Enum_2eproto,
+    false, false, 459, descriptor_table_protodef_Enum_2eproto,
     "Enum.proto",
     &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
     schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
@@ -97,6 +98,7 @@ bool CreatureState_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;

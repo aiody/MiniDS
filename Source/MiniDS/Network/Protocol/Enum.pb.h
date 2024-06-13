@@ -100,10 +100,11 @@ inline bool CreatureType_Parse(
 }
 enum CreatureState : int {
   CREATURE_STATE_IDLE = 0,
-  CREATURE_STATE_MOVING = 1,
-  CREATURE_STATE_ATTACK = 2,
-  CREATURE_STATE_HIT = 3,
-  CREATURE_STATE_DEATH = 4,
+  CREATURE_STATE_WALK = 1,
+  CREATURE_STATE_RUN = 2,
+  CREATURE_STATE_ATTACK = 3,
+  CREATURE_STATE_HIT = 4,
+  CREATURE_STATE_DEATH = 5,
   CreatureState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   CreatureState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };

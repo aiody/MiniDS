@@ -39,6 +39,8 @@ private:
 	float _see_target_dist = 1000.0f;
 	float _attack_range = 30.0f;
 	float _waitUntil = 0.0f;
-	float _attackCooldown = 3.0f;
+	float _attackCooldown = 5.0f;
 	float _attackCooldownUntil = 0.0f;
+	float _attackLength = 1.0f;
+	float _attackUntil = 0.0f;
 };
