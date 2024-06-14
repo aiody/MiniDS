@@ -1408,15 +1408,25 @@ class C_ATTACK final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kObjectIdFieldNumber = 1,
+    kFromFieldNumber = 1,
+    kToFieldNumber = 2,
   };
-  // uint64 object_id = 1;
-  void clear_object_id();
-  uint64_t object_id() const;
-  void set_object_id(uint64_t value);
+  // uint64 from = 1;
+  void clear_from();
+  uint64_t from() const;
+  void set_from(uint64_t value);
   private:
-  uint64_t _internal_object_id() const;
-  void _internal_set_object_id(uint64_t value);
+  uint64_t _internal_from() const;
+  void _internal_set_from(uint64_t value);
+  public:
+
+  // uint64 to = 2;
+  void clear_to();
+  uint64_t to() const;
+  void set_to(uint64_t value);
+  private:
+  uint64_t _internal_to() const;
+  void _internal_set_to(uint64_t value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.C_ATTACK)
@@ -1427,7 +1437,8 @@ class C_ATTACK final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    uint64_t object_id_;
+    uint64_t from_;
+    uint64_t to_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2235,24 +2246,44 @@ inline void S_MOVE::set_state(::Protocol::CreatureState value) {
 
 // C_ATTACK
 
-// uint64 object_id = 1;
-inline void C_ATTACK::clear_object_id() {
-  _impl_.object_id_ = uint64_t{0u};
+// uint64 from = 1;
+inline void C_ATTACK::clear_from() {
+  _impl_.from_ = uint64_t{0u};
 }
-inline uint64_t C_ATTACK::_internal_object_id() const {
-  return _impl_.object_id_;
+inline uint64_t C_ATTACK::_internal_from() const {
+  return _impl_.from_;
 }
-inline uint64_t C_ATTACK::object_id() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_ATTACK.object_id)
-  return _internal_object_id();
+inline uint64_t C_ATTACK::from() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ATTACK.from)
+  return _internal_from();
 }
-inline void C_ATTACK::_internal_set_object_id(uint64_t value) {
+inline void C_ATTACK::_internal_set_from(uint64_t value) {
   
-  _impl_.object_id_ = value;
+  _impl_.from_ = value;
 }
-inline void C_ATTACK::set_object_id(uint64_t value) {
-  _internal_set_object_id(value);
-  // @@protoc_insertion_point(field_set:Protocol.C_ATTACK.object_id)
+inline void C_ATTACK::set_from(uint64_t value) {
+  _internal_set_from(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_ATTACK.from)
+}
+
+// uint64 to = 2;
+inline void C_ATTACK::clear_to() {
+  _impl_.to_ = uint64_t{0u};
+}
+inline uint64_t C_ATTACK::_internal_to() const {
+  return _impl_.to_;
+}
+inline uint64_t C_ATTACK::to() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ATTACK.to)
+  return _internal_to();
+}
+inline void C_ATTACK::_internal_set_to(uint64_t value) {
+  
+  _impl_.to_ = value;
+}
+inline void C_ATTACK::set_to(uint64_t value) {
+  _internal_set_to(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_ATTACK.to)
 }
 
 // -------------------------------------------------------------------

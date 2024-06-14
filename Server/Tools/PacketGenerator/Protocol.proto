@@ -50,7 +50,8 @@ message S_MOVE
 
 message C_ATTACK
 {
-	uint64 object_id = 1;
+	uint64 from = 1;
+	uint64 to = 2;
 }
 
 message S_HIT

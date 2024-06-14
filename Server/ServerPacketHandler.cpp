@@ -71,7 +71,7 @@ bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pk
 	if (room == nullptr)
 		return false;
 
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, player, pkt.object_id()));
+	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, pkt.from(), pkt.to()));
 
 	return true;
 }

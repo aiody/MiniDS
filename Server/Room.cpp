@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "ObjectUtils.h"
+#include "Creature.h"
 
 shared_ptr<Room> gRoom = make_shared<Room>();
 
@@ -110,35 +111,30 @@ void Room::HandleMove(Protocol::C_MOVE pkt)
 	}
 }
 
-void Room::HandleAttack(shared_ptr<Player> from, uint64 toId)
+void Room::HandleAttack(uint64 fromId, uint64 toId)
 {
-	if (_objects.find(from->objectInfo->object_id()) == _objects.end())
+	if (_objects.find(fromId) == _objects.end())
 		return;
 	if (_objects.find(toId) == _objects.end())
 		return;
 
 	// hp 감소
-	shared_ptr<Object> object = _objects[toId];
-	float damage = 0;
-	float remainHp = 0;
+	shared_ptr<Object> from = _objects[fromId];
+	shared_ptr<Object> to = _objects[toId];
 
 	// 피격 처리
-	{
-		shared_ptr<Creature> hitCreature = static_pointer_cast<Creature>(object);
-		float hpOfHitCreature = hitCreature->statInfo->hp();
-		damage = from->statInfo->damage();
-		remainHp = ::max(hpOfHitCreature - damage, 0.0f);
-		hitCreature->statInfo->set_hp(remainHp);
-
-		if (hitCreature->IsPlayer() == false)
-		{
-			shared_ptr<Monster> monster = static_pointer_cast<Monster>(hitCreature);
-			monster->SetTarget(from);
-		}
-	}
+	shared_ptr<Creature> attacker = static_pointer_cast<Creature>(from);
+	shared_ptr<Creature> hitCreature = static_pointer_cast<Creature>(to);
+	float hpOfHitCreature = hitCreature->statInfo->hp();
+	float damage = attacker->statInfo->damage();
+	float remainHp = ::max(hpOfHitCreature - damage, 0.0f);
+	hitCreature->statInfo->set_hp(remainHp);
+	hitCreature->SetTarget(attacker);
 
 	if (remainHp <= 0)
 	{
+		attacker->SetTarget(nullptr);
+		hitCreature->SetState(Protocol::CREATURE_STATE_DEATH);
 		Protocol::S_DEATH deathPkt;
 		{
 			deathPkt.set_from(from->objectInfo->object_id());

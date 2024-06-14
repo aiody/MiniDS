@@ -2,6 +2,7 @@
 
 class Player;
 class Object;
+class Creature;
 
 class Room : public enable_shared_from_this<Room>
 {
@@ -17,7 +18,7 @@ public:
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);
 	void HandleMove(Protocol::C_MOVE pkt);
-	void HandleAttack(shared_ptr<Player> from, uint64 toId);
+	void HandleAttack(uint64 fromId, uint64 toId);
 
 	void Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId = 0);
 

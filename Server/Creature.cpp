@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Creature.h"
+#include "Room.h"
 
 Creature::Creature()
 {
@@ -12,4 +13,27 @@ Creature::Creature()
 
 Creature::~Creature()
 {
+}
+
+void Creature::SetState(Protocol::CreatureState state)
+{
+	creatureInfo->set_state(state);
+	BroadcastMove();
+}
+
+void Creature::BroadcastMove()
+{
+	shared_ptr<Room> myRoom = room.load().lock();
+	if (myRoom == nullptr)
+		return;
+
+	Protocol::S_MOVE movePkt;
+	{
+		movePkt.set_object_id(objectInfo->object_id());
+		Protocol::PosInfo* pktPosInfo = movePkt.mutable_pos_info();
+		pktPosInfo->CopyFrom(*posInfo);
+		movePkt.set_state(creatureInfo->state());
+	}
+	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(movePkt);
+	myRoom->Broadcast(sendBuffer);
 }

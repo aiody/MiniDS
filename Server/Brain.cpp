@@ -176,7 +176,10 @@ BTNodeStatus Brain::ChaseAndAttackPlayer()
     if (myRoom == nullptr)
         return BTNodeStatus::Failure;
 
-    shared_ptr<Player> target = myRoom->FindPlayer();
+    if (_owner->_target == nullptr)
+        return BTNodeStatus::Failure;
+
+    shared_ptr<Player> target = _owner->_target->IsPlayer() ? static_pointer_cast<Player>(_owner->_target) : nullptr;
     if (target == nullptr)
         return BTNodeStatus::Failure;
 

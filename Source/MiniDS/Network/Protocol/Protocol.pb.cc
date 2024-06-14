@@ -126,7 +126,8 @@ struct S_MOVEDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 S_MOVEDefaultTypeInternal _S_MOVE_default_instance_;
 PROTOBUF_CONSTEXPR C_ATTACK::C_ATTACK(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.object_id_)*/uint64_t{0u}
+    /*decltype(_impl_.from_)*/uint64_t{0u}
+  , /*decltype(_impl_.to_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct C_ATTACKDefaultTypeInternal {
   PROTOBUF_CONSTEXPR C_ATTACKDefaultTypeInternal()
@@ -236,7 +237,8 @@ const uint32_t TableStruct_Protocol_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_ATTACK, _impl_.object_id_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_ATTACK, _impl_.from_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_ATTACK, _impl_.to_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_HIT, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -266,8 +268,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 39, -1, -1, sizeof(::Protocol::C_MOVE)},
   { 48, -1, -1, sizeof(::Protocol::S_MOVE)},
   { 57, -1, -1, sizeof(::Protocol::C_ATTACK)},
-  { 64, -1, -1, sizeof(::Protocol::S_HIT)},
-  { 73, -1, -1, sizeof(::Protocol::S_DEATH)},
+  { 65, -1, -1, sizeof(::Protocol::S_HIT)},
+  { 74, -1, -1, sizeof(::Protocol::S_DEATH)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -296,10 +298,10 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   ".Protocol.CreatureState\"h\n\006S_MOVE\022\021\n\tobj"
   "ect_id\030\001 \001(\004\022#\n\010pos_info\030\002 \001(\0132\021.Protoco"
   "l.PosInfo\022&\n\005state\030\003 \001(\0162\027.Protocol.Crea"
-  "tureState\"\035\n\010C_ATTACK\022\021\n\tobject_id\030\001 \001(\004"
-  "\"1\n\005S_HIT\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001(\004\022\016\n\006d"
-  "amage\030\003 \001(\002\"3\n\007S_DEATH\022\014\n\004from\030\001 \001(\004\022\n\n\002"
-  "to\030\002 \001(\004\022\016\n\006damage\030\003 \001(\002b\006proto3"
+  "tureState\"$\n\010C_ATTACK\022\014\n\004from\030\001 \001(\004\022\n\n\002t"
+  "o\030\002 \001(\004\"1\n\005S_HIT\022\014\n\004from\030\001 \001(\004\022\n\n\002to\030\002 \001"
+  "(\004\022\016\n\006damage\030\003 \001(\002\"3\n\007S_DEATH\022\014\n\004from\030\001 "
+  "\001(\004\022\n\n\002to\030\002 \001(\004\022\016\n\006damage\030\003 \001(\002b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -307,7 +309,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_Protocol_2eproto_de
 };
 static ::_pbi::once_flag descriptor_table_Protocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_Protocol_2eproto = {
-    false, false, 592, descriptor_table_protodef_Protocol_2eproto,
+    false, false, 599, descriptor_table_protodef_Protocol_2eproto,
     "Protocol.proto",
     &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 11,
     schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
@@ -1560,11 +1562,14 @@ C_ATTACK::C_ATTACK(const C_ATTACK& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   C_ATTACK* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.object_id_){}
+      decltype(_impl_.from_){}
+    , decltype(_impl_.to_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.object_id_ = from._impl_.object_id_;
+  ::memcpy(&_impl_.from_, &from._impl_.from_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.to_) -
+    reinterpret_cast<char*>(&_impl_.from_)) + sizeof(_impl_.to_));
   // @@protoc_insertion_point(copy_constructor:Protocol.C_ATTACK)
 }
 
@@ -1573,7 +1578,8 @@ inline void C_ATTACK::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.object_id_){uint64_t{0u}}
+      decltype(_impl_.from_){uint64_t{0u}}
+    , decltype(_impl_.to_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -1601,7 +1607,9 @@ void C_ATTACK::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.object_id_ = uint64_t{0u};
+  ::memset(&_impl_.from_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.to_) -
+      reinterpret_cast<char*>(&_impl_.from_)) + sizeof(_impl_.to_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1611,10 +1619,18 @@ const char* C_ATTACK::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // uint64 object_id = 1;
+      // uint64 from = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.object_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.from_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 to = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.to_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1648,10 +1664,16 @@ uint8_t* C_ATTACK::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint64 object_id = 1;
-  if (this->_internal_object_id() != 0) {
+  // uint64 from = 1;
+  if (this->_internal_from() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_object_id(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_from(), target);
+  }
+
+  // uint64 to = 2;
+  if (this->_internal_to() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_to(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1670,9 +1692,14 @@ size_t C_ATTACK::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // uint64 object_id = 1;
-  if (this->_internal_object_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_object_id());
+  // uint64 from = 1;
+  if (this->_internal_from() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_from());
+  }
+
+  // uint64 to = 2;
+  if (this->_internal_to() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_to());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1693,8 +1720,11 @@ void C_ATTACK::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_object_id() != 0) {
-    _this->_internal_set_object_id(from._internal_object_id());
+  if (from._internal_from() != 0) {
+    _this->_internal_set_from(from._internal_from());
+  }
+  if (from._internal_to() != 0) {
+    _this->_internal_set_to(from._internal_to());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1713,7 +1743,12 @@ bool C_ATTACK::IsInitialized() const {
 void C_ATTACK::InternalSwap(C_ATTACK* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.object_id_, other->_impl_.object_id_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(C_ATTACK, _impl_.to_)
+      + sizeof(C_ATTACK::_impl_.to_)
+      - PROTOBUF_FIELD_OFFSET(C_ATTACK, _impl_.from_)>(
+          reinterpret_cast<char*>(&_impl_.from_),
+          reinterpret_cast<char*>(&other->_impl_.from_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata C_ATTACK::GetMetadata() const {

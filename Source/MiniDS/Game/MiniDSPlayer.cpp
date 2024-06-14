@@ -81,7 +81,8 @@ void AMiniDSPlayer::AnimNotify_Attack()
 		{
 			Protocol::C_ATTACK AttackPkt;
 			{
-				AttackPkt.set_object_id(OtherPlayer->GetObjectInfo()->object_id());
+				AttackPkt.set_from(ObjectInfo->object_id());
+				AttackPkt.set_to(OtherPlayer->GetObjectInfo()->object_id());
 			}
 			SEND_PACKET(AttackPkt);
 		}
