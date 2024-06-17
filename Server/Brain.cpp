@@ -40,6 +40,9 @@ void Brain::Init()
             return AvoidWhileCooling();
         },
         [this]() {
+            if (IsDead())
+                return BTNodeStatus::Failure;
+
             _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
@@ -50,6 +53,9 @@ void Brain::Init()
             return ChaseAndAttackPlayer();
         },
         [this]() {
+            if (IsDead())
+                return BTNodeStatus::Failure;
+
             _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
@@ -75,6 +81,9 @@ void Brain::Init()
             return MoveToDest();
         },
         [this]() {
+            if (IsDead())
+                return BTNodeStatus::Failure;
+
             _owner->SetState(Protocol::CREATURE_STATE_RUN);
             return BTNodeStatus::Running;
         });
@@ -86,6 +95,9 @@ void Brain::Init()
             return Wait();
         },
         [this]() {
+            if (IsDead())
+                return BTNodeStatus::Failure;
+
             _waitUntil = ::GetTickCount64() + (Utils::GetRandom(2.f, 4.f) * 1000.f);
             _owner->SetState(Protocol::CREATURE_STATE_IDLE);
             return BTNodeStatus::Running;
@@ -101,6 +113,9 @@ void Brain::Init()
             return MoveToDest();
         },
         [this]() {
+            if (IsDead())
+                return BTNodeStatus::Failure;
+
             _owner->SetState(Protocol::CREATURE_STATE_WALK);
             return BTNodeStatus::Running;
         });
@@ -134,6 +149,11 @@ void Brain::Init()
 void Brain::Run()
 {
     root->Run();
+}
+
+bool Brain::IsDead()
+{
+    return _owner->creatureInfo->state() == Protocol::CREATURE_STATE_DEATH;
 }
 
 bool Brain::IsBattleMode()

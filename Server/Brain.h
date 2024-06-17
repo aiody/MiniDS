@@ -16,6 +16,7 @@ public:
 	void Run();
 
 protected:
+	bool IsDead();
 	bool IsBattleMode();
 	bool IsTooFarToAttack();
 	bool IsAttackCooling();

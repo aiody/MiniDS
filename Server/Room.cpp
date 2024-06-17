@@ -179,7 +179,7 @@ bool Room::EnterRoom(shared_ptr<Object> object)
 
 	object->posInfo->set_x(Utils::GetRandom(0.f, 500.f));
 	object->posInfo->set_y(Utils::GetRandom(0.f, 500.f));
-	object->posInfo->set_z(118.f);
+	object->posInfo->set_z(230.f);
 	if (object->IsPlayer())
 	{
 		auto player = static_pointer_cast<Player>(object);
