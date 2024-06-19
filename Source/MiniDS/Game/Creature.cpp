@@ -65,6 +65,8 @@ void ACreature::Tick(float DeltaSeconds)
 		FVector Location = GetActorLocation();
 		FVector DestLocation = FVector(DestInfo->x(), DestInfo->y(), DestInfo->z());
 
+		DrawDebugLine(GetWorld(), Location, DestLocation, FColor::Orange);
+
 		FVector MoveDir = (DestLocation - Location);
 		const float DistToDest = MoveDir.Length();
 		MoveDir.Normalize();
@@ -96,7 +98,8 @@ void ACreature::SetMoveDir(Protocol::MoveDir Dir)
 
 void ACreature::SetState(Protocol::CreatureState State)
 {
-	if (GetState() == State)
+	Protocol::CreatureState PrevState = GetState();
+	if (PrevState == State)
 		return;
 
 	CreatureInfo->set_state(State);
@@ -106,7 +109,7 @@ void ACreature::SetState(Protocol::CreatureState State)
 		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("AttackSignal"));
 	}
 
-	if (State == Protocol::CREATURE_STATE_HIT)
+	if (State == Protocol::CREATURE_STATE_HIT && PrevState != Protocol::CREATURE_STATE_ATTACK)
 	{
 		GetAnimationComponent()->GetAnimInstance()->JumpToNode(TEXT("HitSignal"));
 	}

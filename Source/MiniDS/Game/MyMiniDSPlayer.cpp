@@ -13,11 +13,12 @@ AMyMiniDSPlayer::AMyMiniDSPlayer()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 500.0f;
+	CameraBoom->TargetArmLength = 3000.0f;
 	CameraBoom->AddLocalRotation(FRotator(-35.f, 0, 0));
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	FollowCamera->SetFieldOfView(45.0f);
 	FollowCamera->bUsePawnControlRotation = false;
 }
 

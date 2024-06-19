@@ -7,7 +7,8 @@ public:
 	Creature();
 	virtual ~Creature();
 
-	void SetTarget(shared_ptr<class Creature> target) { _target = target; }
+	void SetTarget(shared_ptr<Creature> target) { _target = target; }
+	shared_ptr<Creature> GetTarget() { return _target; }
 	void SetState(Protocol::CreatureState state);
 
 protected:
@@ -18,5 +19,5 @@ public:
 	Protocol::StatInfo* statInfo;
 
 protected:
-	shared_ptr<class Creature> _target;
+	shared_ptr<Creature> _target;
 };

@@ -16,13 +16,9 @@ public:
 	virtual void Start();
 	virtual void UpdateTick();
 
-	bool Move(Vector3 targetPos);
+	bool Move(Vector3 targetPos, float speed);
 	Protocol::MoveDir GetMoveDir(Vector3 dirVector);
-
-private:
-	
 
 protected:
 	shared_ptr<class Brain> _brain;
-	float _speed = 25.f;
 };

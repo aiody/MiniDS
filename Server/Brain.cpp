@@ -34,6 +34,11 @@ void Brain::Init()
             bool result = IsAttackCooling();
             return IsAttackCooling();
         });
+    BTActionRef setAvoidDir = make_shared<BTAction>([this]()
+        {
+            cout << "Set avoid Direction" << endl;
+            return SetAvoidDir();
+        });
     BTActionRef avoidWithPlayerWhileCooling = make_shared<BTAction>([this]()
         {
             cout << "Run away!" << endl;
@@ -78,7 +83,7 @@ void Brain::Init()
     BTActionRef avoidPlayer = make_shared<BTAction>([this]()
         {
             cout << "Avoiding the Player" << endl;
-            return MoveToDest();
+            return MoveToDest(_speed_run);
         },
         [this]() {
             if (IsDead())
@@ -110,7 +115,7 @@ void Brain::Init()
     BTActionRef wanderMoveToDest = make_shared<BTAction>([this]()
         {
             cout << "Move to destination." << endl;
-            return MoveToDest();
+            return MoveToDest(_speed_walk);
         },
         [this]() {
             if (IsDead())
@@ -132,6 +137,7 @@ void Brain::Init()
     battleModeSelector->AddChild(chaseAndAttackPlayer);
 
     avoidWhileCoolingSequence->AddChild(isAttackCooling);
+    avoidWhileCoolingSequence->AddChild(setAvoidDir);
     avoidWhileCoolingSequence->AddChild(avoidWithPlayerWhileCooling);
 
     noneBattleModeSelector->AddChild(avoidSequence);
@@ -206,7 +212,7 @@ BTNodeStatus Brain::ChaseAndAttackPlayer()
     if (_owner->creatureInfo->state() != Protocol::CREATURE_STATE_ATTACK)
     {
         Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
-        _owner->Move(targetPos);
+        _owner->Move(targetPos, _speed_run);
         Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), target->posInfo->z());
 
         float dist = (targetPos - myPos).length();
@@ -245,6 +251,9 @@ bool Brain::IsTooCloseWithPlayer()
 
     for (auto& player : myRoom->FindPlayers())
     {
+        if (player->creatureInfo->state() == Protocol::CREATURE_STATE_DEATH)
+            continue;
+
         Vector3 targetPos(player->posInfo->x(), player->posInfo->y(), player->posInfo->z());
         Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), player->posInfo->z());
         float dist = (targetPos - myPos).length();
@@ -285,11 +294,8 @@ BTNodeStatus Brain::SetAvoidDest()
     return BTNodeStatus::Success;
 }
 
-BTNodeStatus Brain::AvoidWhileCooling()
+BTNodeStatus Brain::SetAvoidDir()
 {
-    if (::GetTickCount64() >= _attackCooldownUntil)
-        return BTNodeStatus::Success;
-
     shared_ptr<Room> myRoom = _owner->room.load().lock();
     if (myRoom == nullptr)
         return BTNodeStatus::Failure;
@@ -300,19 +306,28 @@ BTNodeStatus Brain::AvoidWhileCooling()
 
     Vector3 targetPos(target->posInfo->x(), target->posInfo->y(), target->posInfo->z());
     Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), targetPos.z);
-    Vector3 AvoidDir = (myPos - targetPos).normalize();
+    Vector3 avoidDir = (myPos - targetPos).normalize();
+    _destDir = avoidDir;
+    return BTNodeStatus::Success;
+}
 
-    _owner->Move(AvoidDir);
+BTNodeStatus Brain::AvoidWhileCooling()
+{
+    if (::GetTickCount64() >= _attackCooldownUntil)
+        return BTNodeStatus::Success;
+
+    Vector3 myPos(_owner->posInfo->x(), _owner->posInfo->y(), _owner->posInfo->z());
+    _owner->Move(myPos + _destDir * 1000.0f, _speed_run);
 
     return BTNodeStatus::Running;
 }
 
-BTNodeStatus Brain::MoveToDest()
+BTNodeStatus Brain::MoveToDest(float speed)
 {
     if (IsBattleMode())
         return BTNodeStatus::Failure;
 
-    return _owner->Move(_destPos) ? BTNodeStatus::Success : BTNodeStatus::Running;
+    return _owner->Move(_destPos, speed) ? BTNodeStatus::Success : BTNodeStatus::Running;
 }
 
 BTNodeStatus Brain::SetDestForWandering()

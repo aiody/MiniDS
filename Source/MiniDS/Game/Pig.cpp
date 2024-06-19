@@ -70,6 +70,8 @@ void APig::AnimNotify_Attack()
 		AActor* Actor = HitResult.GetActor();
 		ACreature* OtherPlayer = Cast<ACreature>(Actor);
 
+		if (OtherPlayer->IsMyPlayer() == false)
+			return;
 		if (OtherPlayer->GetState() == Protocol::CREATURE_STATE_DEATH)
 			return;
 

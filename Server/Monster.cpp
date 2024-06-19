@@ -30,7 +30,7 @@ void Monster::UpdateTick()
 	_brain->Run();
 }
 
-bool Monster::Move(Vector3 targetPos)
+bool Monster::Move(Vector3 targetPos, float speed)
 {
 	if (creatureInfo->state() != Protocol::CREATURE_STATE_WALK
 		&& creatureInfo->state() != Protocol::CREATURE_STATE_RUN)
@@ -38,7 +38,7 @@ bool Monster::Move(Vector3 targetPos)
 
 	Vector3 myPos(posInfo->x(), posInfo->y(), targetPos.z);
 
-	Vector3 dir = (targetPos - myPos).normalize() * _speed;
+	Vector3 dir = (targetPos - myPos).normalize() * speed;
 	Vector3 destPos = myPos + dir;
 	Vector3 lookDir = myPos - destPos;
 
