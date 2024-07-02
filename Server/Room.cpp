@@ -18,12 +18,13 @@ Room::~Room()
 
 void Room::Start()
 {
-	//cout << "Room Start!" << endl;
 	gJobQueue->Push(make_shared<Job>(gRoom, &Room::UpdateTick));
 
-	shared_ptr<Monster> monster = ObjectUtils::CreateMonster();
-	EnterRoom(monster);
-	monster->Start();
+	{
+		shared_ptr<Monster> monster = ObjectUtils::CreateMonster();
+		EnterRoom(monster);
+		monster->Start();
+	}
 }
 
 void Room::UpdateTick()
@@ -72,6 +73,11 @@ vector<shared_ptr<Player>> Room::FindPlayers()
 		}
 	}
 	return players;
+}
+
+bool Room::HasObject(uint64 id)
+{
+	return _objects.find(id) == _objects.end();
 }
 
 bool Room::HandleEnterPlayer(shared_ptr<Player> player)
@@ -131,10 +137,13 @@ void Room::HandleAttack(uint64 fromId, uint64 toId)
 	hitCreature->statInfo->set_hp(remainHp);
 	hitCreature->SetTarget(attacker);
 
+	cout << "[Game] ( " << fromId << " ) attacked ( " << toId << " ) with " << damage << " damage. HP " << remainHp << " left." << endl;
+
 	if (remainHp <= 0)
 	{
+		cout << "[Game] ( " << toId << " ) is dead." << endl;
 		attacker->SetTarget(nullptr);
-		hitCreature->SetState(Protocol::CREATURE_STATE_DEATH);
+		hitCreature->OnDead();
 		Protocol::S_DEATH deathPkt;
 		{
 			deathPkt.set_from(from->objectInfo->object_id());
@@ -175,10 +184,12 @@ void Room::Broadcast(shared_ptr<SendBuffer> sendBuffer, uint64 exceptId)
 
 bool Room::EnterRoom(shared_ptr<Object> object)
 {
+	cout << "[Game] ( " << object->objectInfo->object_id() << " ) entered room." << endl;
+
 	bool success = AddObject(object);
 
-	object->posInfo->set_x(Utils::GetRandom(0.f, 500.f));
-	object->posInfo->set_y(Utils::GetRandom(0.f, 500.f));
+	object->posInfo->set_x(Utils::GetRandom(-1000.f, 1000.f));
+	object->posInfo->set_y(Utils::GetRandom(-1000.f, 1000.f));
 	object->posInfo->set_z(230.f);
 	if (object->IsPlayer())
 	{
@@ -248,6 +259,8 @@ bool Room::LeaveRoom(shared_ptr<Object> object)
 	if (object == nullptr)
 		return false;
 
+	cout << "[Game] ( " << object->objectInfo->object_id() << " ) left room." << endl;
+
 	const uint64 id = object->objectInfo->object_id();
 	bool success = RemoveObject(id);
 
@@ -275,6 +288,11 @@ bool Room::LeaveRoom(shared_ptr<Object> object)
 			if (auto session = static_pointer_cast<Player>(object)->session.lock())
 				session->Send(despawnBuffer);
 		}
+	}
+
+	if (auto session = static_pointer_cast<Player>(object)->session.lock())
+	{
+		session->Disconnect(L"User");
 	}
 
 	return true;

@@ -13,6 +13,8 @@ public:
 	static void		InitTLS();
 	static void		DestroyTLS();
 
+	static uint32	GetThreadCountToLaunch();
+
 private:
 	mutex			_lock;
 	vector<thread>	_threads;

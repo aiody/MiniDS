@@ -43,3 +43,10 @@ void ThreadManager::InitTLS()
 void ThreadManager::DestroyTLS()
 {
 }
+
+uint32 ThreadManager::GetThreadCountToLaunch()
+{
+	uint32 numOfProcessor = ::thread::hardware_concurrency();
+	cout << "[System] Logical processor count : " << numOfProcessor << endl;
+	return numOfProcessor * 1.5f; // (NumberOfProcessor * 2) + 1 이 효율적이라고도 함.
+}

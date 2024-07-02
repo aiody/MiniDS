@@ -16,6 +16,8 @@ public:
 	virtual void Start();
 	virtual void UpdateTick();
 
+	virtual void OnDead() override;
+
 	bool Move(Vector3 targetPos, float speed);
 	Protocol::MoveDir GetMoveDir(Vector3 dirVector);
 

@@ -14,6 +14,7 @@ public:
 	void UpdateTick();
 	shared_ptr<Player> FindPlayer();
 	vector<shared_ptr<Player>> FindPlayers();
+	bool HasObject(uint64 id);
 
 	bool HandleEnterPlayer(shared_ptr<Player> player);
 	bool HandleLeavePlayer(shared_ptr<Player> player);

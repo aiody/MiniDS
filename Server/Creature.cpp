@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Creature.h"
-#include "Room.h"
+#include "Room.h" 
+#include "Monster.h"
 
 Creature::Creature()
 {
@@ -19,6 +20,11 @@ void Creature::SetState(Protocol::CreatureState state)
 {
 	creatureInfo->set_state(state);
 	BroadcastMove();
+}
+
+void Creature::OnDead()
+{
+	SetState(Protocol::CREATURE_STATE_DEATH);
 }
 
 void Creature::BroadcastMove()

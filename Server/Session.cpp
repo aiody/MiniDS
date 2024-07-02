@@ -56,8 +56,7 @@ void Session::Disconnect(const WCHAR* cause)
 	if (_connected.exchange(false) == false)
 		return;
 
-	wcout << "Disconnect : " << cause << endl;
-
+	wcout << "[System] Disconnected by " << cause << endl;
 	OnDisconnected();
 	GetService()->ReleaseSession(GetSessionRef());
 
@@ -209,8 +208,10 @@ void Session::ProcessConnect()
 	
 	_connected.store(true);
 
-	GetService()->AddSession(GetSessionRef());
+	wcout << "[System] Client Connected!, IP : " << GetNetAddress().GetIpAddress() << ", Port : " << GetNetAddress().GetPort() << endl;
 	
+	GetService()->AddSession(GetSessionRef());
+
 	OnConnected();
 	
 	RegisterRecv();
@@ -222,6 +223,7 @@ void Session::ProcessDisconnect()
 
 	_connected.store(false);
 
+	cout << "[System] Disconnected by User" << endl;
 	OnDisconnected();
 }
 

@@ -30,21 +30,24 @@ void Brain::Init()
     BTSequenceRef avoidWhileCoolingSequence = make_shared<BTSequence>();
     BTConditionRef isAttackCooling = make_shared<BTCondition>([this]()
         {
-            cout << "Is Attack Cooling" << endl;
             bool result = IsAttackCooling();
             return IsAttackCooling();
         });
     BTActionRef setAvoidDir = make_shared<BTAction>([this]()
         {
-            cout << "Set avoid Direction" << endl;
             return SetAvoidDir();
+        },
+        [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Set direction to avoid." << endl;
+            return BTNodeStatus::Running;
         });
     BTActionRef avoidWithPlayerWhileCooling = make_shared<BTAction>([this]()
         {
-            cout << "Run away!" << endl;
             return AvoidWhileCooling();
         },
         [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Run away!" << endl;
+
             if (IsDead())
                 return BTNodeStatus::Failure;
 
@@ -54,10 +57,11 @@ void Brain::Init()
 
     BTActionRef chaseAndAttackPlayer = make_shared<BTAction>([this]()
         {
-            cout << "Chase the Player" << endl;
             return ChaseAndAttackPlayer();
         },
         [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Chase the Player." << endl;
+
             if (IsDead())
                 return BTNodeStatus::Failure;
 
@@ -71,21 +75,24 @@ void Brain::Init()
     BTSequenceRef avoidSequence = make_shared<BTSequence>();
     BTConditionRef isTooCloseWithPlayer = make_shared<BTCondition>([this]()
         {
-            cout << "Check is too close with player." << endl;
             return IsTooCloseWithPlayer();
         });
     BTActionRef setAvoidDest = make_shared<BTAction>([this]()
         {
-            cout << "Set avoid Destination." << endl;
             return SetAvoidDest();
+        },
+        [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Set destination to avoid." << endl;
+            return BTNodeStatus::Running;
         });
 
     BTActionRef avoidPlayer = make_shared<BTAction>([this]()
         {
-            cout << "Avoiding the Player" << endl;
             return MoveToDest(_speed_run);
         },
         [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Avoid the Player." << endl;
+
             if (IsDead())
                 return BTNodeStatus::Failure;
 
@@ -96,10 +103,11 @@ void Brain::Init()
     BTSequenceRef wanderSequence = make_shared<BTSequence>();
     BTActionRef wanderWait = make_shared<BTAction>([this]()
         {
-            cout << "Wait." << endl;
             return Wait();
         },
         [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Wait." << endl;
+
             if (IsDead())
                 return BTNodeStatus::Failure;
 
@@ -109,15 +117,19 @@ void Brain::Init()
         });
     BTActionRef wanderSetDest = make_shared<BTAction>([this]()
         {
-            cout << "Set destination." << endl;
             return SetDestForWandering();
+        },
+        [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Set destination to wander." << endl;
+            return BTNodeStatus::Running;
         });
     BTActionRef wanderMoveToDest = make_shared<BTAction>([this]()
         {
-            cout << "Move to destination." << endl;
             return MoveToDest(_speed_walk);
         },
         [this]() {
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Move to destination for wandering." << endl;
+
             if (IsDead())
                 return BTNodeStatus::Failure;
 
@@ -205,6 +217,12 @@ BTNodeStatus Brain::ChaseAndAttackPlayer()
     if (_owner->_target == nullptr)
         return BTNodeStatus::Failure;
 
+    if (myRoom->HasObject(_owner->_target->objectInfo->object_id()))
+    {
+        _owner->_target = nullptr;
+        return BTNodeStatus::Failure;
+    }
+
     shared_ptr<Player> target = _owner->_target->IsPlayer() ? static_pointer_cast<Player>(_owner->_target) : nullptr;
     if (target == nullptr)
         return BTNodeStatus::Failure;
@@ -218,14 +236,14 @@ BTNodeStatus Brain::ChaseAndAttackPlayer()
         float dist = (targetPos - myPos).length();
         if (dist >= _see_target_dist)
         {
-            cout << "Battle mode is end." << endl;
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Battle mode is end." << endl;
             _owner->SetTarget(nullptr);
             return BTNodeStatus::Failure;
         }
 
         if (dist < _attack_range)
         {
-            cout << "Attack!" << endl;
+            cout << "[AI] ( " << _owner->objectInfo->object_id() << " ) Attack!" << endl;
             _owner->SetState(Protocol::CREATURE_STATE_ATTACK);
             _attackCooldownUntil = ::GetTickCount64() + (_attackCooldown * 1000.0f);
             _attackUntil = ::GetTickCount64() + (_attackLength * 1000.0f);

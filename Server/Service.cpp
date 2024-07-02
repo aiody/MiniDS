@@ -35,6 +35,7 @@ void Service::AddSession(shared_ptr<Session> session)
 	WRITE_LOCK;
 	_sessionCount++;
 	_sessions.insert(session);
+	wcout << "[System] Current session count : " << GetCurrentSessionCount() << endl;
 }
 
 void Service::ReleaseSession(shared_ptr<Session> session)
@@ -42,6 +43,7 @@ void Service::ReleaseSession(shared_ptr<Session> session)
 	WRITE_LOCK;
 	ASSERT_CRASH(_sessions.erase(session) != 0);
 	_sessionCount--;
+	wcout << "[System] Current session count : " << GetCurrentSessionCount() << endl;
 }
 
 

@@ -11,6 +11,8 @@ public:
 	shared_ptr<Creature> GetTarget() { return _target; }
 	void SetState(Protocol::CreatureState state);
 
+	virtual void OnDead();
+
 protected:
 	void BroadcastMove();
 

@@ -17,7 +17,8 @@ int main()
 
     ASSERT_CRASH(service->Start());
 
-    for (int32 i = 0; i < 5; i++)
+    uint32 threadCnt = ThreadManager::GetThreadCountToLaunch();
+    for (int32 i = 0; i < threadCnt; i++)
     {
         gThreadManager->Launch([=]()
             {

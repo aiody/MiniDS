@@ -12,6 +12,7 @@ Monster::Monster()
 
 Monster::~Monster()
 {
+	_brain = nullptr;
 }
 
 shared_ptr<Monster> Monster::GetMonsterRef()
@@ -27,7 +28,14 @@ void Monster::Start()
 
 void Monster::UpdateTick()
 {
-	_brain->Run();
+	if (_brain != nullptr)
+		_brain->Run();
+}
+
+void Monster::OnDead()
+{
+	Creature::OnDead();
+	_brain = nullptr;
 }
 
 bool Monster::Move(Vector3 targetPos, float speed)
