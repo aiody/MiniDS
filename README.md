@@ -5,10 +5,13 @@
 * 데이터 타입 : Protobuf
 
 # 주요 기능
- ## IOCP 서버
+ * [네트워크 코드](https://github.com/aiody/MiniDS/tree/main/Server/Codes/Network)
+ * [패킷 설계](https://github.com/aiody/MiniDS/tree/main/Server/Tools/PacketGenerator)
+ * [잡(or 태스크 or 메시지) 관리](https://github.com/aiody/MiniDS/tree/main/Server/Codes/Job)
+ * 쓰레드 구조
  ![image](https://github.com/aiody/MiniDS/assets/11348329/115dcf0f-e4a8-496f-a710-470b0c4abd4d)
-
- ## 몬스터 AI
+ * [몬스터 AI(행동트리)](https://github.com/aiody/MiniDS/tree/main/Server/Codes/Contents/MonsterAI)
+ * 행동트리 구조
  ![image](https://github.com/aiody/MiniDS/assets/11348329/c87407d6-a276-423c-a3b7-54b2e4cccefa)
 
 # 시연 영상
