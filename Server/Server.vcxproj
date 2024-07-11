@@ -72,22 +72,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,95 +159,95 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BehaviorTree.cpp" />
-    <ClCompile Include="Brain.cpp" />
-    <ClCompile Include="Creature.cpp" />
-    <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectUtils.cpp" />
-    <ClCompile Include="ServerPacketHandler.cpp" />
-    <ClCompile Include="Enum.pb.cc">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="GameSession.cpp" />
-    <ClCompile Include="Global.cpp" />
-    <ClCompile Include="IocpCore.cpp" />
-    <ClCompile Include="IocpEvent.cpp" />
-    <ClCompile Include="Job.cpp" />
-    <ClCompile Include="JobQueue.cpp" />
-    <ClCompile Include="JobTimer.cpp" />
-    <ClCompile Include="Listener.cpp" />
-    <ClCompile Include="Lock.cpp" />
-    <ClCompile Include="NetAddress.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="Codes\Contents\Creature.cpp" />
+    <ClCompile Include="Codes\Contents\Monster.cpp" />
+    <ClCompile Include="Codes\Contents\MonsterAI\BehaviorTree.cpp" />
+    <ClCompile Include="Codes\Contents\MonsterAI\Brain.cpp" />
+    <ClCompile Include="Codes\Contents\Object.cpp" />
+    <ClCompile Include="Codes\Contents\Player.cpp" />
+    <ClCompile Include="Codes\Contents\Room.cpp" />
+    <ClCompile Include="Codes\Inclusion\Global.cpp" />
+    <ClCompile Include="Codes\Inclusion\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Protocol.pb.cc">
+    <ClCompile Include="Codes\Inclusion\TLS.cpp" />
+    <ClCompile Include="Codes\Job\Job.cpp" />
+    <ClCompile Include="Codes\Job\JobQueue.cpp" />
+    <ClCompile Include="Codes\Job\JobTimer.cpp" />
+    <ClCompile Include="Codes\Main\GameSession.cpp" />
+    <ClCompile Include="Codes\Main\Server.cpp" />
+    <ClCompile Include="Codes\Main\ServerPacketHandler.cpp" />
+    <ClCompile Include="Codes\Network\IocpCore.cpp" />
+    <ClCompile Include="Codes\Network\IocpEvent.cpp" />
+    <ClCompile Include="Codes\Network\Listener.cpp" />
+    <ClCompile Include="Codes\Network\NetAddress.cpp" />
+    <ClCompile Include="Codes\Network\RecvBuffer.cpp" />
+    <ClCompile Include="Codes\Network\SendBuffer.cpp" />
+    <ClCompile Include="Codes\Network\Service.cpp" />
+    <ClCompile Include="Codes\Network\Session.cpp" />
+    <ClCompile Include="Codes\Network\SocketUtils.cpp" />
+    <ClCompile Include="Codes\Protocol\Enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RecvBuffer.cpp" />
-    <ClCompile Include="Room.cpp" />
-    <ClCompile Include="SendBuffer.cpp" />
-    <ClCompile Include="Server.cpp" />
-    <ClCompile Include="Service.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="SocketUtils.cpp" />
-    <ClCompile Include="Struct.pb.cc">
+    <ClCompile Include="Codes\Protocol\Protocol.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ThreadManager.cpp" />
-    <ClCompile Include="TLS.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Codes\Protocol\Struct.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Codes\Thread\Lock.cpp" />
+    <ClCompile Include="Codes\Thread\ThreadManager.cpp" />
+    <ClCompile Include="Codes\Utils\ObjectUtils.cpp" />
+    <ClCompile Include="Codes\Utils\Utils.cpp" />
+    <ClCompile Include="Codes\Utils\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BehaviorTree.h" />
-    <ClInclude Include="Brain.h" />
-    <ClInclude Include="Creature.h" />
-    <ClInclude Include="Monster.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ObjectUtils.h" />
-    <ClInclude Include="ServerPacketHandler.h" />
-    <ClInclude Include="Enum.pb.h" />
-    <ClInclude Include="GameSession.h" />
-    <ClInclude Include="Global.h" />
-    <ClInclude Include="IocpCore.h" />
-    <ClInclude Include="IocpEvent.h" />
-    <ClInclude Include="Job.h" />
-    <ClInclude Include="JobQueue.h" />
-    <ClInclude Include="JobTimer.h" />
-    <ClInclude Include="Listener.h" />
-    <ClInclude Include="Lock.h" />
-    <ClInclude Include="Macro.h" />
-    <ClInclude Include="NetAddress.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Protocol.pb.h" />
-    <ClInclude Include="RecvBuffer.h" />
-    <ClInclude Include="Room.h" />
-    <ClInclude Include="SendBuffer.h" />
-    <ClInclude Include="Service.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="SocketUtils.h" />
-    <ClInclude Include="Struct.pb.h" />
-    <ClInclude Include="ThreadManager.h" />
-    <ClInclude Include="TLS.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Codes\Contents\Creature.h" />
+    <ClInclude Include="Codes\Contents\Monster.h" />
+    <ClInclude Include="Codes\Contents\MonsterAI\BehaviorTree.h" />
+    <ClInclude Include="Codes\Contents\MonsterAI\Brain.h" />
+    <ClInclude Include="Codes\Contents\Object.h" />
+    <ClInclude Include="Codes\Contents\Player.h" />
+    <ClInclude Include="Codes\Contents\Room.h" />
+    <ClInclude Include="Codes\Inclusion\Global.h" />
+    <ClInclude Include="Codes\Inclusion\Macro.h" />
+    <ClInclude Include="Codes\Inclusion\pch.h" />
+    <ClInclude Include="Codes\Inclusion\TLS.h" />
+    <ClInclude Include="Codes\Inclusion\Types.h" />
+    <ClInclude Include="Codes\Job\Job.h" />
+    <ClInclude Include="Codes\Job\JobQueue.h" />
+    <ClInclude Include="Codes\Job\JobTimer.h" />
+    <ClInclude Include="Codes\Main\GameSession.h" />
+    <ClInclude Include="Codes\Main\ServerPacketHandler.h" />
+    <ClInclude Include="Codes\Network\IocpCore.h" />
+    <ClInclude Include="Codes\Network\IocpEvent.h" />
+    <ClInclude Include="Codes\Network\Listener.h" />
+    <ClInclude Include="Codes\Network\NetAddress.h" />
+    <ClInclude Include="Codes\Network\RecvBuffer.h" />
+    <ClInclude Include="Codes\Network\SendBuffer.h" />
+    <ClInclude Include="Codes\Network\Service.h" />
+    <ClInclude Include="Codes\Network\Session.h" />
+    <ClInclude Include="Codes\Network\SocketUtils.h" />
+    <ClInclude Include="Codes\Protocol\Enum.pb.h" />
+    <ClInclude Include="Codes\Protocol\Protocol.pb.h" />
+    <ClInclude Include="Codes\Protocol\Struct.pb.h" />
+    <ClInclude Include="Codes\Thread\Lock.h" />
+    <ClInclude Include="Codes\Thread\ThreadManager.h" />
+    <ClInclude Include="Codes\Utils\ObjectUtils.h" />
+    <ClInclude Include="Codes\Utils\Utils.h" />
+    <ClInclude Include="Codes\Utils\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tools\PacketGenerator\Enum.proto" />
