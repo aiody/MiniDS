@@ -72,22 +72,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Server\Codes\Contents\;$(SolutionDir)Server\Codes\Contents\MonsterAI\;$(SolutionDir)Server\Codes\Inclusion\;$(SolutionDir)Server\Codes\Job\;$(SolutionDir)Server\Codes\Main\;$(SolutionDir)Server\Codes\Network\;$(SolutionDir)Server\Codes\Protocol\;$(SolutionDir)Server\Codes\Thread\;$(SolutionDir)Server\Codes\Utils\;$(SolutionDir)Libraries\Include\;$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Server\Codes\Contents\;$(SolutionDir)Server\Codes\Contents\MonsterAI\;$(SolutionDir)Server\Codes\Inclusion\;$(SolutionDir)Server\Codes\Job\;$(SolutionDir)Server\Codes\Main\;$(SolutionDir)Server\Codes\Network\;$(SolutionDir)Server\Codes\Protocol\;$(SolutionDir)Server\Codes\Thread\;$(SolutionDir)Server\Codes\Utils\;$(SolutionDir)Libraries\Include\;$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Server\Codes\Contents\;$(SolutionDir)Server\Codes\Contents\MonsterAI\;$(SolutionDir)Server\Codes\Inclusion\;$(SolutionDir)Server\Codes\Job\;$(SolutionDir)Server\Codes\Main\;$(SolutionDir)Server\Codes\Network\;$(SolutionDir)Server\Codes\Protocol\;$(SolutionDir)Server\Codes\Thread\;$(SolutionDir)Server\Codes\Utils\;$(SolutionDir)Libraries\Include\;$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Codes\Contents\;$(SolutionDir)Codes\Contents\MonsterAI\;$(SolutionDir)Codes\Inclusion\;$(SolutionDir)Codes\Job\;$(SolutionDir)Codes\Main\;$(SolutionDir)Codes\Network\;$(SolutionDir)Codes\Protocol\;$(SolutionDir)Codes\Thread\;$(SolutionDir)Codes\Utils\;$(SolutionDir)Libraries\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Server\Codes\Contents\;$(SolutionDir)Server\Codes\Contents\MonsterAI\;$(SolutionDir)Server\Codes\Inclusion\;$(SolutionDir)Server\Codes\Job\;$(SolutionDir)Server\Codes\Main\;$(SolutionDir)Server\Codes\Network\;$(SolutionDir)Server\Codes\Protocol\;$(SolutionDir)Server\Codes\Thread\;$(SolutionDir)Server\Codes\Utils\;$(SolutionDir)Libraries\Include\;$(SolutionDir)ServerCore\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

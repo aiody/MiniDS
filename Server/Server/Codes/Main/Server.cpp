@@ -9,6 +9,7 @@
 
 int main()
 {
+    fnServerCore();
     shared_ptr<ServerService> service = make_shared<ServerService>(
         NetAddress(L"127.0.0.1", 9999),
         make_shared<IocpCore>(),
