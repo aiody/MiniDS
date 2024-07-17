@@ -1,7 +1,5 @@
 #pragma once
 #include <functional>
-#include "Protocol.pb.h"
-#include "ServerPacketHandler.h"
 
 class Job
 {

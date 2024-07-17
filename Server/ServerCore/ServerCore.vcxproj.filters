@@ -1,13 +1,135 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="CorePch.h" />
-    <ClInclude Include="ServerCore.h" />
+    <ClInclude Include="Codes\Inclusion\CorePch.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\Global.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\Macro.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\pch.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\TLS.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\Types.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Job\Job.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Job\JobQueue.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Job\JobTimer.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\IocpCore.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\IocpEvent.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\Listener.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\NetAddress.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\RecvBuffer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\SendBuffer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\Service.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\Session.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Network\SocketUtils.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Thread\Lock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Thread\ThreadManager.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="ServerCore.cpp" />
-    <ClCompile Include="CorePch.cpp" />
+    <ClCompile Include="Codes\Inclusion\CorePch.cpp">
+      <Filter>Inclusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Inclusion\Global.cpp">
+      <Filter>Inclusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Inclusion\pch.cpp">
+      <Filter>Inclusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Inclusion\TLS.cpp">
+      <Filter>Inclusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Job\Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Job\JobQueue.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Job\JobTimer.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\IocpCore.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\IocpEvent.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\Listener.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\NetAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\RecvBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\SendBuffer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\Service.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\Session.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Network\SocketUtils.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Thread\Lock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Thread\ThreadManager.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Inclusion">
+      <UniqueIdentifier>{9dcbc152-3e61-4979-8f12-212bdcd54a42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Job">
+      <UniqueIdentifier>{e7a240cb-8e71-4d00-8206-ff5167f05102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{e09d1ba4-e5ce-4dc4-b4c3-5f556e570023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{93886915-f8a5-4b7f-99a2-29531a2b4175}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

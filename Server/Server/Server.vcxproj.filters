@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Network">
-      <UniqueIdentifier>{616b1f76-7aab-45bb-ba09-c22c9b274538}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Thread">
-      <UniqueIdentifier>{e5621277-c5f7-4dc8-b317-86b8046993c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Protocol">
       <UniqueIdentifier>{3f4884eb-6c81-4ebf-a309-fbe3dd4019ca}</UniqueIdentifier>
     </Filter>
@@ -15,9 +9,6 @@
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{9ca666cd-49bf-4282-ae38-1f5ed72e78df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Job">
-      <UniqueIdentifier>{8e44e4b1-5bab-4b89-9e05-d87ef0e848a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Contents">
       <UniqueIdentifier>{74ec59be-54be-4fe7-aafc-1d57f9e6f42d}</UniqueIdentifier>
@@ -48,21 +39,6 @@
     <ClCompile Include="Codes\Contents\Room.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
-    <ClCompile Include="Codes\Inclusion\Global.cpp">
-      <Filter>Inclusion</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Inclusion\TLS.cpp">
-      <Filter>Inclusion</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Job\Job.cpp">
-      <Filter>Job</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Job\JobQueue.cpp">
-      <Filter>Job</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Job\JobTimer.cpp">
-      <Filter>Job</Filter>
-    </ClCompile>
     <ClCompile Include="Codes\Main\GameSession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -71,33 +47,6 @@
     </ClCompile>
     <ClCompile Include="Codes\Main\ServerPacketHandler.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\IocpCore.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\IocpEvent.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\Listener.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\NetAddress.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\RecvBuffer.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\SendBuffer.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\Service.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\Session.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Network\SocketUtils.cpp">
-      <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="Codes\Protocol\Enum.pb.cc">
       <Filter>Protocol</Filter>
@@ -116,12 +65,6 @@
     </ClCompile>
     <ClCompile Include="Codes\Utils\Vector3.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Thread\Lock.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="Codes\Thread\ThreadManager.cpp">
-      <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Codes\Contents\MonsterAI\BehaviorTree.cpp">
       <Filter>Contents\MonsterAI</Filter>
@@ -149,59 +92,11 @@
     <ClInclude Include="Codes\Contents\Room.h">
       <Filter>Contents</Filter>
     </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Global.h">
-      <Filter>Inclusion</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Macro.h">
-      <Filter>Inclusion</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Inclusion\TLS.h">
-      <Filter>Inclusion</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Types.h">
-      <Filter>Inclusion</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Job\Job.h">
-      <Filter>Job</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Job\JobQueue.h">
-      <Filter>Job</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Job\JobTimer.h">
-      <Filter>Job</Filter>
-    </ClInclude>
     <ClInclude Include="Codes\Main\GameSession.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Codes\Main\ServerPacketHandler.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\IocpCore.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\IocpEvent.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\Listener.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\NetAddress.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\RecvBuffer.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\SendBuffer.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\Service.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\Session.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Network\SocketUtils.h">
-      <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="Codes\Protocol\Enum.pb.h">
       <Filter>Protocol</Filter>
@@ -220,12 +115,6 @@
     </ClInclude>
     <ClInclude Include="Codes\Utils\Vector3.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Thread\Lock.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Codes\Thread\ThreadManager.h">
-      <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="Codes\Contents\MonsterAI\BehaviorTree.h">
       <Filter>Contents\MonsterAI</Filter>

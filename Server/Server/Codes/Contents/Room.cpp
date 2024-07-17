@@ -5,6 +5,7 @@
 #include "Monster.h"
 #include "ObjectUtils.h"
 #include "Creature.h"
+#include "ServerPacketHandler.h"
 
 shared_ptr<Room> gRoom = make_shared<Room>();
 

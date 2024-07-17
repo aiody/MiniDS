@@ -72,15 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Libraries\Libs\ServerCore\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)ServerCore\Codes\Inclusion\;$(SolutionDir)ServerCore\Codes\Job\;$(SolutionDir)ServerCore\Codes\Network\;$(SolutionDir)ServerCore\Codes\Thread\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Libraries\Libs\ServerCore\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)ServerCore\Codes\Inclusion\;$(SolutionDir)ServerCore\Codes\Job\;$(SolutionDir)ServerCore\Codes\Network\;$(SolutionDir)ServerCore\Codes\Thread\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Libraries\Libs\ServerCore\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)ServerCore\Codes\Inclusion\;$(SolutionDir)ServerCore\Codes\Job\;$(SolutionDir)ServerCore\Codes\Network\;$(SolutionDir)ServerCore\Codes\Thread\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Libraries\Libs\ServerCore\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)ServerCore\Codes\Inclusion\;$(SolutionDir)ServerCore\Codes\Job\;$(SolutionDir)ServerCore\Codes\Network\;$(SolutionDir)ServerCore\Codes\Thread\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -151,19 +155,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CorePch.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="ServerCore.h" />
+    <ClInclude Include="Codes\Inclusion\CorePch.h" />
+    <ClInclude Include="Codes\Inclusion\Global.h" />
+    <ClInclude Include="Codes\Inclusion\Macro.h" />
+    <ClInclude Include="Codes\Inclusion\pch.h" />
+    <ClInclude Include="Codes\Inclusion\TLS.h" />
+    <ClInclude Include="Codes\Inclusion\Types.h" />
+    <ClInclude Include="Codes\Job\Job.h" />
+    <ClInclude Include="Codes\Job\JobQueue.h" />
+    <ClInclude Include="Codes\Job\JobTimer.h" />
+    <ClInclude Include="Codes\Network\IocpCore.h" />
+    <ClInclude Include="Codes\Network\IocpEvent.h" />
+    <ClInclude Include="Codes\Network\Listener.h" />
+    <ClInclude Include="Codes\Network\NetAddress.h" />
+    <ClInclude Include="Codes\Network\RecvBuffer.h" />
+    <ClInclude Include="Codes\Network\SendBuffer.h" />
+    <ClInclude Include="Codes\Network\Service.h" />
+    <ClInclude Include="Codes\Network\Session.h" />
+    <ClInclude Include="Codes\Network\SocketUtils.h" />
+    <ClInclude Include="Codes\Thread\Lock.h" />
+    <ClInclude Include="Codes\Thread\ThreadManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CorePch.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    <ClCompile Include="Codes\Inclusion\CorePch.cpp" />
+    <ClCompile Include="Codes\Inclusion\Global.cpp" />
+    <ClCompile Include="Codes\Inclusion\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ServerCore.cpp" />
+    <ClCompile Include="Codes\Inclusion\TLS.cpp" />
+    <ClCompile Include="Codes\Job\Job.cpp" />
+    <ClCompile Include="Codes\Job\JobQueue.cpp" />
+    <ClCompile Include="Codes\Job\JobTimer.cpp" />
+    <ClCompile Include="Codes\Network\IocpCore.cpp" />
+    <ClCompile Include="Codes\Network\IocpEvent.cpp" />
+    <ClCompile Include="Codes\Network\Listener.cpp" />
+    <ClCompile Include="Codes\Network\NetAddress.cpp" />
+    <ClCompile Include="Codes\Network\RecvBuffer.cpp" />
+    <ClCompile Include="Codes\Network\SendBuffer.cpp" />
+    <ClCompile Include="Codes\Network\Service.cpp" />
+    <ClCompile Include="Codes\Network\Session.cpp" />
+    <ClCompile Include="Codes\Network\SocketUtils.cpp" />
+    <ClCompile Include="Codes\Thread\Lock.cpp" />
+    <ClCompile Include="Codes\Thread\ThreadManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

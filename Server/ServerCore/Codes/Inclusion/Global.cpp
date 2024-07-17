@@ -2,10 +2,8 @@
 #include "Global.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
-#include "ServerPacketHandler.h"
 #include "JobQueue.h"
 #include "JobTimer.h"
-#include "Room.h"
 
 ThreadManager* gThreadManager = nullptr;
 JobQueue* gJobQueue = nullptr;
@@ -17,7 +15,7 @@ public:
 	Global()
 	{
 		SocketUtils::Init();
-		ServerPacketHandler::Init();
+		
 		gThreadManager = new ThreadManager();
 		gJobQueue = new JobQueue();
 		gJobTimer = new JobTimer();

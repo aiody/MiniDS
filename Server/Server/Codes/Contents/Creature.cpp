@@ -2,6 +2,7 @@
 #include "Creature.h"
 #include "Room.h" 
 #include "Monster.h"
+#include "ServerPacketHandler.h"
 
 Creature::Creature()
 {

@@ -1,5 +1,7 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN // 거의 사용하지 않는 API를 제외하여 Win32 헤더 파일의 크기를 줄입니다.
+
 #ifdef _DEBUG
 #pragma comment(lib, "ServerCore\\Debug\\ServerCore.lib")
 #pragma comment(lib, "Protobuf\\Debug\\libprotobufd.lib")
@@ -10,41 +12,9 @@
 
 #include "CorePch.h"
 
-#include "Types.h"
-#include "Macro.h"
-#include "Global.h"
-#include "TLS.h"
-
-#define WIN32_LEAN_AND_MEAN // 거의 사용하지 않는 API를 제외하여 Win32 헤더 파일의 크기를 줄입니다.
-
-#include <iostream>
-using namespace std;
-
-#define NOMINMAX
-#include <WinSock2.h>
-#include <MSWSock.h>
-#include <WS2tcpip.h>
-
-#pragma comment(lib, "ws2_32.lib")
-
-#include <vector>
-#include <set>
-#include <queue>
-#include <map>
-
-#include <thread>
-#include <mutex>
-
-#include "Lock.h"
-#include "SendBuffer.h"
-#include "Session.h"
-
 // Contents
 #include "Utils.h"
 #include "Protocol.pb.h"
-#include "Job.h"
-#include "JobQueue.h"
-#include "JobTimer.h"
 #include "GameSession.h"
 
 #define SEND_PACKET(pkt)															\
