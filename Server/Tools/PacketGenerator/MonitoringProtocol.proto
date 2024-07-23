@@ -1,0 +1,11 @@
+syntax = "proto3";
+package Protocol;
+
+message M_REQ_SERVER_INFO
+{
+}
+
+message S_RES_SERVER_INFO
+{
+	uint64 game_session_num = 1;
+}

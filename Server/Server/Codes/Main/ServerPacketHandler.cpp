@@ -3,6 +3,7 @@
 #include "Room.h"
 #include "Player.h"
 #include "ObjectUtils.h"
+#include "ThreadManager.h"
 
 PacketHandleFunc GPacketHandler[UINT16_MAX];
 
@@ -74,4 +75,18 @@ bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pk
 	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, pkt.from(), pkt.to()));
 
 	return true;
+}
+
+bool Handler_M_REQ_SERVER_INFO(shared_ptr<PacketSession>& session, Protocol::M_REQ_SERVER_INFO& pkt)
+{
+	shared_ptr<GameSession> gameSession = static_pointer_cast<GameSession>(session);
+
+	Protocol::S_RES_SERVER_INFO resServerInfoPkt;
+	{
+		resServerInfoPkt.set_game_session_num(33);
+	}
+	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(resServerInfoPkt);
+	gameSession->Send(sendBuffer);
+
+	return false;
 }
