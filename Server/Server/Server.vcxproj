@@ -166,6 +166,7 @@
     <ClCompile Include="Codes\Contents\Object.cpp" />
     <ClCompile Include="Codes\Contents\Player.cpp" />
     <ClCompile Include="Codes\Contents\Room.cpp" />
+    <ClCompile Include="Codes\Inclusion\Global.cpp" />
     <ClCompile Include="Codes\Inclusion\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -199,6 +200,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Codes\Utils\MonitoringInfo.cpp" />
     <ClCompile Include="Codes\Utils\ObjectUtils.cpp" />
     <ClCompile Include="Codes\Utils\Utils.cpp" />
     <ClCompile Include="Codes\Utils\Vector3.cpp" />
@@ -211,6 +213,7 @@
     <ClInclude Include="Codes\Contents\Object.h" />
     <ClInclude Include="Codes\Contents\Player.h" />
     <ClInclude Include="Codes\Contents\Room.h" />
+    <ClInclude Include="Codes\Inclusion\Global.h" />
     <ClInclude Include="Codes\Inclusion\pch.h" />
     <ClInclude Include="Codes\Main\GameSession.h" />
     <ClInclude Include="Codes\Main\ServerPacketHandler.h" />
@@ -218,6 +221,7 @@
     <ClInclude Include="Codes\Protocol\MonitoringProtocol.pb.h" />
     <ClInclude Include="Codes\Protocol\Protocol.pb.h" />
     <ClInclude Include="Codes\Protocol\Struct.pb.h" />
+    <ClInclude Include="Codes\Utils\MonitoringInfo.h" />
     <ClInclude Include="Codes\Utils\ObjectUtils.h" />
     <ClInclude Include="Codes\Utils\Utils.h" />
     <ClInclude Include="Codes\Utils\Vector3.h" />

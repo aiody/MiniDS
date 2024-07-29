@@ -7,6 +7,7 @@
 #include "JobTimer.h"
 #include "Room.h"
 #include "ServerPacketHandler.h"
+#include "MonitoringInfo.h"
 
 int main()
 {
@@ -19,6 +20,8 @@ int main()
         100);
 
     ASSERT_CRASH(service->Start());
+
+    gMonitoringInfo->SetService(service);
 
     uint32 threadCnt = ThreadManager::GetThreadCountToLaunch();
     for (int32 i = 0; i < threadCnt; i++)

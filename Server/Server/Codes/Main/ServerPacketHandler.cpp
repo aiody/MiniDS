@@ -4,6 +4,9 @@
 #include "Player.h"
 #include "ObjectUtils.h"
 #include "ThreadManager.h"
+#include "MonitoringInfo.h"
+#include "Service.h"
+#include "ThreadManager.h"
 
 PacketHandleFunc GPacketHandler[UINT16_MAX];
 
@@ -83,7 +86,16 @@ bool Handler_M_REQ_SERVER_INFO(shared_ptr<PacketSession>& session, Protocol::M_R
 
 	Protocol::S_RES_SERVER_INFO resServerInfoPkt;
 	{
-		resServerInfoPkt.set_game_session_num(33);
+		resServerInfoPkt.set_game_session_num(gMonitoringInfo->GetService()->GetCurrentSessionCount());
+		resServerInfoPkt.set_thread_num(gThreadManager->GetCurrentThreadCount());
+		resServerInfoPkt.set_total_virtual_memory(gMonitoringInfo->GetTotalVirtualMemory());
+		resServerInfoPkt.set_virtual_memory_currently_used(gMonitoringInfo->GetVirtualMemoryCurrentlyUsed());
+		resServerInfoPkt.set_virtual_memory_used_by_me(gMonitoringInfo->GetVirtualMemoryUsedByMe());
+		resServerInfoPkt.set_total_physical_memory(gMonitoringInfo->GetTotalPhysicalMemory());
+		resServerInfoPkt.set_physical_memory_currently_used(gMonitoringInfo->GetPhysicalMemoryCurrentlyUsed());
+		resServerInfoPkt.set_physical_memory_used_by_me(gMonitoringInfo->GetPhysicalMemoryUsedByMe());
+		resServerInfoPkt.set_cpu_currently_used(gMonitoringInfo->GetCPUCurrentyUsed());
+		resServerInfoPkt.set_cpu_used_by_me(gMonitoringInfo->GetCPUUsedByMe());
 	}
 	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(resServerInfoPkt);
 	gameSession->Send(sendBuffer);

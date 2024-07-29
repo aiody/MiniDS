@@ -50,3 +50,8 @@ uint32 ThreadManager::GetThreadCountToLaunch()
 	cout << "[System] Logical processor count : " << numOfProcessor << endl;
 	return numOfProcessor * 1.5f; // (NumberOfProcessor * 2) + 1 이 효율적이라고도 함.
 }
+
+uint32 ThreadManager::GetCurrentThreadCount()
+{
+	return _threads.size();
+}

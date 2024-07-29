@@ -35,6 +35,15 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR S_RES_SERVER_INFO::S_RES_SERVER_INFO(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.game_session_num_)*/uint64_t{0u}
+  , /*decltype(_impl_.thread_num_)*/uint64_t{0u}
+  , /*decltype(_impl_.total_virtual_memory_)*/uint64_t{0u}
+  , /*decltype(_impl_.virtual_memory_currently_used_)*/uint64_t{0u}
+  , /*decltype(_impl_.virtual_memory_used_by_me_)*/uint64_t{0u}
+  , /*decltype(_impl_.total_physical_memory_)*/uint64_t{0u}
+  , /*decltype(_impl_.physical_memory_currently_used_)*/uint64_t{0u}
+  , /*decltype(_impl_.physical_memory_used_by_me_)*/uint64_t{0u}
+  , /*decltype(_impl_.cpu_currently_used_)*/0
+  , /*decltype(_impl_.cpu_used_by_me_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct S_RES_SERVER_INFODefaultTypeInternal {
   PROTOBUF_CONSTEXPR S_RES_SERVER_INFODefaultTypeInternal()
@@ -64,6 +73,15 @@ const uint32_t TableStruct_MonitoringProtocol_2eproto::offsets[] PROTOBUF_SECTIO
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.game_session_num_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.thread_num_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.total_virtual_memory_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.virtual_memory_currently_used_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.virtual_memory_used_by_me_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.total_physical_memory_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.physical_memory_currently_used_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.physical_memory_used_by_me_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.cpu_currently_used_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_RES_SERVER_INFO, _impl_.cpu_used_by_me_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Protocol::M_REQ_SERVER_INFO)},
@@ -77,12 +95,19 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_MonitoringProtocol_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\030MonitoringProtocol.proto\022\010Protocol\"\023\n\021"
-  "M_REQ_SERVER_INFO\"-\n\021S_RES_SERVER_INFO\022\030"
-  "\n\020game_session_num\030\001 \001(\004b\006proto3"
+  "M_REQ_SERVER_INFO\"\310\002\n\021S_RES_SERVER_INFO\022"
+  "\030\n\020game_session_num\030\001 \001(\004\022\022\n\nthread_num\030"
+  "\002 \001(\004\022\034\n\024total_virtual_memory\030\003 \001(\004\022%\n\035v"
+  "irtual_memory_currently_used\030\004 \001(\004\022!\n\031vi"
+  "rtual_memory_used_by_me\030\005 \001(\004\022\035\n\025total_p"
+  "hysical_memory\030\006 \001(\004\022&\n\036physical_memory_"
+  "currently_used\030\007 \001(\004\022\"\n\032physical_memory_"
+  "used_by_me\030\010 \001(\004\022\032\n\022cpu_currently_used\030\t"
+  " \001(\001\022\026\n\016cpu_used_by_me\030\n \001(\001b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_MonitoringProtocol_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_MonitoringProtocol_2eproto = {
-    false, false, 112, descriptor_table_protodef_MonitoringProtocol_2eproto,
+    false, false, 396, descriptor_table_protodef_MonitoringProtocol_2eproto,
     "MonitoringProtocol.proto",
     &descriptor_table_MonitoringProtocol_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_MonitoringProtocol_2eproto::offsets,
@@ -154,10 +179,21 @@ S_RES_SERVER_INFO::S_RES_SERVER_INFO(const S_RES_SERVER_INFO& from)
   S_RES_SERVER_INFO* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.game_session_num_){}
+    , decltype(_impl_.thread_num_){}
+    , decltype(_impl_.total_virtual_memory_){}
+    , decltype(_impl_.virtual_memory_currently_used_){}
+    , decltype(_impl_.virtual_memory_used_by_me_){}
+    , decltype(_impl_.total_physical_memory_){}
+    , decltype(_impl_.physical_memory_currently_used_){}
+    , decltype(_impl_.physical_memory_used_by_me_){}
+    , decltype(_impl_.cpu_currently_used_){}
+    , decltype(_impl_.cpu_used_by_me_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.game_session_num_ = from._impl_.game_session_num_;
+  ::memcpy(&_impl_.game_session_num_, &from._impl_.game_session_num_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cpu_used_by_me_) -
+    reinterpret_cast<char*>(&_impl_.game_session_num_)) + sizeof(_impl_.cpu_used_by_me_));
   // @@protoc_insertion_point(copy_constructor:Protocol.S_RES_SERVER_INFO)
 }
 
@@ -167,6 +203,15 @@ inline void S_RES_SERVER_INFO::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.game_session_num_){uint64_t{0u}}
+    , decltype(_impl_.thread_num_){uint64_t{0u}}
+    , decltype(_impl_.total_virtual_memory_){uint64_t{0u}}
+    , decltype(_impl_.virtual_memory_currently_used_){uint64_t{0u}}
+    , decltype(_impl_.virtual_memory_used_by_me_){uint64_t{0u}}
+    , decltype(_impl_.total_physical_memory_){uint64_t{0u}}
+    , decltype(_impl_.physical_memory_currently_used_){uint64_t{0u}}
+    , decltype(_impl_.physical_memory_used_by_me_){uint64_t{0u}}
+    , decltype(_impl_.cpu_currently_used_){0}
+    , decltype(_impl_.cpu_used_by_me_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -194,7 +239,9 @@ void S_RES_SERVER_INFO::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.game_session_num_ = uint64_t{0u};
+  ::memset(&_impl_.game_session_num_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cpu_used_by_me_) -
+      reinterpret_cast<char*>(&_impl_.game_session_num_)) + sizeof(_impl_.cpu_used_by_me_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -209,6 +256,78 @@ const char* S_RES_SERVER_INFO::_InternalParse(const char* ptr, ::_pbi::ParseCont
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           _impl_.game_session_num_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 thread_num = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.thread_num_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 total_virtual_memory = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          _impl_.total_virtual_memory_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 virtual_memory_currently_used = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.virtual_memory_currently_used_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 virtual_memory_used_by_me = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.virtual_memory_used_by_me_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 total_physical_memory = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.total_physical_memory_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 physical_memory_currently_used = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+          _impl_.physical_memory_currently_used_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 physical_memory_used_by_me = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 64)) {
+          _impl_.physical_memory_used_by_me_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double cpu_currently_used = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 73)) {
+          _impl_.cpu_currently_used_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double cpu_used_by_me = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 81)) {
+          _impl_.cpu_used_by_me_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
         } else
           goto handle_unusual;
         continue;
@@ -247,6 +366,68 @@ uint8_t* S_RES_SERVER_INFO::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_game_session_num(), target);
   }
 
+  // uint64 thread_num = 2;
+  if (this->_internal_thread_num() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_thread_num(), target);
+  }
+
+  // uint64 total_virtual_memory = 3;
+  if (this->_internal_total_virtual_memory() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(3, this->_internal_total_virtual_memory(), target);
+  }
+
+  // uint64 virtual_memory_currently_used = 4;
+  if (this->_internal_virtual_memory_currently_used() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(4, this->_internal_virtual_memory_currently_used(), target);
+  }
+
+  // uint64 virtual_memory_used_by_me = 5;
+  if (this->_internal_virtual_memory_used_by_me() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(5, this->_internal_virtual_memory_used_by_me(), target);
+  }
+
+  // uint64 total_physical_memory = 6;
+  if (this->_internal_total_physical_memory() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_total_physical_memory(), target);
+  }
+
+  // uint64 physical_memory_currently_used = 7;
+  if (this->_internal_physical_memory_currently_used() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(7, this->_internal_physical_memory_currently_used(), target);
+  }
+
+  // uint64 physical_memory_used_by_me = 8;
+  if (this->_internal_physical_memory_used_by_me() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(8, this->_internal_physical_memory_used_by_me(), target);
+  }
+
+  // double cpu_currently_used = 9;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_currently_used = this->_internal_cpu_currently_used();
+  uint64_t raw_cpu_currently_used;
+  memcpy(&raw_cpu_currently_used, &tmp_cpu_currently_used, sizeof(tmp_cpu_currently_used));
+  if (raw_cpu_currently_used != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(9, this->_internal_cpu_currently_used(), target);
+  }
+
+  // double cpu_used_by_me = 10;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_used_by_me = this->_internal_cpu_used_by_me();
+  uint64_t raw_cpu_used_by_me;
+  memcpy(&raw_cpu_used_by_me, &tmp_cpu_used_by_me, sizeof(tmp_cpu_used_by_me));
+  if (raw_cpu_used_by_me != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(10, this->_internal_cpu_used_by_me(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -266,6 +447,59 @@ size_t S_RES_SERVER_INFO::ByteSizeLong() const {
   // uint64 game_session_num = 1;
   if (this->_internal_game_session_num() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_game_session_num());
+  }
+
+  // uint64 thread_num = 2;
+  if (this->_internal_thread_num() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_thread_num());
+  }
+
+  // uint64 total_virtual_memory = 3;
+  if (this->_internal_total_virtual_memory() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_total_virtual_memory());
+  }
+
+  // uint64 virtual_memory_currently_used = 4;
+  if (this->_internal_virtual_memory_currently_used() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_virtual_memory_currently_used());
+  }
+
+  // uint64 virtual_memory_used_by_me = 5;
+  if (this->_internal_virtual_memory_used_by_me() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_virtual_memory_used_by_me());
+  }
+
+  // uint64 total_physical_memory = 6;
+  if (this->_internal_total_physical_memory() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_total_physical_memory());
+  }
+
+  // uint64 physical_memory_currently_used = 7;
+  if (this->_internal_physical_memory_currently_used() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_physical_memory_currently_used());
+  }
+
+  // uint64 physical_memory_used_by_me = 8;
+  if (this->_internal_physical_memory_used_by_me() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_physical_memory_used_by_me());
+  }
+
+  // double cpu_currently_used = 9;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_currently_used = this->_internal_cpu_currently_used();
+  uint64_t raw_cpu_currently_used;
+  memcpy(&raw_cpu_currently_used, &tmp_cpu_currently_used, sizeof(tmp_cpu_currently_used));
+  if (raw_cpu_currently_used != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double cpu_used_by_me = 10;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_used_by_me = this->_internal_cpu_used_by_me();
+  uint64_t raw_cpu_used_by_me;
+  memcpy(&raw_cpu_used_by_me, &tmp_cpu_used_by_me, sizeof(tmp_cpu_used_by_me));
+  if (raw_cpu_used_by_me != 0) {
+    total_size += 1 + 8;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -289,6 +523,41 @@ void S_RES_SERVER_INFO::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
   if (from._internal_game_session_num() != 0) {
     _this->_internal_set_game_session_num(from._internal_game_session_num());
   }
+  if (from._internal_thread_num() != 0) {
+    _this->_internal_set_thread_num(from._internal_thread_num());
+  }
+  if (from._internal_total_virtual_memory() != 0) {
+    _this->_internal_set_total_virtual_memory(from._internal_total_virtual_memory());
+  }
+  if (from._internal_virtual_memory_currently_used() != 0) {
+    _this->_internal_set_virtual_memory_currently_used(from._internal_virtual_memory_currently_used());
+  }
+  if (from._internal_virtual_memory_used_by_me() != 0) {
+    _this->_internal_set_virtual_memory_used_by_me(from._internal_virtual_memory_used_by_me());
+  }
+  if (from._internal_total_physical_memory() != 0) {
+    _this->_internal_set_total_physical_memory(from._internal_total_physical_memory());
+  }
+  if (from._internal_physical_memory_currently_used() != 0) {
+    _this->_internal_set_physical_memory_currently_used(from._internal_physical_memory_currently_used());
+  }
+  if (from._internal_physical_memory_used_by_me() != 0) {
+    _this->_internal_set_physical_memory_used_by_me(from._internal_physical_memory_used_by_me());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_currently_used = from._internal_cpu_currently_used();
+  uint64_t raw_cpu_currently_used;
+  memcpy(&raw_cpu_currently_used, &tmp_cpu_currently_used, sizeof(tmp_cpu_currently_used));
+  if (raw_cpu_currently_used != 0) {
+    _this->_internal_set_cpu_currently_used(from._internal_cpu_currently_used());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_cpu_used_by_me = from._internal_cpu_used_by_me();
+  uint64_t raw_cpu_used_by_me;
+  memcpy(&raw_cpu_used_by_me, &tmp_cpu_used_by_me, sizeof(tmp_cpu_used_by_me));
+  if (raw_cpu_used_by_me != 0) {
+    _this->_internal_set_cpu_used_by_me(from._internal_cpu_used_by_me());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -306,7 +575,12 @@ bool S_RES_SERVER_INFO::IsInitialized() const {
 void S_RES_SERVER_INFO::InternalSwap(S_RES_SERVER_INFO* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.game_session_num_, other->_impl_.game_session_num_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(S_RES_SERVER_INFO, _impl_.cpu_used_by_me_)
+      + sizeof(S_RES_SERVER_INFO::_impl_.cpu_used_by_me_)
+      - PROTOBUF_FIELD_OFFSET(S_RES_SERVER_INFO, _impl_.game_session_num_)>(
+          reinterpret_cast<char*>(&_impl_.game_session_num_),
+          reinterpret_cast<char*>(&other->_impl_.game_session_num_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_RES_SERVER_INFO::GetMetadata() const {

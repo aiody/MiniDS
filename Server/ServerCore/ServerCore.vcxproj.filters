@@ -4,19 +4,19 @@
     <ClInclude Include="Codes\Inclusion\CorePch.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Global.h">
+    <ClInclude Include="Codes\Inclusion\CoreGlobal.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Macro.h">
+    <ClInclude Include="Codes\Inclusion\CoreMacro.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="Codes\Inclusion\pch.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
-    <ClInclude Include="Codes\Inclusion\TLS.h">
+    <ClInclude Include="Codes\Inclusion\CoreTLS.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
-    <ClInclude Include="Codes\Inclusion\Types.h">
+    <ClInclude Include="Codes\Inclusion\CoreTypes.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
     <ClInclude Include="Codes\Job\Job.h">
@@ -66,13 +66,13 @@
     <ClCompile Include="Codes\Inclusion\CorePch.cpp">
       <Filter>Inclusion</Filter>
     </ClCompile>
-    <ClCompile Include="Codes\Inclusion\Global.cpp">
+    <ClCompile Include="Codes\Inclusion\CoreGlobal.cpp">
       <Filter>Inclusion</Filter>
     </ClCompile>
     <ClCompile Include="Codes\Inclusion\pch.cpp">
       <Filter>Inclusion</Filter>
     </ClCompile>
-    <ClCompile Include="Codes\Inclusion\TLS.cpp">
+    <ClCompile Include="Codes\Inclusion\CoreTLS.cpp">
       <Filter>Inclusion</Filter>
     </ClCompile>
     <ClCompile Include="Codes\Job\Job.cpp">

@@ -301,6 +301,15 @@ class S_RES_SERVER_INFO final :
 
   enum : int {
     kGameSessionNumFieldNumber = 1,
+    kThreadNumFieldNumber = 2,
+    kTotalVirtualMemoryFieldNumber = 3,
+    kVirtualMemoryCurrentlyUsedFieldNumber = 4,
+    kVirtualMemoryUsedByMeFieldNumber = 5,
+    kTotalPhysicalMemoryFieldNumber = 6,
+    kPhysicalMemoryCurrentlyUsedFieldNumber = 7,
+    kPhysicalMemoryUsedByMeFieldNumber = 8,
+    kCpuCurrentlyUsedFieldNumber = 9,
+    kCpuUsedByMeFieldNumber = 10,
   };
   // uint64 game_session_num = 1;
   void clear_game_session_num();
@@ -309,6 +318,87 @@ class S_RES_SERVER_INFO final :
   private:
   uint64_t _internal_game_session_num() const;
   void _internal_set_game_session_num(uint64_t value);
+  public:
+
+  // uint64 thread_num = 2;
+  void clear_thread_num();
+  uint64_t thread_num() const;
+  void set_thread_num(uint64_t value);
+  private:
+  uint64_t _internal_thread_num() const;
+  void _internal_set_thread_num(uint64_t value);
+  public:
+
+  // uint64 total_virtual_memory = 3;
+  void clear_total_virtual_memory();
+  uint64_t total_virtual_memory() const;
+  void set_total_virtual_memory(uint64_t value);
+  private:
+  uint64_t _internal_total_virtual_memory() const;
+  void _internal_set_total_virtual_memory(uint64_t value);
+  public:
+
+  // uint64 virtual_memory_currently_used = 4;
+  void clear_virtual_memory_currently_used();
+  uint64_t virtual_memory_currently_used() const;
+  void set_virtual_memory_currently_used(uint64_t value);
+  private:
+  uint64_t _internal_virtual_memory_currently_used() const;
+  void _internal_set_virtual_memory_currently_used(uint64_t value);
+  public:
+
+  // uint64 virtual_memory_used_by_me = 5;
+  void clear_virtual_memory_used_by_me();
+  uint64_t virtual_memory_used_by_me() const;
+  void set_virtual_memory_used_by_me(uint64_t value);
+  private:
+  uint64_t _internal_virtual_memory_used_by_me() const;
+  void _internal_set_virtual_memory_used_by_me(uint64_t value);
+  public:
+
+  // uint64 total_physical_memory = 6;
+  void clear_total_physical_memory();
+  uint64_t total_physical_memory() const;
+  void set_total_physical_memory(uint64_t value);
+  private:
+  uint64_t _internal_total_physical_memory() const;
+  void _internal_set_total_physical_memory(uint64_t value);
+  public:
+
+  // uint64 physical_memory_currently_used = 7;
+  void clear_physical_memory_currently_used();
+  uint64_t physical_memory_currently_used() const;
+  void set_physical_memory_currently_used(uint64_t value);
+  private:
+  uint64_t _internal_physical_memory_currently_used() const;
+  void _internal_set_physical_memory_currently_used(uint64_t value);
+  public:
+
+  // uint64 physical_memory_used_by_me = 8;
+  void clear_physical_memory_used_by_me();
+  uint64_t physical_memory_used_by_me() const;
+  void set_physical_memory_used_by_me(uint64_t value);
+  private:
+  uint64_t _internal_physical_memory_used_by_me() const;
+  void _internal_set_physical_memory_used_by_me(uint64_t value);
+  public:
+
+  // double cpu_currently_used = 9;
+  void clear_cpu_currently_used();
+  double cpu_currently_used() const;
+  void set_cpu_currently_used(double value);
+  private:
+  double _internal_cpu_currently_used() const;
+  void _internal_set_cpu_currently_used(double value);
+  public:
+
+  // double cpu_used_by_me = 10;
+  void clear_cpu_used_by_me();
+  double cpu_used_by_me() const;
+  void set_cpu_used_by_me(double value);
+  private:
+  double _internal_cpu_used_by_me() const;
+  void _internal_set_cpu_used_by_me(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.S_RES_SERVER_INFO)
@@ -320,6 +410,15 @@ class S_RES_SERVER_INFO final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     uint64_t game_session_num_;
+    uint64_t thread_num_;
+    uint64_t total_virtual_memory_;
+    uint64_t virtual_memory_currently_used_;
+    uint64_t virtual_memory_used_by_me_;
+    uint64_t total_physical_memory_;
+    uint64_t physical_memory_currently_used_;
+    uint64_t physical_memory_used_by_me_;
+    double cpu_currently_used_;
+    double cpu_used_by_me_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -358,6 +457,186 @@ inline void S_RES_SERVER_INFO::_internal_set_game_session_num(uint64_t value) {
 inline void S_RES_SERVER_INFO::set_game_session_num(uint64_t value) {
   _internal_set_game_session_num(value);
   // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.game_session_num)
+}
+
+// uint64 thread_num = 2;
+inline void S_RES_SERVER_INFO::clear_thread_num() {
+  _impl_.thread_num_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_thread_num() const {
+  return _impl_.thread_num_;
+}
+inline uint64_t S_RES_SERVER_INFO::thread_num() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.thread_num)
+  return _internal_thread_num();
+}
+inline void S_RES_SERVER_INFO::_internal_set_thread_num(uint64_t value) {
+  
+  _impl_.thread_num_ = value;
+}
+inline void S_RES_SERVER_INFO::set_thread_num(uint64_t value) {
+  _internal_set_thread_num(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.thread_num)
+}
+
+// uint64 total_virtual_memory = 3;
+inline void S_RES_SERVER_INFO::clear_total_virtual_memory() {
+  _impl_.total_virtual_memory_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_total_virtual_memory() const {
+  return _impl_.total_virtual_memory_;
+}
+inline uint64_t S_RES_SERVER_INFO::total_virtual_memory() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.total_virtual_memory)
+  return _internal_total_virtual_memory();
+}
+inline void S_RES_SERVER_INFO::_internal_set_total_virtual_memory(uint64_t value) {
+  
+  _impl_.total_virtual_memory_ = value;
+}
+inline void S_RES_SERVER_INFO::set_total_virtual_memory(uint64_t value) {
+  _internal_set_total_virtual_memory(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.total_virtual_memory)
+}
+
+// uint64 virtual_memory_currently_used = 4;
+inline void S_RES_SERVER_INFO::clear_virtual_memory_currently_used() {
+  _impl_.virtual_memory_currently_used_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_virtual_memory_currently_used() const {
+  return _impl_.virtual_memory_currently_used_;
+}
+inline uint64_t S_RES_SERVER_INFO::virtual_memory_currently_used() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.virtual_memory_currently_used)
+  return _internal_virtual_memory_currently_used();
+}
+inline void S_RES_SERVER_INFO::_internal_set_virtual_memory_currently_used(uint64_t value) {
+  
+  _impl_.virtual_memory_currently_used_ = value;
+}
+inline void S_RES_SERVER_INFO::set_virtual_memory_currently_used(uint64_t value) {
+  _internal_set_virtual_memory_currently_used(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.virtual_memory_currently_used)
+}
+
+// uint64 virtual_memory_used_by_me = 5;
+inline void S_RES_SERVER_INFO::clear_virtual_memory_used_by_me() {
+  _impl_.virtual_memory_used_by_me_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_virtual_memory_used_by_me() const {
+  return _impl_.virtual_memory_used_by_me_;
+}
+inline uint64_t S_RES_SERVER_INFO::virtual_memory_used_by_me() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.virtual_memory_used_by_me)
+  return _internal_virtual_memory_used_by_me();
+}
+inline void S_RES_SERVER_INFO::_internal_set_virtual_memory_used_by_me(uint64_t value) {
+  
+  _impl_.virtual_memory_used_by_me_ = value;
+}
+inline void S_RES_SERVER_INFO::set_virtual_memory_used_by_me(uint64_t value) {
+  _internal_set_virtual_memory_used_by_me(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.virtual_memory_used_by_me)
+}
+
+// uint64 total_physical_memory = 6;
+inline void S_RES_SERVER_INFO::clear_total_physical_memory() {
+  _impl_.total_physical_memory_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_total_physical_memory() const {
+  return _impl_.total_physical_memory_;
+}
+inline uint64_t S_RES_SERVER_INFO::total_physical_memory() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.total_physical_memory)
+  return _internal_total_physical_memory();
+}
+inline void S_RES_SERVER_INFO::_internal_set_total_physical_memory(uint64_t value) {
+  
+  _impl_.total_physical_memory_ = value;
+}
+inline void S_RES_SERVER_INFO::set_total_physical_memory(uint64_t value) {
+  _internal_set_total_physical_memory(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.total_physical_memory)
+}
+
+// uint64 physical_memory_currently_used = 7;
+inline void S_RES_SERVER_INFO::clear_physical_memory_currently_used() {
+  _impl_.physical_memory_currently_used_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_physical_memory_currently_used() const {
+  return _impl_.physical_memory_currently_used_;
+}
+inline uint64_t S_RES_SERVER_INFO::physical_memory_currently_used() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.physical_memory_currently_used)
+  return _internal_physical_memory_currently_used();
+}
+inline void S_RES_SERVER_INFO::_internal_set_physical_memory_currently_used(uint64_t value) {
+  
+  _impl_.physical_memory_currently_used_ = value;
+}
+inline void S_RES_SERVER_INFO::set_physical_memory_currently_used(uint64_t value) {
+  _internal_set_physical_memory_currently_used(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.physical_memory_currently_used)
+}
+
+// uint64 physical_memory_used_by_me = 8;
+inline void S_RES_SERVER_INFO::clear_physical_memory_used_by_me() {
+  _impl_.physical_memory_used_by_me_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_physical_memory_used_by_me() const {
+  return _impl_.physical_memory_used_by_me_;
+}
+inline uint64_t S_RES_SERVER_INFO::physical_memory_used_by_me() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.physical_memory_used_by_me)
+  return _internal_physical_memory_used_by_me();
+}
+inline void S_RES_SERVER_INFO::_internal_set_physical_memory_used_by_me(uint64_t value) {
+  
+  _impl_.physical_memory_used_by_me_ = value;
+}
+inline void S_RES_SERVER_INFO::set_physical_memory_used_by_me(uint64_t value) {
+  _internal_set_physical_memory_used_by_me(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.physical_memory_used_by_me)
+}
+
+// double cpu_currently_used = 9;
+inline void S_RES_SERVER_INFO::clear_cpu_currently_used() {
+  _impl_.cpu_currently_used_ = 0;
+}
+inline double S_RES_SERVER_INFO::_internal_cpu_currently_used() const {
+  return _impl_.cpu_currently_used_;
+}
+inline double S_RES_SERVER_INFO::cpu_currently_used() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.cpu_currently_used)
+  return _internal_cpu_currently_used();
+}
+inline void S_RES_SERVER_INFO::_internal_set_cpu_currently_used(double value) {
+  
+  _impl_.cpu_currently_used_ = value;
+}
+inline void S_RES_SERVER_INFO::set_cpu_currently_used(double value) {
+  _internal_set_cpu_currently_used(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.cpu_currently_used)
+}
+
+// double cpu_used_by_me = 10;
+inline void S_RES_SERVER_INFO::clear_cpu_used_by_me() {
+  _impl_.cpu_used_by_me_ = 0;
+}
+inline double S_RES_SERVER_INFO::_internal_cpu_used_by_me() const {
+  return _impl_.cpu_used_by_me_;
+}
+inline double S_RES_SERVER_INFO::cpu_used_by_me() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.cpu_used_by_me)
+  return _internal_cpu_used_by_me();
+}
+inline void S_RES_SERVER_INFO::_internal_set_cpu_used_by_me(double value) {
+  
+  _impl_.cpu_used_by_me_ = value;
+}
+inline void S_RES_SERVER_INFO::set_cpu_used_by_me(double value) {
+  _internal_set_cpu_used_by_me(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.cpu_used_by_me)
 }
 
 #ifdef __GNUC__

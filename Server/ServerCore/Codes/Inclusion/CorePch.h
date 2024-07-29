@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Types.h"
-#include "Macro.h"
-#include "Global.h"
-#include "TLS.h"
+#include "CoreTypes.h"
+#include "CoreMacro.h"
+#include "CoreGlobal.h"
+#include "CoreTLS.h"
 
 #include <iostream>
 using namespace std;

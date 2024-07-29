@@ -156,11 +156,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Codes\Inclusion\CorePch.h" />
-    <ClInclude Include="Codes\Inclusion\Global.h" />
-    <ClInclude Include="Codes\Inclusion\Macro.h" />
+    <ClInclude Include="Codes\Inclusion\CoreGlobal.h" />
+    <ClInclude Include="Codes\Inclusion\CoreMacro.h" />
     <ClInclude Include="Codes\Inclusion\pch.h" />
-    <ClInclude Include="Codes\Inclusion\TLS.h" />
-    <ClInclude Include="Codes\Inclusion\Types.h" />
+    <ClInclude Include="Codes\Inclusion\CoreTLS.h" />
+    <ClInclude Include="Codes\Inclusion\CoreTypes.h" />
     <ClInclude Include="Codes\Job\Job.h" />
     <ClInclude Include="Codes\Job\JobQueue.h" />
     <ClInclude Include="Codes\Job\JobTimer.h" />
@@ -178,14 +178,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Codes\Inclusion\CorePch.cpp" />
-    <ClCompile Include="Codes\Inclusion\Global.cpp" />
+    <ClCompile Include="Codes\Inclusion\CoreGlobal.cpp" />
     <ClCompile Include="Codes\Inclusion\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Codes\Inclusion\TLS.cpp" />
+    <ClCompile Include="Codes\Inclusion\CoreTLS.cpp" />
     <ClCompile Include="Codes\Job\Job.cpp" />
     <ClCompile Include="Codes\Job\JobQueue.cpp" />
     <ClCompile Include="Codes\Job\JobTimer.cpp" />
