@@ -2,6 +2,7 @@
 #include "MonitoringPacketHandler.h"
 #include "ThreadManager.h"
 #include "Service.h"
+#include "MonitoringService.h"
 
 int main()
 {
@@ -20,8 +21,14 @@ int main()
         while (true)
         {
             service->GetIocpCore()->Dispatch(10);
+            gJobTimer->Distribute(::GetTickCount64());
         }
     });
+
+    gJobQueue->Push(make_shared<Job>(gMonitoringService, &MonitoringService::Start));
+
+    while (true)
+        gJobQueue->Flush();
 
     gThreadManager->Join();
 

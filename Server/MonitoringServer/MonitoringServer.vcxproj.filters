@@ -8,6 +8,8 @@
     <ClCompile Include="Protocol\MonitoringProtocol.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="ConsoleHelper.cpp" />
+    <ClCompile Include="MonitoringService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -16,6 +18,8 @@
     <ClInclude Include="Protocol\MonitoringProtocol.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleHelper.h" />
+    <ClInclude Include="MonitoringService.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Protocol">

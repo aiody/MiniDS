@@ -94,8 +94,11 @@ bool Handler_M_REQ_SERVER_INFO(shared_ptr<PacketSession>& session, Protocol::M_R
 		resServerInfoPkt.set_total_physical_memory(gMonitoringInfo->GetTotalPhysicalMemory());
 		resServerInfoPkt.set_physical_memory_currently_used(gMonitoringInfo->GetPhysicalMemoryCurrentlyUsed());
 		resServerInfoPkt.set_physical_memory_used_by_me(gMonitoringInfo->GetPhysicalMemoryUsedByMe());
+		gMonitoringInfo->ComputeCPUUsage();
 		resServerInfoPkt.set_cpu_currently_used(gMonitoringInfo->GetCPUCurrentyUsed());
 		resServerInfoPkt.set_cpu_used_by_me(gMonitoringInfo->GetCPUUsedByMe());
+		resServerInfoPkt.set_server_start_time(gMonitoringInfo->GetServerStartTime());
+		resServerInfoPkt.set_packet_transfers_per_second(gMonitoringInfo->GetTransferredPacketCount());
 	}
 	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(resServerInfoPkt);
 	gameSession->Send(sendBuffer);

@@ -300,6 +300,7 @@ class S_RES_SERVER_INFO final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kServerStartTimeFieldNumber = 11,
     kGameSessionNumFieldNumber = 1,
     kThreadNumFieldNumber = 2,
     kTotalVirtualMemoryFieldNumber = 3,
@@ -310,7 +311,22 @@ class S_RES_SERVER_INFO final :
     kPhysicalMemoryUsedByMeFieldNumber = 8,
     kCpuCurrentlyUsedFieldNumber = 9,
     kCpuUsedByMeFieldNumber = 10,
+    kPacketTransfersPerSecondFieldNumber = 12,
   };
+  // string server_start_time = 11;
+  void clear_server_start_time();
+  const std::string& server_start_time() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_server_start_time(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_server_start_time();
+  PROTOBUF_NODISCARD std::string* release_server_start_time();
+  void set_allocated_server_start_time(std::string* server_start_time);
+  private:
+  const std::string& _internal_server_start_time() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_server_start_time(const std::string& value);
+  std::string* _internal_mutable_server_start_time();
+  public:
+
   // uint64 game_session_num = 1;
   void clear_game_session_num();
   uint64_t game_session_num() const;
@@ -401,6 +417,15 @@ class S_RES_SERVER_INFO final :
   void _internal_set_cpu_used_by_me(double value);
   public:
 
+  // uint64 packet_transfers_per_second = 12;
+  void clear_packet_transfers_per_second();
+  uint64_t packet_transfers_per_second() const;
+  void set_packet_transfers_per_second(uint64_t value);
+  private:
+  uint64_t _internal_packet_transfers_per_second() const;
+  void _internal_set_packet_transfers_per_second(uint64_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.S_RES_SERVER_INFO)
  private:
   class _Internal;
@@ -409,6 +434,7 @@ class S_RES_SERVER_INFO final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr server_start_time_;
     uint64_t game_session_num_;
     uint64_t thread_num_;
     uint64_t total_virtual_memory_;
@@ -419,6 +445,7 @@ class S_RES_SERVER_INFO final :
     uint64_t physical_memory_used_by_me_;
     double cpu_currently_used_;
     double cpu_used_by_me_;
+    uint64_t packet_transfers_per_second_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -637,6 +664,76 @@ inline void S_RES_SERVER_INFO::_internal_set_cpu_used_by_me(double value) {
 inline void S_RES_SERVER_INFO::set_cpu_used_by_me(double value) {
   _internal_set_cpu_used_by_me(value);
   // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.cpu_used_by_me)
+}
+
+// string server_start_time = 11;
+inline void S_RES_SERVER_INFO::clear_server_start_time() {
+  _impl_.server_start_time_.ClearToEmpty();
+}
+inline const std::string& S_RES_SERVER_INFO::server_start_time() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.server_start_time)
+  return _internal_server_start_time();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void S_RES_SERVER_INFO::set_server_start_time(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.server_start_time_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.server_start_time)
+}
+inline std::string* S_RES_SERVER_INFO::mutable_server_start_time() {
+  std::string* _s = _internal_mutable_server_start_time();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_RES_SERVER_INFO.server_start_time)
+  return _s;
+}
+inline const std::string& S_RES_SERVER_INFO::_internal_server_start_time() const {
+  return _impl_.server_start_time_.Get();
+}
+inline void S_RES_SERVER_INFO::_internal_set_server_start_time(const std::string& value) {
+  
+  _impl_.server_start_time_.Set(value, GetArenaForAllocation());
+}
+inline std::string* S_RES_SERVER_INFO::_internal_mutable_server_start_time() {
+  
+  return _impl_.server_start_time_.Mutable(GetArenaForAllocation());
+}
+inline std::string* S_RES_SERVER_INFO::release_server_start_time() {
+  // @@protoc_insertion_point(field_release:Protocol.S_RES_SERVER_INFO.server_start_time)
+  return _impl_.server_start_time_.Release();
+}
+inline void S_RES_SERVER_INFO::set_allocated_server_start_time(std::string* server_start_time) {
+  if (server_start_time != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.server_start_time_.SetAllocated(server_start_time, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.server_start_time_.IsDefault()) {
+    _impl_.server_start_time_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_RES_SERVER_INFO.server_start_time)
+}
+
+// uint64 packet_transfers_per_second = 12;
+inline void S_RES_SERVER_INFO::clear_packet_transfers_per_second() {
+  _impl_.packet_transfers_per_second_ = uint64_t{0u};
+}
+inline uint64_t S_RES_SERVER_INFO::_internal_packet_transfers_per_second() const {
+  return _impl_.packet_transfers_per_second_;
+}
+inline uint64_t S_RES_SERVER_INFO::packet_transfers_per_second() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_RES_SERVER_INFO.packet_transfers_per_second)
+  return _internal_packet_transfers_per_second();
+}
+inline void S_RES_SERVER_INFO::_internal_set_packet_transfers_per_second(uint64_t value) {
+  
+  _impl_.packet_transfers_per_second_ = value;
+}
+inline void S_RES_SERVER_INFO::set_packet_transfers_per_second(uint64_t value) {
+  _internal_set_packet_transfers_per_second(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_RES_SERVER_INFO.packet_transfers_per_second)
 }
 
 #ifdef __GNUC__

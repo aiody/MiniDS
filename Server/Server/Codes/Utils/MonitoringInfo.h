@@ -13,52 +13,49 @@ public:
         _prevProcUserTime = { 0 };
     }
 
-    double GetSystemCPUUsage()
+    void Update()
     {
-        FILETIME idleTime, kernelTime, userTime;
-        ::GetSystemTimes(&idleTime, &kernelTime, &userTime);
+        FILETIME sysIdleTime, sysKernelTime, sysUserTime;
+        FILETIME procCreationTime, procExitTime, procKernelTime, procUserTime;
 
-        uint64 idleDelta = SubtractTimes(idleTime, _prevSysIdleTime);
-        uint64 kernelDelta = SubtractTimes(kernelTime, _prevSysKernelTime);
-        uint64 userDelta = SubtractTimes(userTime, _prevSysUserTime);
+        if (::GetSystemTimes(&sysIdleTime, &sysKernelTime, &sysUserTime)
+            && ::GetProcessTimes(::GetCurrentProcess(), &procCreationTime, &procExitTime, &procKernelTime, &procUserTime))
+        {
+            uint64 sysIdleDelta = SubtractTimes(sysIdleTime, _prevSysIdleTime);
+            uint64 sysKernelDelta = SubtractTimes(sysKernelTime, _prevSysKernelTime);
+            uint64 sysUserDelta = SubtractTimes(sysUserTime, _prevSysUserTime);
+            uint64 sysTotal = sysKernelDelta + sysUserDelta;
 
-        uint64 sysTotal = kernelDelta + userDelta;
-        int64 kernerlTotal = ::max((int64)0, (int64)kernelDelta - (int64)idleDelta);
+            uint64 procKernelDelta = SubtractTimes(procKernelTime, _prevProcKernelTime);
+            uint64 procUserDelta = SubtractTimes(procUserTime, _prevProcUserTime);
+            uint64 procTotal = procKernelDelta + procUserDelta;
 
-        double usage = 0.0f;
-        if (sysTotal > 0)
-            usage = ((kernerlTotal + userDelta) * 100.f) / sysTotal;
-
-        _prevSysIdleTime = idleTime;
-        _prevSysKernelTime = kernelTime;
-        _prevSysUserTime = userTime;
-
-        return usage;
-    }
-
-    double GetProcessCPUUsage()
-    {
-        FILETIME creationTime, exitTime, kernelTime, userTime;
-        if (::GetProcessTimes(GetCurrentProcess(), &creationTime, &exitTime, &kernelTime, &userTime)) {
-            uint64 procKernelDelta = SubtractTimes(kernelTime, _prevProcKernelTime);
-            uint64 procUserDelta = SubtractTimes(userTime, _prevProcUserTime);
-            ULONGLONG procTotal = procKernelDelta + procUserDelta;
-
-            ULONGLONG sysKernelDelta = SubtractTimes(kernelTime, _prevSysKernelTime);
-            ULONGLONG sysUserDelta = SubtractTimes(userTime, _prevSysUserTime);
-            ULONGLONG sysTotal = sysKernelDelta + sysUserDelta;
-
-            double usage = 0.0;
             if (sysTotal > 0)
-                usage = (procTotal * 100.f / sysTotal);
+            {
+                _sysCPUUsage = (1.0 - (sysIdleDelta * 1.0 / sysTotal)) * 100.0;
+                _procCPUUsage = (procTotal * 100.f / sysTotal);
+            }
+            else
+            {
+                _sysCPUUsage = 0.0f;
+                _procCPUUsage = 0.0f;
+            }
 
-            _prevProcKernelTime = kernelTime;
-            _prevProcUserTime = userTime;
-
-            return usage;
+            _prevSysIdleTime = sysIdleTime;
+            _prevSysKernelTime = sysKernelTime;
+            _prevSysUserTime = sysUserTime;
+            _prevProcKernelTime = procKernelTime;
+            _prevProcUserTime = procUserTime;
         }
-        return 0.0;
+        else
+        {
+            _sysCPUUsage = 0.0f;
+            _procCPUUsage = 0.0f;
+        }
     }
+
+    double GetSystemCPUUsage() { return _sysCPUUsage; }
+    double GetProcessCPUUsage() { return _procCPUUsage; }
 
 private:
     uint64 SubtractTimes(FILETIME& newTime, FILETIME& oldTime)
@@ -71,6 +68,10 @@ private:
         return a.QuadPart - b.QuadPart;
     }
 
+private:
+    double _sysCPUUsage = 0.0f;
+    double _procCPUUsage = 0.0f;
+
     FILETIME _prevSysIdleTime;
     FILETIME _prevSysKernelTime;
     FILETIME _prevSysUserTime;
@@ -82,6 +83,10 @@ private:
 class MonitoringInfo
 {
 public:
+    MonitoringInfo();
+    ~MonitoringInfo();
+
+    void Init();
 	void SetService(shared_ptr<Service> service) { _service = service; }
 	shared_ptr<Service> GetService() { return _service; }
 
@@ -91,10 +96,17 @@ public:
 	DWORDLONG	GetTotalPhysicalMemory();
 	DWORDLONG	GetPhysicalMemoryCurrentlyUsed();
 	SIZE_T		GetPhysicalMemoryUsedByMe();
+    void        ComputeCPUUsage();
 	double		GetCPUCurrentyUsed();
 	double		GetCPUUsedByMe();
+    string      GetServerStartTime() { return _serverStartTimeString; }
+    void        AddTransferredPacketCount();
+    uint64      GetTransferredPacketCount();
 
 private:
+    USE_LOCK;
 	shared_ptr<Service> _service;
-    CPUUsage _cpuUsage;
+    CPUUsage* _cpuUsage;
+    string _serverStartTimeString;
+    uint64 _transferredPacketCount;
 };

@@ -3,6 +3,7 @@
 #include "Room.h"
 #include "JobQueue.h"
 #include "Protocol.pb.h"
+#include "MonitoringInfo.h"
 
 GameSession::GameSession()
 {
@@ -26,7 +27,8 @@ void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
     //cout << "Packet ID : " << header.id << " Size : " << header.size << endl;
 
     shared_ptr<PacketSession> session = GetPacketSessionRef();
-    ServerPacketHandler::HandlePacket(session, buffer, len);
+    if (ServerPacketHandler::HandlePacket(session, buffer, len))
+        gMonitoringInfo->AddTransferredPacketCount();
 }
 
 void GameSession::OnSend(int32 len)

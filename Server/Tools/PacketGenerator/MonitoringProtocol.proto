@@ -17,4 +17,6 @@ message S_RES_SERVER_INFO
 	uint64 physical_memory_used_by_me = 8;
 	double cpu_currently_used = 9;
 	double cpu_used_by_me = 10;
+	string server_start_time = 11;
+	uint64 packet_transfers_per_second = 12;
 }

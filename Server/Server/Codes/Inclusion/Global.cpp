@@ -10,6 +10,7 @@ public:
 	Global()
 	{
 		gMonitoringInfo = new MonitoringInfo();
+		gMonitoringInfo->Init();
 	}
 	~Global()
 	{
