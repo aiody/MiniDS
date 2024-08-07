@@ -1,5 +1,6 @@
 #pragma once
 #include "Protocol.pb.h"
+#include "MonitoringProtocol.pb.h"
 
 using PacketHandleFunc = std::function<bool(shared_ptr<PacketSession>&, BYTE*, int32)>;
 extern PacketHandleFunc GPacketHandler[UINT16_MAX];
@@ -17,6 +18,8 @@ enum : uint16
 	PKT_C_ATTACK = 1009,
 	PKT_S_HIT = 1010,
 	PKT_S_DEATH = 1011,
+	PKT_M_REQ_SERVER_INFO = 2001,
+	PKT_S_RES_SERVER_INFO = 2002,
 };
 
 bool Handler_INVALID(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len);
@@ -24,6 +27,7 @@ bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_
 bool Handler_C_LEAVE_GAME(shared_ptr<PacketSession>& session, Protocol::C_LEAVE_GAME& pkt);
 bool Handler_C_MOVE(shared_ptr<PacketSession>& session, Protocol::C_MOVE& pkt);
 bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pkt);
+bool Handler_M_REQ_SERVER_INFO(shared_ptr<PacketSession>& session, Protocol::M_REQ_SERVER_INFO& pkt);
 
 class ServerPacketHandler
 {
@@ -37,6 +41,7 @@ public:
 		GPacketHandler[PKT_C_LEAVE_GAME] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LEAVE_GAME>(Handler_C_LEAVE_GAME, session, buffer, len); };
 		GPacketHandler[PKT_C_MOVE] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_MOVE>(Handler_C_MOVE, session, buffer, len); };
 		GPacketHandler[PKT_C_ATTACK] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ATTACK>(Handler_C_ATTACK, session, buffer, len); };
+		GPacketHandler[PKT_M_REQ_SERVER_INFO] = [](shared_ptr<PacketSession>& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::M_REQ_SERVER_INFO>(Handler_M_REQ_SERVER_INFO, session, buffer, len); };
 	}
 
 	static bool HandlePacket(shared_ptr<PacketSession>& session, BYTE* buffer, int32 len)
@@ -52,6 +57,7 @@ public:
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_S_MOVE); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_HIT& pkt) { return MakeSendBuffer(pkt, PKT_S_HIT); }
 	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_DEATH& pkt) { return MakeSendBuffer(pkt, PKT_S_DEATH); }
+	static shared_ptr<SendBuffer> MakeSendBuffer(Protocol::S_RES_SERVER_INFO& pkt) { return MakeSendBuffer(pkt, PKT_S_RES_SERVER_INFO); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

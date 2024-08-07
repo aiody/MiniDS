@@ -75,6 +75,15 @@
     <ClCompile Include="Codes\Inclusion\pch.cpp">
       <Filter>Inclusion</Filter>
     </ClCompile>
+    <ClCompile Include="Codes\Protocol\MonitoringProtocol.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Inclusion\Global.cpp">
+      <Filter>Inclusion</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Utils\MonitoringInfo.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Codes\Contents\Creature.h">
@@ -125,19 +134,31 @@
     <ClInclude Include="Codes\Inclusion\pch.h">
       <Filter>Inclusion</Filter>
     </ClInclude>
+    <ClInclude Include="Codes\Protocol\MonitoringProtocol.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Inclusion\Global.h">
+      <Filter>Inclusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Codes\Utils\MonitoringInfo.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tools\PacketGenerator\GenPacket.bat">
+    <None Include="..\Tools\PacketGenerator\MonitoringProtocol.proto">
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="..\Tools\PacketGenerator\Protocol.proto">
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="..\Tools\PacketGenerator\Enum.proto">
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="..\Tools\PacketGenerator\Struct.proto">
+      <Filter>Protocol\Proto</Filter>
+    </None>
+    <None Include="..\Tools\PacketGenerator\GenPacket.bat">
       <Filter>Protocol</Filter>
-    </None>
-    <None Include="Tools\PacketGenerator\Enum.proto">
-      <Filter>Protocol\Proto</Filter>
-    </None>
-    <None Include="Tools\PacketGenerator\Protocol.proto">
-      <Filter>Protocol\Proto</Filter>
-    </None>
-    <None Include="Tools\PacketGenerator\Struct.proto">
-      <Filter>Protocol\Proto</Filter>
     </None>
   </ItemGroup>
 </Project>

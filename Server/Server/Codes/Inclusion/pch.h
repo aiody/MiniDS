@@ -11,6 +11,7 @@
 #endif
 
 #include "CorePch.h"
+#include "Global.h"
 
 // Contents
 #include "Utils.h"

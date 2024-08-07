@@ -14,6 +14,7 @@ public:
 	static void		DestroyTLS();
 
 	static uint32	GetThreadCountToLaunch();
+	uint32			GetCurrentThreadCount();
 
 private:
 	mutex			_lock;

@@ -1,0 +1,22 @@
+syntax = "proto3";
+package Protocol;
+
+message M_REQ_SERVER_INFO
+{
+}
+
+message S_RES_SERVER_INFO
+{
+	uint64 game_session_num = 1;
+	uint64 thread_num = 2;
+	uint64 total_virtual_memory = 3;
+	uint64 virtual_memory_currently_used = 4;
+	uint64 virtual_memory_used_by_me = 5;
+	uint64 total_physical_memory = 6;
+	uint64 physical_memory_currently_used = 7;
+	uint64 physical_memory_used_by_me = 8;
+	double cpu_currently_used = 9;
+	double cpu_used_by_me = 10;
+	string server_start_time = 11;
+	uint64 packet_transfers_per_second = 12;
+}

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MonitoringServer.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="MonitoringSession.cpp" />
+    <ClCompile Include="MonitoringPacketHandler.cpp" />
+    <ClCompile Include="Protocol\MonitoringProtocol.pb.cc">
+      <Filter>Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleHelper.cpp" />
+    <ClCompile Include="MonitoringService.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="MonitoringSession.h" />
+    <ClInclude Include="MonitoringPacketHandler.h" />
+    <ClInclude Include="Protocol\MonitoringProtocol.pb.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleHelper.h" />
+    <ClInclude Include="MonitoringService.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{59c161d5-2f38-49b3-a707-39b66e478ad5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Global.h"
+#include "CoreGlobal.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
 #include "JobQueue.h"
@@ -9,10 +9,10 @@ ThreadManager* gThreadManager = nullptr;
 JobQueue* gJobQueue = nullptr;
 JobTimer* gJobTimer = nullptr;
 
-class Global
+class CoreGlobal
 {
 public:
-	Global()
+	CoreGlobal()
 	{
 		SocketUtils::Init();
 		
@@ -21,11 +21,11 @@ public:
 		gJobTimer = new JobTimer();
 	}
 
-	~Global()
+	~CoreGlobal()
 	{
 		SocketUtils::Clear();
 		delete gThreadManager;
 		delete gJobQueue;
 		delete gJobTimer;
 	}
-} GGlobal; // 전역 객체
+} GCoreGlobal; // 전역 객체
