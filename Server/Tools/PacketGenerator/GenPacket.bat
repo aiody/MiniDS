@@ -23,8 +23,17 @@ XCOPY Enum.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
 XCOPY Struct.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
 XCOPY Protocol.pb.cc "../../../Source/MiniDS/Network/Protocol" /Y
 
+:: for monitoring
 XCOPY MonitoringProtocol.pb.h "../../MonitoringServer/Protocol" /Y
 XCOPY MonitoringProtocol.pb.cc "../../MonitoringServer/Protocol" /Y
+
+:: for dummy client
+XCOPY Enum.pb.h "../../DummyClient/Protocol" /Y
+XCOPY Struct.pb.h "../../DummyClient/Protocol" /Y
+XCOPY Protocol.pb.h "../../DummyClient/Protocol" /Y
+XCOPY Enum.pb.cc "../../DummyClient/Protocol" /Y
+XCOPY Struct.pb.cc "../../DummyClient/Protocol" /Y
+XCOPY Protocol.pb.cc "../../DummyClient/Protocol" /Y
 
 DEL *.pb.h
 DEL *.pb.cc
