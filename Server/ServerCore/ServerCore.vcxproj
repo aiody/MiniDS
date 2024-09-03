@@ -161,6 +161,7 @@
     <ClInclude Include="Codes\Inclusion\pch.h" />
     <ClInclude Include="Codes\Inclusion\CoreTLS.h" />
     <ClInclude Include="Codes\Inclusion\CoreTypes.h" />
+    <ClInclude Include="Codes\Job\GlobalQueue.h" />
     <ClInclude Include="Codes\Job\Job.h" />
     <ClInclude Include="Codes\Job\JobQueue.h" />
     <ClInclude Include="Codes\Job\JobTimer.h" />
@@ -186,6 +187,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Codes\Inclusion\CoreTLS.cpp" />
+    <ClCompile Include="Codes\Job\GlobalQueue.cpp" />
     <ClCompile Include="Codes\Job\Job.cpp" />
     <ClCompile Include="Codes\Job\JobQueue.cpp" />
     <ClCompile Include="Codes\Job\JobTimer.cpp" />

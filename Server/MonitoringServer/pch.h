@@ -11,5 +11,6 @@
 #endif
 
 #include "CorePch.h"
+#include "Global.h"
 
 #include "MonitoringSession.h"

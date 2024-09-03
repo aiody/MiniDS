@@ -2,6 +2,7 @@
 #include "MonitoringService.h"
 #include "Job.h"
 #include "ConsoleHelper.h"
+#include "JobQueue.h"
 
 shared_ptr<MonitoringService> gMonitoringService = make_shared<MonitoringService>();
 
@@ -28,7 +29,8 @@ void MonitoringService::UpdateTick()
 {
 	HealthCheck();
 	DrawUI();
-	gJobTimer->Reserve(1000, make_shared<Job>(shared_from_this(), &MonitoringService::UpdateTick));
+	shared_ptr<Job> job = make_shared<Job>(shared_from_this(), &MonitoringService::UpdateTick);
+	gJobTimer->Reserve(1000, gJobQueue, job);
 }
 
 void MonitoringService::DrawUI()

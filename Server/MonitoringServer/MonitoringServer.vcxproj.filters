@@ -10,6 +10,7 @@
     </ClCompile>
     <ClCompile Include="ConsoleHelper.cpp" />
     <ClCompile Include="MonitoringService.cpp" />
+    <ClCompile Include="Global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -20,6 +21,7 @@
     </ClInclude>
     <ClInclude Include="ConsoleHelper.h" />
     <ClInclude Include="MonitoringService.h" />
+    <ClInclude Include="Global.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Protocol">

@@ -19,7 +19,7 @@ Room::~Room()
 
 void Room::Start()
 {
-	gJobQueue->Push(make_shared<Job>(gRoom, &Room::UpdateTick));
+	Push(make_shared<Job>(gRoom, &Room::UpdateTick));
 
 	{
 		shared_ptr<Monster> monster = ObjectUtils::CreateMonster();
@@ -41,8 +41,8 @@ void Room::UpdateTick()
 		}
 	}
 
-	shared_ptr<Job> job = make_shared<Job>(shared_from_this(), &Room::UpdateTick);
-	gJobTimer->Reserve(100, job);
+	shared_ptr<Job> job = make_shared<Job>(GetRoomRef(), &Room::UpdateTick);
+	gJobTimer->Reserve(100, shared_from_this(), job);
 }
 
 shared_ptr<Player> Room::FindPlayer()
@@ -249,7 +249,7 @@ bool Room::EnterRoom(shared_ptr<Object> object)
 		objectInfo->CopyFrom(*object->objectInfo);
 
 		shared_ptr<SendBuffer> spawnBuffer = ServerPacketHandler::MakeSendBuffer(spawnPkt);
-		gJobQueue->Push(make_shared<Job>(gRoom, &Room::Broadcast, spawnBuffer, object->objectInfo->object_id()));
+		Push(make_shared<Job>(gRoom, &Room::Broadcast, spawnBuffer, object->objectInfo->object_id()));
 	}
 
 	return success;
@@ -281,7 +281,7 @@ bool Room::LeaveRoom(shared_ptr<Object> object)
 		despawnPkt.add_object_ids(id);
 
 		shared_ptr<SendBuffer> despawnBuffer = ServerPacketHandler::MakeSendBuffer(despawnPkt);
-		gJobQueue->Push(make_shared<Job>(gRoom, &Room::Broadcast, despawnBuffer, id));
+		Push(make_shared<Job>(gRoom, &Room::Broadcast, despawnBuffer, id));
 
 		// LeavePlayer에서 room에서 빼버렸기 때문에 Broadcast 대상에 들어가지 않아 다시 보냄
 		if (object->IsPlayer())
@@ -307,7 +307,7 @@ bool Room::AddObject(shared_ptr<Object> object)
 
 	_objects.insert(::make_pair(object->objectInfo->object_id(), object));
 
-	object->room.store(shared_from_this());
+	object->room.store(GetRoomRef());
 
 	return true;
 }

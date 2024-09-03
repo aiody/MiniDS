@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleHelper.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="MonitoringPacketHandler.cpp" />
     <ClCompile Include="MonitoringServer.cpp" />
     <ClCompile Include="MonitoringService.cpp" />
@@ -180,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleHelper.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="MonitoringPacketHandler.h" />
     <ClInclude Include="MonitoringService.h" />
     <ClInclude Include="MonitoringSession.h" />

@@ -108,5 +108,5 @@ private:
 	shared_ptr<Service> _service;
     CPUUsage* _cpuUsage;
     string _serverStartTimeString;
-    uint64 _transferredPacketCount;
+    uint64 _transferredPacketCount = 0;
 };

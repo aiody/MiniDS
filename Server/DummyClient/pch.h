@@ -11,4 +11,5 @@
 #endif
 
 #include "CorePch.h"
+#include "Global.h"
 #include "Struct.pb.h"

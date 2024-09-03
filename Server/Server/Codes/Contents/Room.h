@@ -1,10 +1,11 @@
 #pragma once
+#include "JobQueue.h"
 
 class Player;
 class Object;
 class Creature;
 
-class Room : public enable_shared_from_this<Room>
+class Room : public JobQueue
 {
 public:
 	Room();
@@ -12,6 +13,7 @@ public:
 
 	void Start();
 	void UpdateTick();
+	shared_ptr<Room> GetRoomRef() { return static_pointer_cast<Room>(shared_from_this()); }
 	shared_ptr<Player> FindPlayer();
 	vector<shared_ptr<Player>> FindPlayers();
 	bool HasObject(uint64 id);

@@ -1,14 +1,14 @@
 #pragma once
 #include "Job.h"
 
-class JobQueue
+class JobQueue : public enable_shared_from_this<JobQueue>
 {
 public:
 	void Push(shared_ptr<Job> job);
-	shared_ptr<Job> Pop();
-	void Flush();
+	void Execute();
 
 private:
 	USE_LOCK;
-	queue<shared_ptr<Job>> _jobs;
+	queue<shared_ptr<Job>>	_jobs;
+	atomic<int32>			_jobCount = 0;
 };

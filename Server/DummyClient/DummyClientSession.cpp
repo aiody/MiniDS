@@ -2,6 +2,7 @@
 #include "DummyClientSession.h"
 #include "DummyClientPacketHandler.h"
 #include "Utils.h"
+#include "JobQueue.h"
 
 DummyClientSession::DummyClientSession()
 {
@@ -20,7 +21,8 @@ void DummyClientSession::OnConnected()
 	Send(sendBuffer);
 
 	UpdateTick();
-	gJobTimer->Reserve(250, make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::SendAttackPacketIntermittently));
+	shared_ptr<Job> job = make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::SendAttackPacketIntermittently);
+	gJobTimer->Reserve(250, gJobQueue, job);
 }
 
 void DummyClientSession::OnDisconnected()
@@ -51,7 +53,8 @@ void DummyClientSession::UpdateTick()
 	shared_ptr<SendBuffer> sendBuffer = DummyClientPacketHandler::MakeSendBuffer(movePkt);
 	Send(sendBuffer);
 
-	gJobTimer->Reserve(200, make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::UpdateTick));
+	shared_ptr<Job> job = make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::UpdateTick);
+	gJobTimer->Reserve(200, gJobQueue, job);
 }
 
 void DummyClientSession::SendAttackPacketIntermittently()
@@ -67,5 +70,6 @@ void DummyClientSession::SendAttackPacketIntermittently()
 	Send(sendBuffer);
 
 	uint32 randomTime = Utils::GetRandom(500, 5000);
-	gJobTimer->Reserve(randomTime, make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::SendAttackPacketIntermittently));
+	shared_ptr<Job> job = make_shared<Job>(GetDummyClientSessionRef(), &DummyClientSession::SendAttackPacketIntermittently);
+	gJobTimer->Reserve(randomTime, gJobQueue, job);
 }

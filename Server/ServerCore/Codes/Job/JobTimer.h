@@ -2,6 +2,14 @@
 #include "Job.h"
 #include "JobQueue.h"
 
+struct JobData
+{
+	JobData(weak_ptr<JobQueue> owner, shared_ptr<Job> job) : owner(owner), job(job) { }
+
+	weak_ptr<JobQueue> owner;
+	shared_ptr<Job> job;
+};
+
 struct TimerItem
 {
 	bool operator<(const TimerItem& other) const
@@ -10,14 +18,15 @@ struct TimerItem
 	}
 
 	uint64 executeTick = 0;
-	shared_ptr<Job> job = nullptr;
+	JobData* jobData = nullptr;
 };
 
 class JobTimer
 {
 public:
-	void Reserve(uint64 tickAfter, shared_ptr<Job> job);
+	void Reserve(uint64 tickAfter, weak_ptr<JobQueue> owner, shared_ptr<Job> job);
 	void Distribute(uint64 now);
+	void Clear();
 
 private:
 	USE_LOCK;

@@ -158,6 +158,7 @@
     <ClCompile Include="DummyClientPacketHandler.cpp" />
     <ClCompile Include="DummyClientSession.cpp" />
     <ClCompile Include="DummyClient.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -187,6 +188,7 @@
   <ItemGroup>
     <ClInclude Include="DummyClientPacketHandler.h" />
     <ClInclude Include="DummyClientSession.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Protocol\Enum.pb.h" />
     <ClInclude Include="Protocol\Protocol.pb.h" />

@@ -2,12 +2,13 @@
 #include "JobTimer.h"
 #include "JobQueue.h"
 
-void JobTimer::Reserve(uint64 tickAfter, shared_ptr<Job> job)
+void JobTimer::Reserve(uint64 tickAfter, weak_ptr<JobQueue> owner, shared_ptr<Job> job)
 {
 	const uint64 executeTick = ::GetTickCount64() + tickAfter;
+	JobData* jobData = new JobData(owner, job);
 
 	WRITE_LOCK;
-	_items.push(TimerItem{ executeTick, job });
+	_items.push(TimerItem{ executeTick, jobData });
 }
 
 void JobTimer::Distribute(uint64 now)
@@ -31,8 +32,22 @@ void JobTimer::Distribute(uint64 now)
 
 	for(TimerItem& item : items)
 	{
-		gJobQueue->Push(item.job);
+		if (shared_ptr<JobQueue> owner = item.jobData->owner.lock())
+			owner->Push(item.jobData->job);
+
+		delete item.jobData;
 	}
 
 	_distributing.store(false);
+}
+
+void JobTimer::Clear()
+{
+	WRITE_LOCK;
+	while (_items.empty() == false)
+	{
+		const TimerItem& item = _items.top();
+		delete item.jobData;
+		_items.pop();
+	}
 }

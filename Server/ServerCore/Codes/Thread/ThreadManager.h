@@ -13,6 +13,9 @@ public:
 	static void		InitTLS();
 	static void		DestroyTLS();
 
+	static void		DoGlobalQueueWork();
+	static void		DistributeReservedJobs();
+
 	static uint32	GetThreadCountToLaunch();
 	uint32			GetCurrentThreadCount();
 

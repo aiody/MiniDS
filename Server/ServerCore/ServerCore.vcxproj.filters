@@ -61,6 +61,9 @@
     <ClInclude Include="Codes\Thread\ThreadManager.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Codes\Job\GlobalQueue.h">
+      <Filter>Job</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Codes\Inclusion\CorePch.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="Codes\Thread\ThreadManager.cpp">
       <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Codes\Job\GlobalQueue.cpp">
+      <Filter>Job</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

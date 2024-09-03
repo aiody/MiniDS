@@ -24,7 +24,7 @@ bool Handler_C_ENTER_GAME(shared_ptr<PacketSession>& session, Protocol::C_ENTER_
 	shared_ptr<Player> player = ObjectUtils::CreatePlayer(gameSession);
 	
 	// 방에 입장
-	gJobQueue->Push(make_shared<Job>(gRoom, &Room::HandleEnterPlayer, player));
+	gRoom->Push(make_shared<Job>(gRoom, &Room::HandleEnterPlayer, player));
 
 	return true;
 }
@@ -41,7 +41,7 @@ bool Handler_C_LEAVE_GAME(shared_ptr<PacketSession>& session, Protocol::C_LEAVE_
 	if (room == nullptr)
 		return false;
 
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleLeavePlayer, player));
+	room->Push(make_shared<Job>(room, &Room::HandleLeavePlayer, player));
 
 	return true;
 }
@@ -58,7 +58,7 @@ bool Handler_C_MOVE(shared_ptr<PacketSession>& session, Protocol::C_MOVE& pkt)
 	if (room == nullptr)
 		return false;
 	
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleMove, pkt));
+	room->Push(make_shared<Job>(room, &Room::HandleMove, pkt));
 
 	return true;
 }
@@ -75,7 +75,7 @@ bool Handler_C_ATTACK(shared_ptr<PacketSession>& session, Protocol::C_ATTACK& pk
 	if (room == nullptr)
 		return false;
 
-	gJobQueue->Push(make_shared<Job>(room, &Room::HandleAttack, pkt.from(), pkt.to()));
+	room->Push(make_shared<Job>(room, &Room::HandleAttack, pkt.from(), pkt.to()));
 
 	return true;
 }
@@ -103,5 +103,5 @@ bool Handler_M_REQ_SERVER_INFO(shared_ptr<PacketSession>& session, Protocol::M_R
 	shared_ptr<SendBuffer> sendBuffer = ServerPacketHandler::MakeSendBuffer(resServerInfoPkt);
 	gameSession->Send(sendBuffer);
 
-	return false;
+	return true;
 }

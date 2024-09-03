@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ThreadManager.h"
+#include "GlobalQueue.h"
 
 ThreadManager::ThreadManager()
 {
@@ -42,6 +43,28 @@ void ThreadManager::InitTLS()
 
 void ThreadManager::DestroyTLS()
 {
+}
+
+void ThreadManager::DoGlobalQueueWork()
+{
+	while (true)
+	{
+		// 쓰레드를 너무 오래 이 단계에 붙잡고 있지 않도록 조절
+		const uint64 now = ::GetTickCount64();
+		if (now > LEndTickCount)
+			break;
+
+		shared_ptr<JobQueue> jobQueue = gGlobalQueue->Pop();
+		if (jobQueue == nullptr)
+			break;
+
+		jobQueue->Execute();
+	}
+}
+
+void ThreadManager::DistributeReservedJobs()
+{
+	gJobTimer->Distribute(::GetTickCount64());
 }
 
 uint32 ThreadManager::GetThreadCountToLaunch()

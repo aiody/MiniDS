@@ -2,12 +2,12 @@
 #include "CoreGlobal.h"
 #include "ThreadManager.h"
 #include "SocketUtils.h"
-#include "JobQueue.h"
+#include "GlobalQueue.h"
 #include "JobTimer.h"
 
-ThreadManager* gThreadManager = nullptr;
-JobQueue* gJobQueue = nullptr;
-JobTimer* gJobTimer = nullptr;
+ThreadManager*	gThreadManager = nullptr;
+GlobalQueue*	gGlobalQueue = nullptr;
+JobTimer*		gJobTimer = nullptr;
 
 class CoreGlobal
 {
@@ -15,9 +15,8 @@ public:
 	CoreGlobal()
 	{
 		SocketUtils::Init();
-		
 		gThreadManager = new ThreadManager();
-		gJobQueue = new JobQueue();
+		gGlobalQueue = new GlobalQueue();
 		gJobTimer = new JobTimer();
 	}
 
@@ -25,7 +24,7 @@ public:
 	{
 		SocketUtils::Clear();
 		delete gThreadManager;
-		delete gJobQueue;
+		delete gGlobalQueue;
 		delete gJobTimer;
 	}
 } GCoreGlobal; // 전역 객체

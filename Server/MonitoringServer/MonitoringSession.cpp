@@ -38,6 +38,7 @@ void MonitoringSession::OnSend(int32 len)
 
 void MonitoringSession::SetMonitoringInfo(Protocol::S_RES_SERVER_INFO& pkt)
 {
+	gMonitoringService->SetServerRunningStatus(true);
 	gMonitoringService->SetLastRespondTime();
 	gMonitoringService->SetMonitoringInfo(
 		pkt.cpu_used_by_me(),

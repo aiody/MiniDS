@@ -15,6 +15,7 @@
     <ClCompile Include="DummyClientSession.cpp" />
     <ClCompile Include="DummyClientPacketHandler.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="DummyClientSession.h" />
     <ClInclude Include="DummyClientPacketHandler.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Global.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Protocol">
